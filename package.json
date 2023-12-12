@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "db_push": "nodemon npx prisma db push",
+    "db_pull": "nodemon npx prisma db pull",
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
