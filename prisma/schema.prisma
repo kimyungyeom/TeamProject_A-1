@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   userId      Int            @id @default(autoincrement()) @map("userId")
-  userLevel   Int            @default(1) @map("userLevel") 
+  userLevel   Int            @default(1) @map("userLevel")
   email       String         @unique @map("email")
   username    String         @map("username")
   googleId    String?        @map("googleId")
@@ -20,11 +20,9 @@ model Users {
   address     String?        @map("address")
   createdAt   DateTime       @default(now()) @map("createdAt")
   updatedAt   DateTime       @updatedAt @map("updatedAt")
-
   Post        Posts?
   Reservation Reservations[]
   Review      Reviews[]
-
   @@map("Users")
 }
 
@@ -34,8 +32,8 @@ model Posts {
   title       String         @map("title")
   content     String         @map("content")
   price       Int            @map("price")
-  startDate   DateTime       @map("startDate")
-  endDate     DateTime       @map("endDate")
+  startDate   DateTime       @map("startDate") @db.Date
+  endDate     DateTime       @map("endDate")   @db.Date
   career      String         @map("career")
   experience  String         @map("experience")
   createdAt   DateTime       @default(now()) @map("createdAt")
@@ -43,7 +41,6 @@ model Posts {
   User        Users          @relation(fields: [userId], references: [userId], onDelete: Cascade)
   Reservation Reservations[]
   Review      Reviews[]
-
   @@map("Posts")
 }
 
@@ -51,11 +48,11 @@ model Reservations {
   reservationId Int       @id @default(autoincrement()) @map("reservationId")
   userId        Int       @map("userId")
   postId        Int       @map("postId")
-  startDate     DateTime  @map("startDate")
-  endTime       DateTime  @map("endTime")
+  ResStartDate  DateTime  @map("ResStartDate") @db.Date
+  ResEndDate    DateTime  @map("ResEndDate") @db.Date
   cats          Int       @map("cats")
-  visitTime     DateTime  @map("visitTime")
-  pickupTime    DateTime  @map("pickupTime")
+  visitTime     String    @map("visitTime")
+  pickupTime    String    @map("pickupTime")
   totalPrice    Int       @map("totalPrice")
   createdAt     DateTime  @default(now()) @map("createdAt")
   updatedAt     DateTime  @updatedAt @map("updatedAt")
@@ -74,7 +71,7 @@ model Reviews {
   postId        Int          @map("postId")
   reservationId Int          @map("reservationId")
   comment       String       @map("comment")
-  rating        Int          @map("rating")
+  rating        Float        @map("rating")
   createdAt     DateTime     @default(now()) @map("createdAt")
   updatedAt     DateTime     @updatedAt @map("updatedAt")
   Post          Posts        @relation(fields: [postId], references: [postId], onDelete: Cascade)
