@@ -43,7 +43,6 @@ router.get('/post/:postId', async (req, res) => {
 router.post('/post', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
-    console.log(userId);
     const { title, content, price, startDate, endDate, career, experience } = req.body;
     const startTime = new Date(`${startDate}T00:00:00.000Z`).toISOString();
     const endTime = new Date(`${endDate}T00:00:00.000Z`).toISOString();
