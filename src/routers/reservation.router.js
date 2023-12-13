@@ -8,17 +8,17 @@ const router = express.Router();
 //예약 정보를
 
 // API 예약 생성
-router.post('/reservation', async (req, res, next) => {
+router.post('/:postId/reservation', async (req, res, next) => {
   try {
-    //임시 userId, postId 가져오는 곳 바꾸어야 함
-    const { userId, postId, startDate, endTime, cats, visitTime, pickupTime, totalPrice } =
-      req.body;
+    const userId = req.user.userId;
+    const { postId } = req.params;
+    const { ResStartDate, ResEndDate, cats, visitTime, pickupTime, totalPrice } = req.body;
     const reservation = await prisma.Reservations.create({
       data: {
         userId: +userId,
         postId: +postId,
-        startDate,
-        endTime,
+        ResStartDate: new Date(`${ResStartDate}T00:00:00.000Z`),
+        ResEndDate: new Date(`${ResEndDate}T00:00:00.000Z`),
         cats: +cats,
         visitTime,
         pickupTime,
@@ -38,8 +38,8 @@ router.get('/reservation/:reservationId', async (req, res, next) => {
       where: { reservationId: +reservationId },
       select: {
         reservationId: true,
-        startDate: true,
-        endTime: true,
+        ResStartDate: true,
+        ResEndDate: true,
         cats: true,
         visitTime: true,
         pickupTime: true,
@@ -54,15 +54,16 @@ router.get('/reservation/:reservationId', async (req, res, next) => {
 // API 예약 수정-상세페이지에서
 router.patch('/reservation/:reservationId', async (req, res, next) => {
   try {
-    //임시 userId, postId 가져오는 곳 바꾸어야 함
+    const userId = req.user.userId;
+    const { postId } = req.params;
+    // reservation 작성자가 맞는지 확인 필요
     const { reservationId } = req.params;
-    const { userId, postId, startDate, endTime, cats, visitTime, pickupTime, totalPrice } =
-      req.body;
+    const { ResStartDate, ResEndDate, cats, visitTime, pickupTime, totalPrice } = req.body;
     const reservation = await prisma.Reservations.update({
       where: { reservationId: +reservationId },
       data: {
-        startDate,
-        endTime,
+        ResStartDate: new Date(`${ResStartDate}T00:00:00.000Z`),
+        ResEndDate: new Date(`${ResEndDate}T00:00:00.000Z`),
         cats: +cats,
         visitTime,
         pickupTime,
@@ -77,29 +78,29 @@ router.patch('/reservation/:reservationId', async (req, res, next) => {
 // API 예약 취소
 router.delete('/reservation/:reservationId', async (req, res, next) => {
   try {
-    const reservationId = await prisma.Reservations.delete({
+    const reservationId = req.params;
+    // 예약 작성자 확인 필요
+    const reservationCanc = await prisma.Reservations.delete({
       where: { reservationId: +reservationId },
     });
-    res.status(200).json({ data: reservationId });
+    res.status(200).json({ data: reservationCanc });
   } catch (err) {
     next(err);
   }
 });
-// API 포스트별(시터/유저) 예약 조회
+// API 포스트별(유저) 예약 조회
 router.get('/user/reservation', async (req, res, next) => {
   try {
-    // const userId = req.user.userId;
-    // const userLevel = req.user.userLevel;
-    // 임시
-    const userId = 1;
-    const userLevel = 1;
-
+    const userId = req.user.userId;
+    const userLevel = req.user.userLevel;
+    // userLevel에서 시터/예약자 확인
     const reservations = await prisma.Reservations.findMany({
       where: { userId: +userId },
       select: {
         reservationId: true,
-        startDate: true,
-        startDate: true,
+        postId: true,
+        ResStartDate: true,
+        ResEndDate: true,
       },
     });
     res.status(200).json({ data: reservations });
