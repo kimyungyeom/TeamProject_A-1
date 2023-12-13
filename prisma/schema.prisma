@@ -34,8 +34,8 @@ model Posts {
   title       String         @map("title")
   content     String         @map("content")
   price       Int            @map("price")
-  startDate   DateTime       @map("startDate")
-  endDate     DateTime       @map("endDate")
+  startDate   DateTime       @map("startDate") @db.Date
+  endDate     DateTime       @map("endDate")   @db.Date
   career      String         @map("career")
   experience  String         @map("experience")
   createdAt   DateTime       @default(now()) @map("createdAt")
