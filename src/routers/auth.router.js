@@ -2,7 +2,7 @@ import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 import passport from 'passport';
 import '../config/passport.js';
-import cookieSession from 'cookie-session';
+
 import {
   validate,
   validateEmail,
@@ -81,4 +81,22 @@ router.post('/logout', (req, res, next) => {
     res.redirect('/login');
   });
 });
+
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    accessType: 'offline',
+    prompt: 'consent',
+  }),
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    successReturnToOrRedirect: '/',
+    failureRedirect: '/login',
+  }),
+);
+
 export default router;
