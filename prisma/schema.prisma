@@ -1,11 +1,88 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Users {
+  userId      Int            @id @default(autoincrement()) @map("userId")
+  userLevel   Int            @default(1) @map("userLevel") 
+  email       String         @unique @map("email")
+  username    String         @map("username")
+  googleId    String?        @map("googleId")
+  kakaoId     String?        @map("kakaoId")
+  password    String         @map("password")
+  profile     String?        @map("profile")
+  phone       String         @map("phone")
+  address     String?        @map("address")
+  createdAt   DateTime       @default(now()) @map("createdAt")
+  updatedAt   DateTime       @updatedAt @map("updatedAt")
+
+  Post        Posts?
+  Reservation Reservations[]
+  Review      Reviews[]
+
+  @@map("Users")
+}
+
+model Posts {
+  postId      Int            @id @default(autoincrement()) @map("postId")
+  userId      Int            @unique @map("userId")
+  title       String         @map("title")
+  content     String         @map("content")
+  price       Int            @map("price")
+  startDate   DateTime       @map("startDate")
+  endDate     DateTime       @map("endDate")
+  career      String         @map("career")
+  experience  String         @map("experience")
+  createdAt   DateTime       @default(now()) @map("createdAt")
+  updatedAt   DateTime       @updatedAt @map("updatedAt")
+  User        Users          @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  Reservation Reservations[]
+  Review      Reviews[]
+
+  @@map("Posts")
+}
+
+model Reservations {
+  reservationId Int       @id @default(autoincrement()) @map("reservationId")
+  userId        Int       @map("userId")
+  postId        Int       @map("postId")
+  startDate     DateTime  @map("startDate")
+  endTime       DateTime  @map("endTime")
+  cats          Int       @map("cats")
+  visitTime     DateTime  @map("visitTime")
+  pickupTime    DateTime  @map("pickupTime")
+  totalPrice    Int       @map("totalPrice")
+  createdAt     DateTime  @default(now()) @map("createdAt")
+  updatedAt     DateTime  @updatedAt @map("updatedAt")
+  Post          Posts     @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  User          Users     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  Review        Reviews[]
+
+  @@index([postId], map: "Reservation_postId_fkey")
+  @@index([userId], map: "Reservation_userId_fkey")
+  @@map("Reservation")
+}
+
+model Reviews {
+  reviewId      Int          @id @default(autoincrement()) @map("reviewId")
+  userId        Int          @map("userId")
+  postId        Int          @map("postId")
+  reservationId Int          @map("reservationId")
+  comment       String       @map("comment")
+  rating        Int          @map("rating")
+  createdAt     DateTime     @default(now()) @map("createdAt")
+  updatedAt     DateTime     @updatedAt @map("updatedAt")
+  Post          Posts        @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  Reservation   Reservations @relation(fields: [reservationId], references: [reservationId], onDelete: Cascade)
+  User          Users        @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@index([postId], map: "Reviews_postId_fkey")
+  @@index([reservationId], map: "Reviews_reservationId_fkey")
+  @@index([userId], map: "Reviews_userId_fkey")
+  @@map("Reviews")
 }
