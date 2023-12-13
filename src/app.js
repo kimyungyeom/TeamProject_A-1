@@ -7,13 +7,13 @@ import 'dotenv/config';
 import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
 import { checkAuthenticate } from './middlewares/auth.js';
 // port
 const PORT = process.env.SERVER_PORT;
 
 // import router
 import AuthRouter from './routers/auth.router.js';
+import AdminRouter from './routers/admin.router.js';
 // app.js - global variables
 const app = express();
 
@@ -50,6 +50,7 @@ app.use(passport.session());
 
 // router middleware
 app.use('/api/auth/', AuthRouter);
+app.use('/api/admin/', AdminRouter);
 app.get('/', checkAuthenticate, (req, res) => {
   const user = req.user;
   console.log('USER', user);
