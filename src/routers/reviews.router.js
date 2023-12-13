@@ -1,16 +1,16 @@
 // import
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
-// import { checkAuthenticate } from '../middlewares/auth.js';
+import { checkAuthenticate } from '../middlewares/auth.js';
 
 // reviews.js - global variables
 const router = express.Router();
 
 // 리뷰 생성 router
-router.post('/:postId/reviews', async (req, res, next) => {
+router.post('/:postId/reviews', checkAuthenticate, async (req, res, next) => {
   try {
-    const userId = '1'; // 유저 id 임시값
-    const reservationId = '1'; // 예약 id 임시값
+    const userId = req.user.userId;
+    const reservationId = 1;
     const { postId } = req.params;
     const { comment, rating } = req.body;
 
@@ -36,9 +36,9 @@ router.post('/:postId/reviews', async (req, res, next) => {
     // 리뷰 생성
     const reviews = await prisma.reviews.create({
       data: {
-        userId: +userId,
+        userId: userId,
         postId: +postId,
-        reservationId: +reservationId,
+        reservationId: reservationId,
         comment,
         rating,
       },
@@ -74,10 +74,10 @@ router.get('/:postId/reviews', async (req, res, next) => {
   }
 });
 // 리뷰 수정 router
-router.put('/:postId/reviews/:reviewId', async (req, res, next) => {
+router.put('/:postId/reviews/:reviewId', checkAuthenticate, async (req, res, next) => {
   try {
-    const userId = '1'; // 유저 id 임시값
-    const reservationId = '1'; // 예약 id 임시값
+    const userId = req.user.userId;
+    const reservationId = 1; // 예약 id 임시값
     const { postId, reviewId } = req.params;
     const { comment, rating } = req.body;
 
@@ -106,10 +106,10 @@ router.put('/:postId/reviews/:reviewId', async (req, res, next) => {
   }
 });
 // 리뷰 삭제 router
-router.delete('/:postId/reviews/:reviewId', async (req, res, next) => {
+router.delete('/:postId/reviews/:reviewId', checkAuthenticate, async (req, res, next) => {
   try {
-    const userId = '1'; // 유저 id 임시값
-    const reservationId = '1'; // 예약 id 임시값
+    const userId = req.user.userId; // 유저 id 임시값
+    const reservationId = 1; // 예약 id 임시값
     const { postId, reviewId } = req.params;
 
     const post = await prisma.posts.findFirst({
