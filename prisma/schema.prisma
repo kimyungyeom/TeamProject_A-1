@@ -74,7 +74,7 @@ model Reviews {
   postId        Int          @map("postId")
   reservationId Int          @map("reservationId")
   comment       String       @map("comment")
-  rating        Int          @map("rating")
+  rating        Float        @map("rating")
   createdAt     DateTime     @default(now()) @map("createdAt")
   updatedAt     DateTime     @updatedAt @map("updatedAt")
   Post          Posts        @relation(fields: [postId], references: [postId], onDelete: Cascade)
