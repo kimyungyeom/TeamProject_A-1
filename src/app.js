@@ -11,6 +11,7 @@ import { checkAuthenticate } from './middlewares/auth.js';
 const PORT = process.env.SERVER_PORT;
 
 // import router
+import PostRouter from './routers/post.router.js';
 import AuthRouter from './routers/auth.router.js';
 // app.js - global variables
 const app = express();
@@ -44,6 +45,7 @@ app.use(passport.session());
 
 // router middleware
 app.use('/api/auth/', AuthRouter);
+app.use('/api/', PostRouter);
 app.get('/', checkAuthenticate, (req, res) => {
   const user = req.user;
   res.send(user);

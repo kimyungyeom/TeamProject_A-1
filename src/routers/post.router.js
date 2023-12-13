@@ -20,6 +20,9 @@ router.get('/post', async (req, res) => {
       createdAt: 'desc',
     },
   });
+  if (!posts) {
+    return res.json({ message: 'error' });
+  }
   return res.json({ data: posts });
 });
 
@@ -60,7 +63,7 @@ router.post('/post', checkAuthenticate, async (req, res, next) => {
 });
 
 // 게시글 수정
-router.put('post/:postId', checkAuthenticate, async (req, req, next) => {
+router.put('post/:postId', checkAuthenticate, async (req, res, next) => {
   try {
     const { userId } = req.user;
     const { postId } = req.params;
@@ -99,7 +102,7 @@ router.put('post/:postId', checkAuthenticate, async (req, req, next) => {
 });
 
 // 게시글 삭제
-router.delete('post/:postId', checkAuthenticate, async (req, req, next) => {
+router.delete('post/:postId', checkAuthenticate, async (req, res, next) => {
   try {
     const { userId } = req.user;
     const { postId } = req.params;
