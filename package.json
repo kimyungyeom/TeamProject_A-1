@@ -1,13 +1,10 @@
 {
   "name": "team_project",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db_push": "nodemon npx prisma db push",
-    "db_pull": "nodemon npx prisma db pull",
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
@@ -33,6 +30,16 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.2",
-    "prettier": "3.1.1"
-  }
+    "prettier": "3.1.1",
+    "prisma": "^5.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimyungyeom/TeamProject_A-1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kimyungyeom/TeamProject_A-1/issues"
+  },
+  "homepage": "https://github.com/kimyungyeom/TeamProject_A-1#readme",
+  "description": ""
 }

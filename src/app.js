@@ -7,13 +7,15 @@ import 'dotenv/config';
 import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
 import { checkAuthenticate } from './middlewares/auth.js';
+
 // port
 const PORT = process.env.SERVER_PORT;
 
 // import router
+import PostRouter from './routers/post.router.js';
 import AuthRouter from './routers/auth.router.js';
-import AdminRouter from './routers/admin.router.js';
 // app.js - global variables
 const app = express();
 
@@ -48,15 +50,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-
+// 임시
+app.use('/api', [reservationRouter]);
 // router middleware
 app.use('/api/auth/', AuthRouter);
-app.use('/api/admin/', AdminRouter);
-app.get('/adm', (req, res) => {
-  res.render('adm/index.ejs');
-});
-app.get('/adm/users', (req, res) => {
-  res.render('adm/users.ejs');
+app.get('/', checkAuthenticate, (req, res) => {
+  const user = req.user;
+  console.log('USER', user);
+  res.render('index.ejs', { user });
 });
 app.get('/adm/petsitter', (req, res) => {
   res.render('adm/petsitter.ejs');
