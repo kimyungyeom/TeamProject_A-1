@@ -5,6 +5,8 @@ import passport from 'passport';
 import cookieSession from 'cookie-session';
 import 'dotenv/config';
 import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { checkAuthenticate } from './middlewares/auth.js';
 // port
@@ -35,6 +37,10 @@ app.use(function (request, response, next) {
   }
   next();
 });
+const currentModuleURL = import.meta.url;
+const currentModulePath = fileURLToPath(currentModuleURL);
+app.set('views', path.join(currentModulePath, '../views'));
+app.set('view engine', 'ejs');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -46,7 +52,14 @@ app.use(passport.session());
 app.use('/api/auth/', AuthRouter);
 app.get('/', checkAuthenticate, (req, res) => {
   const user = req.user;
-  res.send(user);
+  console.log('USER', user);
+  res.render('index.ejs', { user });
+});
+app.get('/login', (req, res) => {
+  res.render('login.ejs');
+});
+app.get('/signup', (req, res) => {
+  res.render('signup.ejs');
 });
 
 app.use(ErrorHandlingMiddleware);
