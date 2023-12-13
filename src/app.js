@@ -16,6 +16,7 @@ const PORT = process.env.SERVER_PORT;
 // import router
 import PostRouter from './routers/post.router.js';
 import AuthRouter from './routers/auth.router.js';
+import reservationRouter from './routers/reservation.router.js';
 // app.js - global variables
 const app = express();
 
@@ -52,6 +53,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // 임시
 app.use('/api', [reservationRouter]);
+
 // router middleware
 app.use('/api/auth/', AuthRouter);
 app.get('/', checkAuthenticate, (req, res) => {
@@ -59,6 +61,11 @@ app.get('/', checkAuthenticate, (req, res) => {
   console.log('USER', user);
   res.render('index.ejs', { user });
 });
+
+app.get('/adm/users', (req, res) => {
+  res.render('adm/users.ejs');
+});
+
 app.get('/adm/petsitter', (req, res) => {
   res.render('adm/petsitter.ejs');
 });
