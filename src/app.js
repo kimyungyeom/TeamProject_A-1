@@ -4,7 +4,9 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
 import 'dotenv/config';
+import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 
+import { checkAuthenticate } from './middlewares/auth.js';
 // port
 const PORT = process.env.SERVER_PORT;
 
@@ -16,7 +18,7 @@ const app = express();
 // global variables
 app.use(
   cookieSession({
-    name: 'cookie-session-passport',
+    name: 'cookie-session-name',
     keys: [process.env.COOKIESESSIONKEY],
   }),
 );
@@ -42,10 +44,12 @@ app.use(passport.session());
 
 // router middleware
 app.use('/api/auth/', AuthRouter);
-app.get('/', (req, res) => {
-  res.send('!');
+app.get('/', checkAuthenticate, (req, res) => {
+  const user = req.user;
+  res.send(user);
 });
 
+app.use(ErrorHandlingMiddleware);
 // 서버 구동
 app.listen(PORT, () => {
   console.log(PORT, '포트로 서버 구동');
