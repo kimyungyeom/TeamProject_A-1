@@ -39,9 +39,10 @@ app.use(function (request, response, next) {
 });
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
+
 app.set('views', path.join(currentModulePath, '../views'));
 app.set('view engine', 'ejs');
-
+app.use(express.static(path.join(currentModulePath, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -51,18 +52,18 @@ app.use(passport.session());
 // router middleware
 app.use('/api/auth/', AuthRouter);
 app.use('/api/admin/', AdminRouter);
-app.get('/', checkAuthenticate, (req, res) => {
-  const user = req.user;
-  console.log('USER', user);
-  res.render('index.ejs', { user });
+app.get('/adm', (req, res) => {
+  res.render('adm/index.ejs');
 });
-app.get('/login', (req, res) => {
-  res.render('login.ejs');
+app.get('/adm/users', (req, res) => {
+  res.render('adm/users.ejs');
 });
-app.get('/signup', (req, res) => {
-  res.render('signup.ejs');
+app.get('/adm/petsitter', (req, res) => {
+  res.render('adm/petsitter.ejs');
 });
-
+app.get('/adm/reservation', (req, res) => {
+  res.render('adm/reservation.ejs');
+});
 app.use(ErrorHandlingMiddleware);
 // 서버 구동
 app.listen(PORT, () => {
