@@ -1,5 +1,8 @@
 @host=http://localhost:3000
 
+### 회원가입
+POST {{host}}api/
+
 ### 로그인
 POST {{host}}/api/auth/login
 Content-Type: application/json
@@ -14,7 +17,7 @@ GET {{host}}/api/post
 Content-Type: application/json
 
 ### 게시글 상세 조회
-GET {{host}}/api/post/15
+GET {{host}}/api/post/1
 Content-Type: application/json
 
 ### 게시글 작성
@@ -22,7 +25,7 @@ POST {{host}}/api/post
 Content-Type: application/json
 
 {
-    "title": "안전하고 편안한 펫시팅3",
+    "title": "안전하고 편안한 펫시팅",
     "content": "반려동물 훈련 노하우를 가진 준비된 펫시터!",
     "price": "50000",
     "startDate": "2023-11-10",
@@ -32,7 +35,7 @@ Content-Type: application/json
 }
 
 ### 게시글 수정
-PUT {{host}}/api/post/15
+PUT {{host}}/api/post/1
 Content-Type: application/json
 
 {
@@ -46,5 +49,5 @@ Content-Type: application/json
 }
 
 ### 게시글 삭제
-DELETE {{host}}/api/post/15
+DELETE {{host}}/api/post/24
 Content-Type: application/json

@@ -45,7 +45,7 @@ router.post('/post', checkAuthenticate, async (req, res, next) => {
     const userId = req.user.userId;
     console.log(userId);
     const { title, content, price, startDate, endDate, career, experience } = req.body;
-    const startTime = new Date(`${startDate}T00:00:00.000Z`).toISOString(); //T04:55:14.972Z
+    const startTime = new Date(`${startDate}T00:00:00.000Z`).toISOString();
     const endTime = new Date(`${endDate}T00:00:00.000Z`).toISOString();
 
     const newPost = await prisma.posts.create({
@@ -67,10 +67,14 @@ router.post('/post', checkAuthenticate, async (req, res, next) => {
 });
 
 // 게시글 수정
-router.put('post/:postId', checkAuthenticate, async (req, res, next) => {
+router.put('/post/:postId', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const { postId } = req.params;
+    const { title, content, price, startDate, endDate, career, experience } = req.body;
+    const startTime = new Date(`${startDate}T00:00:00.000Z`).toISOString();
+    const endTime = new Date(`${endDate}T00:00:00.000Z`).toISOString();
+
     const post = await prisma.posts.findFirst({
       where: {
         postId: +postId,
@@ -83,8 +87,7 @@ router.put('post/:postId', checkAuthenticate, async (req, res, next) => {
       return res.status(403).send({ message: 'error' });
     }
 
-    const { title, content, price, startDate, endDate, career, experience } = req.body;
-    const updatePost = await prisma.update({
+    const updatePost = await prisma.posts.update({
       where: {
         postId: +postId,
       },
@@ -92,8 +95,8 @@ router.put('post/:postId', checkAuthenticate, async (req, res, next) => {
         title,
         content,
         price: +price,
-        startDate,
-        endDate,
+        startDate: startTime,
+        endDate: endTime,
         career,
         experience,
       },
@@ -105,12 +108,16 @@ router.put('post/:postId', checkAuthenticate, async (req, res, next) => {
 });
 
 // 게시글 삭제
-router.delete('post/:postId', checkAuthenticate, async (req, res, next) => {
+router.delete('/post/:postId', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
-    console.log(userId);
     const { postId } = req.params;
 
+    const post = await prisma.posts.findFirst({
+      where: {
+        postId: +postId,
+      },
+    });
     if (!post) {
       return res.status(404).send({ message: 'error' });
     }
@@ -121,7 +128,6 @@ router.delete('post/:postId', checkAuthenticate, async (req, res, next) => {
     const deletePost = await prisma.posts.delete({
       where: {
         postId: +postId,
-        userId: +userId,
       },
     });
     return res.json({ data: deletePost });
