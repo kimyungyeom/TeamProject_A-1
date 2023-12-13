@@ -1,14 +1,11 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
+import { checkAuthenticate } from '../middlewares/auth.js';
 
 const router = express.Router();
-//메인 페이지에서 예약 가능한 포스팅을 확인한다
-//포스트에서 예약을 한다 (예약 정보를 받는다)
-//예약 정보를 바탕으로 데이터베이스에 등록된다.
-//예약 정보를
 
 // API 예약 생성
-router.post('/:postId/reservation', async (req, res, next) => {
+router.post('/:postId/reservation', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const { postId } = req.params;
@@ -31,7 +28,7 @@ router.post('/:postId/reservation', async (req, res, next) => {
   }
 });
 // API 예약 상세보기
-router.get('/reservation/:reservationId', async (req, res, next) => {
+router.get('/reservation/:reservationId', checkAuthenticate, async (req, res, next) => {
   try {
     const { reservationId } = req.params;
     const reservationInfo = await prisma.Reservations.findUnique({
@@ -52,7 +49,7 @@ router.get('/reservation/:reservationId', async (req, res, next) => {
   }
 });
 // API 예약 수정-상세페이지에서
-router.patch('/reservation/:reservationId', async (req, res, next) => {
+router.patch('/reservation/:reservationId', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const { postId } = req.params;
@@ -76,9 +73,9 @@ router.patch('/reservation/:reservationId', async (req, res, next) => {
   }
 });
 // API 예약 취소
-router.delete('/reservation/:reservationId', async (req, res, next) => {
+router.delete('/reservation/:reservationId', checkAuthenticate, async (req, res, next) => {
   try {
-    const reservationId = req.params;
+    const { reservationId } = req.params;
     // 예약 작성자 확인 필요
     const reservationCanc = await prisma.Reservations.delete({
       where: { reservationId: +reservationId },
@@ -89,7 +86,7 @@ router.delete('/reservation/:reservationId', async (req, res, next) => {
   }
 });
 // API 포스트별(유저) 예약 조회
-router.get('/user/reservation', async (req, res, next) => {
+router.get('/user/reservation', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const userLevel = req.user.userLevel;

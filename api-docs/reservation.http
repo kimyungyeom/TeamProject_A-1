@@ -14,7 +14,7 @@ Content-Type: application/json; charset=utf-8
 }
 ###
 //API 예약 상세조회
-GET {{host}}/api/reservation/1 HTTP/1.1
+GET {{host}}/api/reservation/2 HTTP/1.1
 Content-Type: application/json; charset=utf-8
 ###
 //API 예약 상세삭제
@@ -22,7 +22,7 @@ DELETE  {{host}}/api/reservation/1 HTTP/1.1
 Content-Type: application/json; charset=utf-8
 ###
 //API 예약 수정
-PATCH {{host}}/api/reservation/1 HTTP/1.1
+PATCH {{host}}/api/reservation/2 HTTP/1.1
 Content-Type: application/json; charset=utf-8
 
 {
