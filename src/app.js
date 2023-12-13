@@ -8,6 +8,7 @@ import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import reservationRouter from './routers/reservation.router.js';
 import { checkAuthenticate } from './middlewares/auth.js';
 
 // port
@@ -50,7 +51,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-
+// 임시
+app.use('/api', [reservationRouter]);
 // router middleware
 app.use('/api/auth/', AuthRouter);
 app.use('/api/post', ReviewsRouter);
