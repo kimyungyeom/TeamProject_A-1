@@ -1,4 +1,6 @@
 @host=http://localhost:3000
+@cookie=cookie-session-name=eyJwYXNzcG9ydCI6eyJ1c2VyIjoyfX0=;
+@cookie-session-name.sig=ZE31dBIzzL0FojIrPG8pxbdRtiE;
 
 ### 리뷰 생성
 POST {{host}}/api/post/1/reviews
@@ -23,5 +25,5 @@ Content-Type: application/json
 }
 
 ### 리뷰 삭제
-delete {{host}}/api/post/1/reviews/7
+delete {{host}}/api/post/1/reviews/1
 Content-Type: application/json

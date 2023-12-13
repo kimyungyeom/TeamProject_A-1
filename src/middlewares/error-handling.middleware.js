@@ -16,8 +16,8 @@ export default function (err, req, res, next) {
       return res.status(401).send({
         errorMessage: '로그인을 해주세요!',
       });
-
     case 'Forbidden':
+    case 'NotPermission':
       return res.status(403).send({
         errorMessage: '권한이 없습니다.',
       });
@@ -27,16 +27,19 @@ export default function (err, req, res, next) {
         errorMessage: '이메일을 확인해주세요.',
       });
 
-    case 'notFoundProduct':
+    case 'NotFoundPost':
       return res.status(404).send({
-        errorMessage: '상품이 없습니다.',
+        errorMessage: '게시글이 없습니다.',
       });
 
     case 'Product Create failed':
+    case 'InvalidValue':
+    case 'EmptyCreateValue':
       return res.status(500).send({
         errorMessage: '등록에 실패하였습니다',
       });
     case 'Product Update failed':
+    case 'EmptyEditValue':
       return res.status(500).send({
         errorMessage: '수정에 실패하였습니다',
       });
