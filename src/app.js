@@ -6,6 +6,7 @@ import cookieSession from 'cookie-session';
 import 'dotenv/config';
 import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 
+import reservationRouter from './routers/reservation.router.js';
 import { checkAuthenticate } from './middlewares/auth.js';
 // port
 const PORT = process.env.SERVER_PORT;
@@ -41,7 +42,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-
+// 임시
+app.use('/api', [reservationRouter]);
 // router middleware
 app.use('/api/auth/', AuthRouter);
 app.get('/', checkAuthenticate, (req, res) => {
