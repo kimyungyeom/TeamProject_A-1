@@ -1,33 +1,39 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 import { checkAuthenticate } from '../middlewares/auth.js';
+import { reservationValidation } from '../middlewares/reservation.validation.js';
 
 const router = express.Router();
 
 // API 예약 생성
-router.post('/:store_id/reservation', checkAuthenticate, async (req, res, next) => {
-  try {
-    const user_id = req.user.user_id;
-    const { store_id } = req.params;
-    const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
-    const reservation = await prisma.reservations.create({
-      data: {
-        user_id: +user_id,
-        store_id: +store_id,
-        reserve_date,
-        cats: +cats,
-        res_comment,
-        visit_time,
-        pickup_time,
-        total_price: +total_price,
-        approved: 'No',
-      },
-    });
-    return res.status(201).json({ data: reservation });
-  } catch (err) {
-    next(err);
-  }
-});
+router.post(
+  '/:store_id/reservation',
+  reservationValidation,
+  checkAuthenticate,
+  async (req, res, next) => {
+    try {
+      const user_id = req.user.user_id;
+      const { store_id } = req.params;
+      const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
+      const reservation = await prisma.reservations.create({
+        data: {
+          user_id: +user_id,
+          store_id: +store_id,
+          reserve_date,
+          cats: +cats,
+          res_comment,
+          visit_time,
+          pickup_time,
+          total_price: +total_price,
+          approved: 'No',
+        },
+      });
+      return res.status(201).json({ data: reservation });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 // API 예약 상세보기
 router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
   try {
@@ -51,35 +57,40 @@ router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next)
   }
 });
 // API 예약 수정-상세페이지에서
-router.patch('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
-  try {
-    const user_id = req.user.user_id;
-    const { reserve_id } = req.params;
-    const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
-    const reservationInfo = await prisma.reservations.findUnique({
-      where: { reserve_id: +reserve_id },
-    });
-    // 예약자 본인 확인
-    if (reservationInfo.user_id === user_id) {
-      const reservation = await prisma.reservations.update({
+router.patch(
+  '/reservation/:reserve_id',
+  reservationValidation,
+  checkAuthenticate,
+  async (req, res, next) => {
+    try {
+      const user_id = req.user.user_id;
+      const { reserve_id } = req.params;
+      const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
+      const reservationInfo = await prisma.reservations.findUnique({
         where: { reserve_id: +reserve_id },
-        data: {
-          reserve_date: reserve_date,
-          cats: +cats,
-          res_comment,
-          visit_time,
-          pickup_time,
-          total_price: +total_price,
-        },
       });
-      res.status(200).json({ data: reservation });
-    } else {
-      throw new Error('Not a reserver');
+      // 예약자 본인 확인
+      if (reservationInfo.user_id === user_id) {
+        const reservation = await prisma.reservations.update({
+          where: { reserve_id: +reserve_id },
+          data: {
+            reserve_date: reserve_date,
+            cats: +cats,
+            res_comment,
+            visit_time,
+            pickup_time,
+            total_price: +total_price,
+          },
+        });
+        res.status(200).json({ data: reservation });
+      } else {
+        throw new Error('Not a reserver');
+      }
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
-  }
-});
+  },
+);
 
 // API 예약 수정-상세페이지에서 - 시터가 승인여부 변경
 router.patch('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) => {
