@@ -14,7 +14,7 @@ GET {{host}}/api/store
 Content-Type: application/json
 
 ### 게시글 상세 조회
-GET {{host}}/api/store
+GET {{host}}/api/store/3
 Content-Type: application/json
 
 ### 게시글 작성
@@ -25,26 +25,34 @@ Content-Type: application/json
     "title": "안전하고 편안한 펫시팅",
     "content": "반려동물 훈련 노하우를 가진 준비된 펫시터!",
     "price": "50000",
-    "startDate": "2023-11-10",
-    "endDate": "2023-11-11",
-    "career": "1년",
+    "able_date": {
+        "date1": "2023-12-15",
+        "date2": "2023-12-25"
+    },
+    "images": {
+        "image1": "https://img.animalplanet.co.kr/news/2019/11/28/700/f9in35p5660ce423x290.jpg",
+        "image2": "https://cdn.metavv.com/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
+        },
     "experience": "현재 고양이 집사입니다."
 }
 
 ### 게시글 수정
-PUT {{host}}/api/store/1
+PUT {{host}}/api/store/3
 Content-Type: application/json
 
 {
-    "title": "즐거운 펫시팅",
+    "title": "즐겁고 편안한 펫시팅",
     "content": "반려동물 훈련 노하우를 가진 준비된 펫시터!",
-    "price": "40000",
-    "startDate": "2023-11-10",
-    "endDate": "2023-11-11",
-    "career": "3년",
+    "price": "50000",
+    "able_date": {
+        "date1": "2023-12-15"
+    },
+    "images": {
+        "image1": "https://img.animalplanet.co.kr/news/2019/11/28/700/f9in35p5660ce423x290.jpg"
+        },
     "experience": "반려동물 키운 경험 없습니다."
 }
 
 ### 게시글 삭제
-DELETE {{host}}/api/store/24
+DELETE {{host}}/api/store/2
 Content-Type: application/json
