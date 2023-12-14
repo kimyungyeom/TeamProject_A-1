@@ -28,16 +28,16 @@ model users {
 }
 
 model store {
-  store_id    Int            @id @default(autoincrement()) @map("store_id")
-  user_id     Int            @unique @map("user_id")
+  store_id      Int            @id @default(autoincrement()) @map("store_id")
+  user_id      Int            @unique @map("user_id")
   title       String         @map("title")
   content     String         @map("content")
   price       Int            @map("price")
   images      Json           @map("images") 
   able_date   Json           @map("able_date")
   experience  String         @map("experience")
-  created_at  DateTime       @default(now()) @map("created_at")
-  updated_at  DateTime       @updatedAt @map("updated_at")
+  created_at   DateTime       @default(now()) @map("created_at")
+  updated_at   DateTime       @updatedAt @map("updated_at")
 
   user        users          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   reservations reservations[]
@@ -46,14 +46,14 @@ model store {
 }
 
 model reservations {
-  reserve_id     Int       @id @default(autoincrement()) @map("reserve_id")
+  reserve_id    Int       @id @default(autoincrement()) @map("reserve_id")
   user_id        Int       @map("user_id")
-  store_id       Int       @map("store_id")
+  store_id        Int       @map("store_id")
   reserve_start  DateTime  @map("reserve_start") @db.Date
   reserve_end    DateTime  @map("reserve_end") @db.Date
-  cats           Int       @map("cats")
-  visit_time     String    @map("visit_time")
-  pickup_time    String    @map("pickup_time")
+  cats          Int       @map("cats")
+  visit_time    String    @map("visit_time")
+  pickup_time   String    @map("pickup_time")
   total_price    Int       @map("total_price")
   created_at     DateTime  @default(now()) @map("created_at")
   updated_at     DateTime  @updatedAt @map("updated_at")
@@ -68,10 +68,10 @@ model reservations {
 model reviews {
   review_id      Int          @id @default(autoincrement()) @map("review_id")
   user_id        Int          @map("user_id")
-  store_id       Int          @map("store_id")
+  store_id        Int          @map("store_id")
   reserve_id     Int          @map("reserve_id")
-  comment        String       @map("comment")
-  rating         Float        @map("rating")
+  comment       String       @map("comment")
+  rating        Float        @map("rating")
   created_at     DateTime     @default(now()) @map("created_at")
   updated_at     DateTime     @updatedAt @map("updated_at")
 
