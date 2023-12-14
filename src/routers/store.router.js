@@ -67,7 +67,7 @@ router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
     const { store_id } = req.params;
     const { title, content, price, images, able_date, experience } = req.body;
 
-    const store = await prisma.posts.findFirst({
+    const store = await prisma.stores.findUnique({
       where: {
         store_id: +store_id,
       },
