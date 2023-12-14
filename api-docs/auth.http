@@ -1,1 +1,22 @@
 @host=http://localhost:3000
+
+### 로그인
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test01@test.com",
+    "password": "111111"
+}
+
+### 회원가입
+POST {{host}}/api/auth/signup
+Content-Type: application/json
+
+{
+"email": "test01@test.com",
+"password": "111111",
+"passwordCheck":"111111",
+"phone":"010-0000-1111",
+"username":"테스트용"
+}
