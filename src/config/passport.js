@@ -3,6 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import 'dotenv/config';
 import { prisma } from '../utils/prisma/index.js';
+import router from '../routers/auth.router.js';
 
 passport.serializeUser((user, done) => {
   done(null, user.userId);
@@ -69,4 +70,5 @@ const googleStrategyConfig = new GoogleStrategy(
     }
   },
 );
+
 passport.use('google', googleStrategyConfig);
