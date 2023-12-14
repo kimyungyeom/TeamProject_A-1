@@ -41,9 +41,9 @@ PUT {{host}}/api/store/3
 Content-Type: application/json
 
 {
-    "title": "즐겁고 편안한 펫시팅",
-    "content": "반려동물 훈련 노하우를 가진 준비된 펫시터!",
-    "price": "50000",
+    "title": "안전하고 편안한 펫시팅",
+    "content": "내 아이처럼 생각하고 돌보겠습니다~",
+    "price": "40000",
     "able_date": {
         "date1": "2023-12-15"
     },
