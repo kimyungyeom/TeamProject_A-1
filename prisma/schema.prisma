@@ -51,6 +51,7 @@ model reservations {
   reserve_start  DateTime  @map("reserve_start") @db.Date
   reserve_end    DateTime  @map("reserve_end") @db.Date
   cats          Int       @map("cats")
+<<<<<<< HEAD
   visit_time    String    @map("visit_time")
   pickup_time   String    @map("pickup_time")
   total_price    Int       @map("total_price")
@@ -60,6 +61,17 @@ model reservations {
   store          store     @relation(fields: [store_id], references: [store_id], onDelete: Cascade)
   users          users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   Review        reviews[]
+=======
+  ResComment    String    @map("ResComment")
+  visitTime     String    @map("visitTime")
+  pickupTime    String    @map("pickupTime")
+  totalPrice    Int       @map("totalPrice")
+  createdAt     DateTime  @default(now()) @map("createdAt")
+  updatedAt     DateTime  @updatedAt @map("updatedAt")
+  Post          Posts     @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  User          Users     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  Review        Reviews[]
+>>>>>>> 41beca8c16e2a596fb631497f6fa07ccc4125bf4
 
   @@index([store_id], map: "Reservation_postId_fkey")
   @@index([user_id], map: "Reservation_userId_fkey")
