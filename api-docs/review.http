@@ -3,7 +3,7 @@
 @cookie-session-name.sig=ZE31dBIzzL0FojIrPG8pxbdRtiE;
 
 ### 리뷰 생성
-POST {{host}}/api/post/1/reservation/1/review
+POST {{host}}/api/store/3/reservation/2/review
 Content-Type: application/json
 
 {
@@ -12,19 +12,17 @@ Content-Type: application/json
 }
 
 ### 리뷰 조회
-GET {{host}}/api/post/1/reviews
-
+GET {{host}}/api/store/3/reviews
 
 ### 리뷰 수정
-
-PUT {{host}}/api/post/1/reservation/1/review/4
+PUT {{host}}/api/store/3/reservation/2/review/3
 Content-Type: application/json
 
 {
-    "comment": "펫시터님이 잘돌봐주셔서 너무 다행이에여!!!",
-    "rating": 5
+    "comment": "펫시터님이 잘돌봐주셔서 너무 다행이에여ㅎㅎ",
+    "rating": 4
 }
 
 ### 리뷰 삭제
-delete {{host}}/api/post/1/reservation/1/review/1
+delete {{host}}/api/store/3/reservation/2/review/2
 Content-Type: application/json

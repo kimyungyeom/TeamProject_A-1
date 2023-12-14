@@ -9,27 +9,27 @@ const router = express.Router();
 
 // 리뷰 생성 router
 router.post(
-  '/:postId/reservation/:reservationId/review',
+  '/:store_id/reservation/:reserve_id/review',
   [validate, validateComment, validateRating],
   checkAuthenticate,
   async (req, res, next) => {
     try {
-      const userId = req.user.userId;
-      const { postId, reservationId } = req.params;
+      const user_id = req.user.user_id;
+      const { store_id, reserve_id } = req.params;
       const { comment, rating } = req.body;
 
-      const post = await prisma.posts.findFirst({
-        where: { postId: +postId },
+      const store = await prisma.stores.findFirst({
+        where: { store_id: +store_id },
       });
 
       // 게시글이 존재하지 않을 때 예외처리
-      if (!post) {
-        throw new Error('NotFoundPost');
+      if (!store) {
+        throw new Error('NotFoundStore');
       }
 
       // 해당 유저의 예약 정보 확인
       const reservation = await prisma.reservations.findUnique({
-        where: { reservationId: +reservationId, userId },
+        where: { reserve_id: +reserve_id, user_id },
       });
 
       // 예약 정보가 없는 경우
@@ -38,13 +38,13 @@ router.post(
       }
 
       // 예약한 userId와 로그인한 userId가 다를 경우
-      if (reservation.userId !== userId) {
+      if (reservation.user_id !== user_id) {
         throw new Error('NotPermission');
       }
 
       // 해당 유저가 해당 게시글에 리뷰를 작성했는지 확인
       const existReview = await prisma.reviews.findFirst({
-        where: { postId: +postId, userId },
+        where: { store_id: +store_id, user_id },
       });
 
       // 이미 리뷰를 작성한 경우
@@ -55,11 +55,11 @@ router.post(
       // 리뷰 생성
       const reviews = await prisma.reviews.create({
         data: {
-          userId: userId,
-          postId: +postId,
-          reservationId: +reservationId,
+          user_id: user_id,
+          store_id: +store_id,
+          reserve_id: +reserve_id,
           comment,
-          rating,
+          rating: +rating,
         },
       });
 
@@ -71,21 +71,21 @@ router.post(
 );
 
 // 리뷰 조회 router
-router.get('/:postId/reviews', async (req, res, next) => {
+router.get('/:store_id/reviews', async (req, res, next) => {
   try {
-    const { postId } = req.params;
-    const post = await prisma.posts.findFirst({
-      where: { postId: +postId },
+    const { store_id } = req.params;
+    const store = await prisma.stores.findFirst({
+      where: { store_id: +store_id },
     });
     // 게시글이 존재하지 않을 때 예외처리
-    if (!post) {
-      throw new Error('NotFoundPost');
+    if (!store) {
+      throw new Error('NotFoundStore');
     }
 
     // 리뷰 조회
     const reviews = await prisma.reviews.findMany({
-      where: { postId: +postId },
-      orderBy: { createdAt: 'desc' },
+      where: { store_id: +store_id },
+      orderBy: { created_at: 'desc' },
     });
 
     return res.status(200).json({ data: reviews });
@@ -96,26 +96,26 @@ router.get('/:postId/reviews', async (req, res, next) => {
 
 // 리뷰 수정 router
 router.put(
-  '/:postId/reservation/:reservationId/review/:reviewId',
+  '/:store_id/reservation/:reserve_id/review/:review_id',
   [validate, validateComment, validateRating],
   checkAuthenticate,
   async (req, res, next) => {
     try {
-      const userId = req.user.userId;
-      const { postId, reservationId, reviewId } = req.params;
+      const user_id = req.user.user_id;
+      const { store_id, reserve_id, review_id } = req.params;
       const { comment, rating } = req.body;
 
-      const post = await prisma.posts.findFirst({
-        where: { postId: +postId },
+      const store = await prisma.stores.findFirst({
+        where: { store_id: +store_id },
       });
       // 게시글이 존재하지 않을 때 예외처리
-      if (!post) {
-        throw new Error('NotFoundPost');
+      if (!store) {
+        throw new Error('NotFoundStore');
       }
 
       // 해당 유저의 예약 정보 확인
       const reservation = await prisma.reservations.findUnique({
-        where: { reservationId: +reservationId, userId },
+        where: { reserve_id: +reserve_id, user_id },
       });
 
       // 예약 정보가 없는 경우
@@ -124,14 +124,14 @@ router.put(
       }
 
       // 예약한 userId와 로그인한 userId가 다를 경우
-      if (reservation.userId !== userId) {
+      if (reservation.user_id !== user_id) {
         throw new Error('NotPermission');
       }
 
       // 리뷰 수정
       const updatedReview = await prisma.reviews.update({
-        where: { reviewId: +reviewId },
-        data: { comment, rating },
+        where: { review_id: +review_id },
+        data: { comment, rating: +rating },
       });
 
       return res.status(200).json({ data: updatedReview });
@@ -143,24 +143,24 @@ router.put(
 
 // 리뷰 삭제 router
 router.delete(
-  '/:postId/reservation/:reservationId/review/:reviewId',
+  '/:store_id/reservation/:reserve_id/review/:review_id',
   checkAuthenticate,
   async (req, res, next) => {
     try {
-      const userId = req.user.userId;
-      const { postId, reservationId, reviewId } = req.params;
+      const user_id = req.user.user_id;
+      const { store_id, reserve_id, review_id } = req.params;
 
-      const post = await prisma.posts.findFirst({
-        where: { postId: +postId },
+      const store = await prisma.stores.findFirst({
+        where: { store_id: +store_id },
       });
       // 게시글이 존재하지 않을 때 예외처리
-      if (!post) {
-        throw new Error('NotFoundPost');
+      if (!store) {
+        throw new Error('NotFoundStore');
       }
 
       // 해당 유저의 예약 정보 확인
       const reservation = await prisma.reservations.findUnique({
-        where: { reservationId: +reservationId, userId },
+        where: { reserve_id: +reserve_id, user_id },
       });
 
       // 예약 정보가 없는 경우
@@ -169,13 +169,13 @@ router.delete(
       }
 
       // 예약한 userId와 로그인한 userId가 다를 경우
-      if (reservation.userId !== userId) {
+      if (reservation.user_id !== user_id) {
         throw new Error('NotPermission');
       }
 
       // 리뷰 삭제
       const deletedReview = await prisma.reviews.delete({
-        where: { postId: +postId, reviewId: +reviewId },
+        where: { store_id: +store_id, review_id: +review_id },
       });
 
       return res.status(200).json({ data: deletedReview });

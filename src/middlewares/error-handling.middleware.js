@@ -27,7 +27,7 @@ export default function (err, req, res, next) {
         errorMessage: '이메일을 확인해주세요.',
       });
 
-    case 'NotFoundPost':
+    case 'NotFoundStore':
       return res.status(404).send({
         errorMessage: '게시글이 없습니다.',
       });
