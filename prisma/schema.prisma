@@ -49,8 +49,7 @@ model reservations {
   reserve_id    Int       @id @default(autoincrement()) @map("reserve_id")
   user_id        Int       @map("user_id")
   store_id        Int       @map("store_id")
-  reserve_start  DateTime  @map("reserve_start") @db.Date
-  reserve_end    DateTime  @map("reserve_end") @db.Date
+  reserve_date  Json  @map("reserve_date")
   cats          Int       @map("cats")
   visit_time    String    @map("visit_time")
   pickup_time   String    @map("pickup_time")
