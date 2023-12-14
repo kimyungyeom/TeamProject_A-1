@@ -1,0 +1,89 @@
+<%- include('../partials/header.ejs') %>
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      navbar-scroll="true">
+      <div class="container-fluid py-1 px-3 mt-4 ">
+        <nav aria-label="breadcrumb">
+          <h5 class="font-weight-bolder ">예약 내역</h5>
+        </nav>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row min-vh-80 h-100">
+        <div class="col-12">
+          <div class="row">
+
+
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body pt-4 p-3">
+                  <ul class="list-group">
+                    <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                      <div class="d-flex flex-column col-8">
+                        <h6 class="mb-3 text-sm">김도현</h6>
+                        <span class="mb-2 text-xs">펫시터 :
+                          <span class="text-dark font-weight-bold ms-sm-2">
+                            강창민
+                          </span>
+                        </span>
+
+                        <div class="row">
+                          <span class="mb-2 text-xs col-6">예약시작날짜:
+                            <span class="text-dark ms-sm-2 font-weight-bold">2022년 12월 13일</span>
+                          </span>
+                          <span class="text-xs col-6"> 예약종료날짜:
+                            <span class="text-dark ms-sm-2 font-weight-bold">2022년 12월 13일</span>
+                          </span>
+                        </div>
+
+                        <div class="row">
+                          <span class="mb-2 text-xs col-6">방문 예정 시간 :
+                            <span class="text-dark ms-sm-2 font-weight-bold"> 12:00시 </span>
+                          </span>
+                          <span class="text-xs col-6">마리수 :
+                            <span class="text-dark ms-sm-2 font-weight-bold">3 마리</span>
+                          </span>
+                        </div>
+
+                        <div class="row">
+                          <span class="mb-2 text-xs col-6"> 가격 :
+                            <span class="text-dark ms-sm-2 font-weight-bold"> 30,000 원 </span>
+                          </span>
+                          <span class="text-xs col-6"> 총 가격 :
+                            <span class="text-dark ms-sm-2 font-weight-bold"> 90,000 원 </span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="ms-auto text-end">
+                        <a class="btn btn-link text-danger text-gradient px-2 mb-0" href="javascript:;">
+                          <i class="material-icons text-sm me-2">delete</i>취소
+                        </a>
+                        <a class="btn btn-link text-dark px-2 mb-0" href="javascript:;">
+                          <i class="material-icons text-sm me-2">edit</i>수정
+                        </a>
+                        <a class="btn btn-link text-dark px-2 mb-0" href="javascript:;">
+                          <i class="material-icons text-sm me-2">edit</i>확정
+                        </a>
+                      </div>
+
+
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%- include('../partials/footer.ejs') %>
