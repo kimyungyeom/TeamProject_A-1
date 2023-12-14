@@ -1,135 +1,127 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 import { checkAuthenticate } from '../middlewares/auth.js';
-import { reconstructFieldPath } from 'express-validator/src/field-selection.js';
-import { checkExact } from 'express-validator';
 
 const router = express.Router();
 
 // 전체 게시글 조회
-router.get('/post', async (req, res) => {
-  const posts = await prisma.posts.findMany({
+router.get('/store', async (req, res) => {
+  const stores = await prisma.stores.findMany({
     select: {
-      postId: true,
-      userId: true,
+      store_id: true,
+      user_id: true,
       title: true,
       content: true,
-      createdAt: true,
-      updatedAt: true,
+      created_at: true,
+      updated_at: true,
     },
     orderBy: {
-      createdAt: 'desc',
+      created_at: 'desc',
     },
   });
-  if (!posts) {
+  if (!stores) {
     return res.json({ message: 'error' });
   }
-  return res.json({ data: posts });
+  return res.json({ data: stores });
 });
 
 // 게시글 상세조회
-router.get('/post/:postId', async (req, res) => {
-  const { postId } = req.params;
+router.get('/store/:store_id', async (req, res) => {
+  const { store_id } = req.params;
 
-  const post = await prisma.posts.findFirst({
+  const store = await prisma.stores.findFirst({
     where: {
-      postId: +postId,
+      store_id: +store_id,
     },
   });
-  return res.json({ data: post });
+  return res.json({ data: store });
 });
 
 // 게시글 작성
-router.post('/post', checkAuthenticate, async (req, res, next) => {
+router.post('/store', checkAuthenticate, async (req, res, next) => {
   try {
-    const userId = req.user.userId;
-    const { title, content, price, startDate, endDate, career, experience } = req.body;
-    const startTime = new Date(`${startDate}T00:00:00.000Z`).toISOString();
-    const endTime = new Date(`${endDate}T00:00:00.000Z`).toISOString();
+    const user_id = req.user.user_id;
+    const { title, content, price, images, able_date, experience } = req.body;
 
-    const newPost = await prisma.posts.create({
+    const newStore = await prisma.stores.create({
       data: {
-        userId: userId,
+        user_id: +user_id,
         title,
         content,
         price: +price,
-        startDate: startTime,
-        endDate: endTime,
-        career,
+        able_date,
+        images,
         experience,
       },
     });
-    return res.json({ data: newPost });
+    return res.json({ data: newStore });
   } catch (err) {
     next(err);
   }
 });
 
 // 게시글 수정
-router.put('/post/:postId', checkAuthenticate, async (req, res, next) => {
+router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
   try {
-    const userId = req.user.userId;
-    const { postId } = req.params;
-    const { title, content, price, startDate, endDate, career, experience } = req.body;
-    const startTime = new Date(`${startDate}T00:00:00.000Z`).toISOString();
-    const endTime = new Date(`${endDate}T00:00:00.000Z`).toISOString();
+    const user_id = req.user.user_id;
+    const { store_id } = req.params;
+    const { title, content, price, images, able_date, experience } = req.body;
 
-    const post = await prisma.posts.findFirst({
+    const store = await prisma.posts.findFirst({
       where: {
-        postId: +postId,
+        store_id: +store_id,
       },
     });
-    if (!post) {
+    if (!store) {
       return res.status(404).send({ message: 'error' });
     }
-    if (userId !== post.userId) {
+    if (user_id !== store.store_id) {
       return res.status(403).send({ message: 'error' });
     }
 
-    const updatePost = await prisma.posts.update({
+    const updateStore = await prisma.stores.update({
       where: {
-        postId: +postId,
+        store_id: +store_id,
       },
       data: {
         title,
         content,
         price: +price,
-        startDate: startTime,
-        endDate: endTime,
-        career,
+        images,
+        able_date,
         experience,
       },
     });
-    return res.json({ data: updatePost });
+    return res.json({ data: updateStore });
   } catch (err) {
     next(err);
   }
 });
 
 // 게시글 삭제
-router.delete('/post/:postId', checkAuthenticate, async (req, res, next) => {
+router.delete('/store/:store_id', checkAuthenticate, async (req, res, next) => {
   try {
-    const userId = req.user.userId;
-    const { postId } = req.params;
+    const user_id = req.user.user_id;
+    const { store_id } = req.params;
 
-    const post = await prisma.posts.findFirst({
+    const store = await prisma.stores.findFirst({
       where: {
-        postId: +postId,
+        store_id: +store_id,
       },
     });
-    if (!post) {
+    if (!store) {
       return res.status(404).send({ message: 'error' });
     }
-    if (userId !== post.userId) {
+    if (user_id !== store.user_id) {
       return res.status(403).send({ message: 'error' });
     }
 
-    const deletePost = await prisma.posts.delete({
+    const deleteStore = await prisma.stores.delete({
       where: {
-        postId: +postId,
+        store_id: +store_id,
       },
     });
-    return res.json({ data: deletePost });
+    return res.json({ data: deleteStore });
   } catch (err) {
     next(err);
   }
