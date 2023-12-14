@@ -3,10 +3,8 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import 'dotenv/config';
 import { prisma } from '../utils/prisma/index.js';
-import router from '../routers/auth.router.js';
 
 passport.serializeUser((user, done) => {
-  console.log(user);
   done(null, user.user_id);
 });
 // client => session => request
@@ -24,7 +22,6 @@ const LocalStrategyConfig = new LocalStrategy(
     passwordField: 'password',
   },
   async (email, password, done) => {
-    console.log(email, password);
     const user = await prisma.users.findUnique({
       where: { email: email },
     });

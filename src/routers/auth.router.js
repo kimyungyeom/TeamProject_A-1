@@ -47,8 +47,8 @@ router.post(
       data: newUser,
     });
     delete ExistUser.password;
-    delete ExistUser.googleId;
-    delete ExistUser.kakaoId;
+    delete ExistUser.google_id;
+    delete ExistUser.kakao_id;
     delete ExistUser.profile;
     return res.status(200).send(ExistUser);
     //res.redirect('/login');
@@ -73,7 +73,6 @@ router.post('/login', [validateEmail, validatePassword, validate], (req, res, ne
 
 //logout
 router.post('/logout', (req, res, next) => {
-  console.log(req.body);
   req.logOut(function (err) {
     if (err) {
       return next(err);
@@ -101,5 +100,17 @@ router.get(
 
 router.get('passportlogin', (req, res, next) => {
   passport.authenticate('jwt', { session: false });
+});
+
+// front end
+router.get('/users', (req, res) => {
+  res.render('adm/users.ejs');
+});
+
+router.get('/petsitter', (req, res) => {
+  res.render('adm/petsitter.ejs');
+});
+router.get('/reservation', (req, res) => {
+  res.render('adm/reservation.ejs');
 });
 export default router;
