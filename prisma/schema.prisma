@@ -7,79 +7,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  userId      Int            @id @default(autoincrement()) @map("userId")
-  userLevel   Int            @default(1) @map("userLevel")
-  email       String         @unique @map("email")
-  username    String         @map("username")
-  googleId    String?        @map("googleId")
-  kakaoId     String?        @map("kakaoId")
-  password    String         @map("password")
-  profile     String?        @map("profile")
-  phone       String         @map("phone")
-  address     String?        @map("address")
-  createdAt   DateTime       @default(now()) @map("createdAt")
-  updatedAt   DateTime       @updatedAt @map("updatedAt")
-  Post        Posts?
-  Reservation Reservations[]
-  Review      Reviews[]
-  @@map("Users")
+model users {
+  user_id      Int            @id @default(autoincrement()) @map("userId")
+  user_level   Int            @default(1) @map("userLevel")
+  email        String         @unique @map("email")
+  password     String         @map("password")
+  name         String         @map("name")
+  phone        String         @map("phone")
+  google_id    String?        @map("googleId")
+  kakao_id     String?        @map("kakaoId")
+  profile      String?        @map("profile")
+  created_at   DateTime       @default(now()) @map("createdAt")
+  updated_at   DateTime       @updatedAt @map("updatedAt")
+
+  store        store?
+  reservations reservations[]
+  reviews      reviews[]
+  @@map("users")
 }
 
-model Posts {
-  postId      Int            @id @default(autoincrement()) @map("postId")
-  userId      Int            @unique @map("userId")
+model store {
+  store_id      Int            @id @default(autoincrement()) @map("postId")
+  user_id      Int            @unique @map("userId")
   title       String         @map("title")
   content     String         @map("content")
   price       Int            @map("price")
-  startDate   DateTime       @map("startDate")
-  endDate     DateTime       @map("endDate")
-  career      String         @map("career")
+  images      Json           @map("images") 
+  able_date   Json           @map("able_date")
   experience  String         @map("experience")
   createdAt   DateTime       @default(now()) @map("createdAt")
   updatedAt   DateTime       @updatedAt @map("updatedAt")
-  User        Users          @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  Reservation Reservations[]
-  Review      Reviews[]
-  @@map("Posts")
+
+  user        users          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  reservations reservations[]
+  Review      reviews[]
+  @@map("store")
 }
 
-model Reservations {
-  reservationId Int       @id @default(autoincrement()) @map("reservationId")
-  userId        Int       @map("userId")
-  postId        Int       @map("postId")
-  ResStartDate  DateTime  @map("ResStartDate") @db.Date
-  ResEndDate    DateTime  @map("ResEndDate") @db.Date
+model reservations {
+  reserve_id    Int       @id @default(autoincrement()) @map("reservationId")
+  user_id        Int       @map("user_id")
+  store_id        Int       @map("store_id")
+  reserve_start  DateTime  @map("reserve_start") @db.Date
+  reserve_end    DateTime  @map("reserve_end") @db.Date
   cats          Int       @map("cats")
-  visitTime     String    @map("visitTime")
-  pickupTime    String    @map("pickupTime")
-  totalPrice    Int       @map("totalPrice")
-  createdAt     DateTime  @default(now()) @map("createdAt")
-  updatedAt     DateTime  @updatedAt @map("updatedAt")
-  Post          Posts     @relation(fields: [postId], references: [postId], onDelete: Cascade)
-  User          Users     @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  Review        Reviews[]
+  visit_time    String    @map("visit_time")
+  pickup_time   String    @map("pickup_time")
+  total_price    Int       @map("total_price")
+  created_at     DateTime  @default(now()) @map("created_at")
+  updated_at     DateTime  @updatedAt @map("updated_at")
+  
+  store          store     @relation(fields: [store_id], references: [store_id], onDelete: Cascade)
+  users          users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  Review        reviews[]
 
-  @@index([postId], map: "Reservation_postId_fkey")
-  @@index([userId], map: "Reservation_userId_fkey")
-  @@map("Reservation")
+  @@index([store_id], map: "Reservation_postId_fkey")
+  @@index([user_id], map: "Reservation_userId_fkey")
+
+  @@map("reservations")
 }
 
-model Reviews {
-  reviewId      Int          @id @default(autoincrement()) @map("reviewId")
-  userId        Int          @map("userId")
-  postId        Int          @map("postId")
-  reservationId Int          @map("reservationId")
+model reviews {
+  review_id      Int          @id @default(autoincrement()) @map("review_id")
+  user_id        Int          @map("user_id")
+  store_id        Int          @map("store_id")
+  reserve_id     Int          @map("reserve_id")
   comment       String       @map("comment")
   rating        Float        @map("rating")
-  createdAt     DateTime     @default(now()) @map("createdAt")
-  updatedAt     DateTime     @updatedAt @map("updatedAt")
-  Post          Posts        @relation(fields: [postId], references: [postId], onDelete: Cascade)
-  Reservation   Reservations @relation(fields: [reservationId], references: [reservationId], onDelete: Cascade)
-  User          Users        @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  created_at     DateTime     @default(now()) @map("created_at")
+  updated_at     DateTime     @updatedAt @map("updated_at")
 
-  @@index([postId], map: "Reviews_postId_fkey")
-  @@index([reservationId], map: "Reviews_reservationId_fkey")
-  @@index([userId], map: "Reviews_userId_fkey")
-  @@map("Reviews")
+  store          store        @relation(fields: [store_id], references: [store_id], onDelete: Cascade)
+  reservations   reservations @relation(fields: [reserve_id], references: [reserve_id], onDelete: Cascade)
+  users          users        @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@index([store_id], map: "Reviews_postId_fkey")
+  @@index([reserve_id], map: "Reviews_reservationId_fkey")
+  @@index([user_id], map: "Reviews_userId_fkey")
+
+  @@map("reviews")
 }

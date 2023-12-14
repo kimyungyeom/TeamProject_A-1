@@ -1,7 +1,7 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
-import { type } from 'os';
 
+import { body } from 'express-validator';
 const router = express.Router();
 // 전체 유저 조회
 router.get('/userlist', async (req, res, next) => {
@@ -36,4 +36,5 @@ router.get('/reviews', async (req, res, next) => {
   const reviews = await prisma.reviews.findMany({});
   console.log(reviews);
 });
+
 export default router;
