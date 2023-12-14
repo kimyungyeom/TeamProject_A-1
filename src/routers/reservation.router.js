@@ -9,7 +9,8 @@ router.post('/:postId/reservation', checkAuthenticate, async (req, res, next) =>
   try {
     const userId = req.user.userId;
     const { postId } = req.params;
-    const { ResStartDate, ResEndDate, cats, visitTime, pickupTime, totalPrice } = req.body;
+    const { ResStartDate, ResEndDate, cats, ResComment, visitTime, pickupTime, totalPrice } =
+      req.body;
     const reservation = await prisma.Reservations.create({
       data: {
         userId: +userId,
@@ -17,6 +18,7 @@ router.post('/:postId/reservation', checkAuthenticate, async (req, res, next) =>
         ResStartDate: new Date(`${ResStartDate}T00:00:00.000Z`),
         ResEndDate: new Date(`${ResEndDate}T00:00:00.000Z`),
         cats: +cats,
+        ResComment,
         visitTime,
         pickupTime,
         totalPrice: +totalPrice,
@@ -55,13 +57,15 @@ router.patch('/reservation/:reservationId', checkAuthenticate, async (req, res, 
     const { postId } = req.params;
     // reservation 작성자가 맞는지 확인 필요
     const { reservationId } = req.params;
-    const { ResStartDate, ResEndDate, cats, visitTime, pickupTime, totalPrice } = req.body;
+    const { ResStartDate, ResComment, ResEndDate, cats, visitTime, pickupTime, totalPrice } =
+      req.body;
     const reservation = await prisma.Reservations.update({
       where: { reservationId: +reservationId },
       data: {
         ResStartDate: new Date(`${ResStartDate}T00:00:00.000Z`),
         ResEndDate: new Date(`${ResEndDate}T00:00:00.000Z`),
         cats: +cats,
+        ResComment,
         visitTime,
         pickupTime,
         totalPrice: +totalPrice,
@@ -89,7 +93,6 @@ router.delete('/reservation/:reservationId', checkAuthenticate, async (req, res,
 router.get('/user/reservation', checkAuthenticate, async (req, res, next) => {
   try {
     const userId = req.user.userId;
-    const userLevel = req.user.userLevel;
     // userLevel에서 시터/예약자 확인
     const reservations = await prisma.Reservations.findMany({
       where: { userId: +userId },
@@ -105,5 +108,24 @@ router.get('/user/reservation', checkAuthenticate, async (req, res, next) => {
     next(err);
   }
 });
-
+// API 포스트별(시터) 예약 조회
+router.get('/sitter/reservation', checkAuthenticate, async (req, res, next) => {
+  try {
+    const userId = req.user.userId;
+    // userLevel에서 시터/예약자 확인
+    const reservations = await prisma.Reservations.findMany({
+      where: { Post: { userId: +userId } }, //포스트 작성자 기준 확인
+      select: {
+        reservationId: true,
+        userId: true,
+        postId: true,
+        ResStartDate: true,
+        ResEndDate: true,
+      },
+    });
+    res.status(200).json({ data: reservations });
+  } catch (err) {
+    next(err);
+  }
+});
 export default router;

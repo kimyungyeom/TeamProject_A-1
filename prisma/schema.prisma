@@ -51,6 +51,7 @@ model Reservations {
   ResStartDate  DateTime  @map("ResStartDate") @db.Date
   ResEndDate    DateTime  @map("ResEndDate") @db.Date
   cats          Int       @map("cats")
+  ResComment    String    @map("ResComment")
   visitTime     String    @map("visitTime")
   pickupTime    String    @map("pickupTime")
   totalPrice    Int       @map("totalPrice")
