@@ -33,13 +33,10 @@ export default function (err, req, res, next) {
       });
 
     case 'Product Create failed':
-    case 'InvalidValue':
-    case 'EmptyCreateValue':
       return res.status(500).send({
         errorMessage: '등록에 실패하였습니다',
       });
     case 'Product Update failed':
-    case 'EmptyEditValue':
       return res.status(500).send({
         errorMessage: '수정에 실패하였습니다',
       });
