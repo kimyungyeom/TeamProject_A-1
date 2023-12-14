@@ -99,4 +99,7 @@ router.get(
   }),
 );
 
+router.get('passportlogin', (req, res, next) => {
+  passport.authenticate('jwt', { session: false });
+});
 export default router;
