@@ -1,15 +1,15 @@
 import { body, validationResult2 } from 'express-validator';
 
-const DateTodayAfter = (resDate) => {
-  const inputDate = new Date(resDate);
-  const today = new Date();
-  return inputDate > today;
-};
-
-export const validateResStartDate = body('ResStartDate')
+export const validateReserveDate = body('reserve_date')
   .trim()
   .isEmpty()
-  .is.withMessage('email을 확인해주세요.');
+  .is.withMessage('예약 일정을 확인해주세요.');
+
+export const validateCats = body('cats')
+  .trim()
+  .isEmpty()
+  .isNumeric()
+  .is.withMessage('맡기시려는 반려묘 마릿수를 입력해주세요.');
 
 export function validate(req, res, next) {
   const errors = validationResult2(req);
