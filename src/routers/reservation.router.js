@@ -1,15 +1,16 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 import { checkAuthenticate } from '../middlewares/auth.js';
-import { reservationValidation } from '../middlewares/reservation.validation.js';
+import { reservationValidation, validate } from '../middlewares/reservation.validation.js';
 
 const router = express.Router();
 
 // API 예약 생성
 router.post(
   '/:store_id/reservation',
-  reservationValidation,
   checkAuthenticate,
+  reservationValidation,
+  validate,
   async (req, res, next) => {
     try {
       const user_id = req.user.user_id;
@@ -59,8 +60,9 @@ router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next)
 // API 예약 수정-상세페이지에서
 router.patch(
   '/reservation/:reserve_id',
-  reservationValidation,
   checkAuthenticate,
+  reservationValidation,
+  validate,
   async (req, res, next) => {
     try {
       const user_id = req.user.user_id;
