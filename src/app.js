@@ -73,6 +73,7 @@ app.get('/adm/petsitter', (req, res) => {
 app.get('/adm/reservation', (req, res) => {
   res.render('adm/reservation.ejs');
 });
+
 app.use(ErrorHandlingMiddleware);
 // 서버 구동
 app.listen(PORT, () => {

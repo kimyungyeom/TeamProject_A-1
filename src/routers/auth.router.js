@@ -25,7 +25,7 @@ router.post(
     validate,
   ],
   async (req, res, next) => {
-    const { email, password, passwordCheck, phone, username } = req.body;
+    const { email, password, passwordCheck, phone, name } = req.body;
     if (password === passwordCheck) {
     }
     const existEmailCheck = await prisma.users.findFirst({
@@ -34,15 +34,14 @@ router.post(
       },
     });
     if (existEmailCheck) {
-      throw new Error('ExistEmail');
+      return next(new Error('ExistEmail'));
     }
     const newUser = {
       email,
       password,
       phone,
-      username,
+      name,
     };
-    console.log(newUser);
 
     const ExistUser = await prisma.users.create({
       data: newUser,
@@ -56,7 +55,7 @@ router.post(
   },
 );
 
-router.post('/login', (req, res, next) => {
+router.post('/login', [validateEmail, validatePassword, validate], (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
     if (!user) {
@@ -74,6 +73,7 @@ router.post('/login', (req, res, next) => {
 
 //logout
 router.post('/logout', (req, res, next) => {
+  console.log(req.body);
   req.logOut(function (err) {
     if (err) {
       return next(err);
