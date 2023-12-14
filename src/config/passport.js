@@ -6,20 +6,25 @@ import { prisma } from '../utils/prisma/index.js';
 import router from '../routers/auth.router.js';
 
 passport.serializeUser((user, done) => {
-  done(null, user.userId);
+  console.log(user);
+  done(null, user.user_id);
 });
 // client => session => request
 passport.deserializeUser((id, done) => {
-  prisma.users.findUnique({ where: { userId: Number(id) } }).then((user) => {
+  prisma.users.findUnique({ where: { user_id: Number(id) } }).then((user) => {
     delete user.password;
-    delete user.googleId;
-    delete user.kakaoId;
+    delete user.google_id;
+    delete user.kakao_id;
     done(null, user);
   });
 });
 const LocalStrategyConfig = new LocalStrategy(
-  { usernameField: 'email', passwordField: 'password' },
+  {
+    usernameField: 'email',
+    passwordField: 'password',
+  },
   async (email, password, done) => {
+    console.log(email, password);
     const user = await prisma.users.findUnique({
       where: { email: email },
     });

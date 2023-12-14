@@ -22,10 +22,7 @@ export const validatePhone = body('phone')
   .isLength({ min: 11 })
   .withMessage('phone을 확인해주세요.');
 
-export const validateUsername = body('username')
-  .notEmpty()
-  .trim()
-  .withMessage('이름이 비어있습니다.');
+export const validateUsername = body('name').notEmpty().trim().withMessage('이름이 비어있습니다.');
 
 export function validate(req, res, next) {
   const errors = validationResult(req);
