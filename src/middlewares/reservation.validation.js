@@ -1,5 +1,11 @@
 import { body, validationResult2 } from 'express-validator';
 
+const DateTodayAfter = (resDate) => {
+  const inputDate = new Date(resDate);
+  const today = new Date();
+  return inputDate > today;
+};
+
 export const validateResStartDate = body('ResStartDate')
   .trim()
   .isEmpty()
