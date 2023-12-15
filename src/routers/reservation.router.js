@@ -8,8 +8,27 @@ const router = express.Router();
 router.get('');
 
 // API 예약 랜더
-router.get('/:store_id/reservation', (req, res) => {
-  res.render('storereservation.ejs');
+router.get('/:store_id/reservation', async (req, res) => {
+  try {
+    const { store_id } = req.params;
+    const store = await prisma.stores.findUnique({
+      where: {
+        store_id: +store_id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+            phone: true,
+          },
+        },
+      },
+    });
+    return res.render('storereservation.ejs', { store });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // API 예약 생성
