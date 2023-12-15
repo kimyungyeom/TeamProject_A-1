@@ -6,7 +6,7 @@ import '../config/passport.js';
 const router = express.Router();
 // 회원가입 local
 router.get('/signup', (req, res, next) => {
-  res.send('!!');
+  res.render('signup.ejs');
 });
 
 router.get('/login', (req, res, next) => {
