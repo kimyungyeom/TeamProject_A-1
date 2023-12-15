@@ -5,7 +5,10 @@ import { reservationValidation, validate } from '../middlewares/reservation.vali
 
 const router = express.Router();
 
+router.get('');
+
 // API 예약 생성
+//startDate, endDate//// json 형태로 받아서 사이 몇일인지 계산
 router.post(
   '/:store_id/reservation',
   checkAuthenticate,
@@ -42,6 +45,7 @@ router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next)
     const reservationInfo = await prisma.reservations.findUnique({
       where: { reserve_id: +reserve_id },
       select: {
+        user_id: true,
         reserve_id: true,
         reserve_date: true,
         res_comment: true,
@@ -112,11 +116,11 @@ router.patch('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) =>
     });
     const storeOwner = reservationInfo.store.user_id;
     // 스토어 주인 확인
-    if (storeOwner === user_id) {
+    if (+storeOwner === +user_id) {
       const reservation = await prisma.reservations.update({
         where: { reserve_id: +reserve_id },
         data: {
-          approved,
+          approved: { set: approved },
         },
       });
       return res.status(200).json({ data: reservation });
@@ -136,7 +140,7 @@ router.delete('/reservation/:reserve_id', checkAuthenticate, async (req, res, ne
       where: { reserve_id: +reserve_id },
     });
     // 본인확인
-    if (reservationInfo.user_id === user_id) {
+    if (+reservationInfo.user_id === +user_id) {
       const reservationCanc = await prisma.reservations.delete({
         where: { reserve_id: +reserve_id },
       });
@@ -159,9 +163,11 @@ router.get('/user/reservation', checkAuthenticate, async (req, res, next) => {
         reserve_id: true,
         store_id: true,
         reserve_date: true,
+        res_comment: true,
         cats: true,
         approved: true,
       },
+      orderBy: { created_at: 'desc' },
     });
     res.status(200).json({ data: AllReservations });
   } catch (err) {
@@ -180,13 +186,43 @@ router.get('/sitter/reservation', checkAuthenticate, async (req, res, next) => {
         user_id: true,
         store_id: true,
         reserve_date: true,
+        res_comment: true,
         cats: true,
         approved: true,
       },
+      orderBy: { created_at: 'desc' },
     });
     res.status(200).json({ data: AllReservations });
   } catch (err) {
     next(err);
   }
 });
+
+// API 어드민 예약목록 조회
+router.get('/All/reservation', async (req, res, next) => {
+  try {
+    // const user_level = req.user.user_level;
+    // userLevel에서 시터/예약자 확인
+    const AllReservations = await prisma.reservations.findMany({
+      //포스트 작성자 기준 확인
+      select: {
+        reserve_id: true,
+        user_id: true,
+        store_id: true,
+        reserve_date: true,
+        cats: true,
+        approved: true,
+        res_comment: true,
+        total_price: true,
+        created_at: true,
+        updated_at: true,
+      },
+      orderBy: { created_at: 'desc' },
+    });
+    res.render('storereservation.ejs', { data: AllReservations });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;
