@@ -19,6 +19,7 @@ model users {
   updated_at  DateTime       @updatedAt @map("updated_at")
   user_id     Int            @id @default(autoincrement()) @map("user_id")
   user_level  Int            @default(1) @map("user_level")
+  
   reservation reservations[]
   review      reviews[]
   store       stores?
@@ -33,15 +34,19 @@ model stores {
   images      Json           @map("images")
   able_date   Json           @map("able_date")
   experience  String         @map("experience")
+  state       String         @map("state")
+  city        String         @map("city")
+  address     String         @map("address")
   created_at  DateTime       @default(now()) @map("created_at")
   store_id    Int            @id @default(autoincrement()) @map("store_id")
   updated_at  DateTime       @updatedAt @map("updated_at")
   user_id     Int            @unique @map("user_id")
+  
   reservation reservations[]
   review      reviews[]
   user        users          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
-  @@map("store")
+  @@map("stores")
 }
 
 model reservations {

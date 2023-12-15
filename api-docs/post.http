@@ -5,7 +5,7 @@ POST {{host}}/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "test01@test.com",
+    "email": "test02@test.com",
     "password": "111111"
 }
 
@@ -14,7 +14,7 @@ GET {{host}}/api/store
 Content-Type: application/json
 
 ### 게시글 상세 조회
-GET {{host}}/api/store/3
+GET {{host}}/api/store/2
 Content-Type: application/json
 
 ### 게시글 작성
@@ -33,15 +33,18 @@ Content-Type: application/json
         "image1": "https://img.animalplanet.co.kr/news/2019/11/28/700/f9in35p5660ce423x290.jpg",
         "image2": "https://cdn.metavv.com/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
         },
-    "experience": "현재 고양이 집사입니다."
+    "experience": "현재 고양이 집사입니다.",
+    "state": "전라북도",
+    "city": "무주군",
+    "address": "무주로 1739 무주IC만남의 광장"
 }
 
 ### 게시글 수정
-PUT {{host}}/api/store/3
+PUT {{host}}/api/store/2
 Content-Type: application/json
 
 {
-    "title": "안전하고 편안한 펫시팅",
+    "title": "즐겁고 행복한 펫시팅",
     "content": "내 아이처럼 생각하고 돌보겠습니다~",
     "price": "40000",
     "able_date": {
@@ -50,7 +53,10 @@ Content-Type: application/json
     "images": {
         "image1": "https://img.animalplanet.co.kr/news/2019/11/28/700/f9in35p5660ce423x290.jpg"
         },
-    "experience": "반려동물 키운 경험 없습니다."
+    "experience": "반려동물 키운 경험 없습니다.",
+    "state": "전라북도",
+    "city": "무주군",
+    "address": "무주로 1739 무주IC만남의 광장"
 }
 
 ### 게시글 삭제
