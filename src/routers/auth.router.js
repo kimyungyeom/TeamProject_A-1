@@ -65,8 +65,7 @@ router.post('/login', [validateEmail, validatePassword, validate], (req, res, ne
 
     req.logIn(user, function (err) {
       if (err) return next(err);
-      console.log(req.session);
-      res.redirect('/');
+      res.status(200).send({ user });
     });
   })(req, res, next);
 });

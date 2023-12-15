@@ -7,6 +7,11 @@ const router = express.Router();
 
 router.get('');
 
+// API 예약 랜더
+router.get('/:store_id/reservation', (req, res) => {
+  res.render('storereservation.ejs');
+});
+
 // API 예약 생성
 //startDate, endDate//// json 형태로 받아서 사이 몇일인지 계산
 router.post(
@@ -32,7 +37,10 @@ router.post(
           approved: 'No',
         },
       });
-      return res.status(201).json({ data: reservation });
+      res.status(201).json({ data: reservation });
+      return res.send(
+        "<script>alert('예약 정보가 시터에게 전달되었습니다.');location.href = document.referrer;</script>",
+      );
     } catch (err) {
       next(err);
     }
@@ -219,7 +227,7 @@ router.get('/All/reservation', async (req, res, next) => {
       },
       orderBy: { created_at: 'desc' },
     });
-    res.render('storereservation.ejs', { data: AllReservations });
+    res.render('전체 예약 조회', { data: AllReservations });
   } catch (err) {
     next(err);
   }

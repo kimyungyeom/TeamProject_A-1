@@ -6,8 +6,8 @@ Content-Type: application/json; charset=utf-8
 
 {
   "reserve_date": {"date":"2023-11-01"},
-  "cats": "10",
-  "res_comment": "우리 굉이들 잘 부탁드려요",
+  "cats": "1",
+  "res_comment": "이번엔 한마리만",
   "visit_time": "12:30",
   "pickup_time": "12:30",
   "total_price": "500000"
