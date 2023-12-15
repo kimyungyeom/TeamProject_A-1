@@ -88,7 +88,12 @@ router.get('/:store_id/reviews', async (req, res, next) => {
       orderBy: { created_at: 'desc' },
     });
 
-    return res.status(200).json({ data: reviews });
+    // 평점 계산
+    const ratings = reviews.map((reviews) => reviews.rating);
+    const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
+    const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
+    return res.status(200).json({ data: reviews, averageRating });
   } catch (err) {
     next(err);
   }

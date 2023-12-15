@@ -41,7 +41,7 @@ router.get('/store/:store_id', async (req, res) => {
 router.post('/store', checkAuthenticate, async (req, res, next) => {
   try {
     const user_id = req.user.user_id;
-    const { title, content, price, images, able_date, experience } = req.body;
+    const { title, content, price, images, able_date, experience, state, city, address } = req.body;
 
     const newStore = await prisma.stores.create({
       data: {
@@ -52,6 +52,9 @@ router.post('/store', checkAuthenticate, async (req, res, next) => {
         able_date,
         images,
         experience,
+        state,
+        city,
+        address,
       },
     });
     return res.json({ data: newStore });
@@ -65,7 +68,7 @@ router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
   try {
     const user_id = req.user.user_id;
     const { store_id } = req.params;
-    const { title, content, price, images, able_date, experience } = req.body;
+    const { title, content, price, images, able_date, experience, state, city, address } = req.body;
 
     const store = await prisma.stores.findUnique({
       where: {
@@ -90,6 +93,9 @@ router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
         images,
         able_date,
         experience,
+        state,
+        city,
+        address,
       },
     });
     return res.json({ data: updateStore });
