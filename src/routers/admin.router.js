@@ -63,7 +63,6 @@ router.get('/petsitter', async (req, res, next) => {
       total_price: true,
     },
   });
-  console.log(counts);
 
   res.render('adm/petsitter.ejs', {
     stores,

@@ -57,8 +57,8 @@ const googleStrategyConfig = new GoogleStrategy(
       const newUser = {
         email: profile.emails[0].value,
         password: 'GoogleLogin',
-        username: profile.displayName,
-        googleId: profile.id,
+        name: profile.displayName,
+        google_id: profile.id,
         profile: profile.photos[0].value,
         phone: 'null',
       };
