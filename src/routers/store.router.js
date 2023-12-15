@@ -75,6 +75,7 @@ router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
         store_id: +store_id,
       },
     });
+
     if (!store) {
       return res.status(404).send({ message: 'error' });
     }
