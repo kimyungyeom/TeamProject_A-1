@@ -1,22 +1,63 @@
 <%- include('./partials/main.header.ejs') %>
 
-<!-- <div class="container">
-    <div class="col-8">
-      <div class="allCards">
-        <%  %>
-        <% data.forEach(AllReservations=>{ %>
-        <div id="cardList">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title mb-4"><%= AllReservations.reserve_id %></h5>
-              <p class="card-subtitle mb-4"><%= AllReservations.approved %></p>
-              <p class="card-subtitle mb-4"><%= AllReservations.res_comment %></p>
-            </div>
+<div class="" style="height: 30px">여백</div>
+
+<div class="container">
+  <div class="row">
+    <div class="store_place card col">
+      <h2>스토어 정보 있을 자리</h2>
+    </div>
+    <div class="card col">
+      <div class="mb-3">
+        <h2>예약하기</h2>
+        <form class="reservationForm" method="post">
+          <p>예약 일정</p>
+          <div class="datePickerContainer">
+            <input
+              class="dateSelector"
+              type="text"
+              name="reserve_date"
+              placeholder="날짜를 선택하세요"
+            />
           </div>
-        </div>
-        <% }); %>
+          <p>마리 수</p>
+          <input type="number" name="cats" min="1" max="10" value="1" />
+          <br />
+          <p>코멘트</p>
+          <input type="text" name="res_comment" value="잘부탁드려요!" />
+          <br />
+          <p>방문 시간</p>
+          <input type="time" name="visit_time" min="09:00" max="20:00" value="14:00" required />
+          <br />
+          <p>픽업 시간</p>
+          <input type="time" name="pickup_time" min="09:00" max="20:00" value="14:00" required />
+          <br />
+          <p>합계</p>
+          <input type="text" name="total_price" value="50,000" readonly />
+          <button type="submit">예약하기</button>
+        </form>
       </div>
     </div>
-  </div> -->
-
+  </div>
+</div>
+<script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+<script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let dateSelector = document.querySelector('.dateSelector');
+    flatpickr(dateSelector, {
+      position: 'above',
+      mode: 'range',
+      minDate: 'today',
+      dateFormat: 'Y-m-d',
+      disable: [
+        function (date) {
+          // disable every multiple of 8
+          return !(date.getDate() % 8);
+        },
+      ],
+      locale: 'ko',
+    });
+  });
+</script>
 <%- include('./partials/footer.ejs') %>
