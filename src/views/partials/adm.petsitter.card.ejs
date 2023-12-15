@@ -24,17 +24,13 @@
   <td class="align-middle text-center text-sm">
 
     <span class="badge badge-sm bg-gradient-success">
-      <%= store.store_id%>
+      <%= counts.find((x)=> x.store_id === store.store_id)._count.reserve_id %>
     </span>
   </td>
-  <td class="align-middle text-center text-sm">
-    <span>
-      <%= store.user_id%>
-    </span>
-  </td>
+
   <td class=" align-middle text-center text-sm">
     <span class="text-secondary text-xs font-weight-bold">
-      <%= store.price %>
+      <%= counts.find((x)=> x.store_id === store.store_id)._sum.total_price %>
     </span>
   </td>
   <td class="align-middle text-center">
@@ -49,7 +45,7 @@
   </td>
 
   <td class=" align-middle">
-    <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+    <a href="/adm/petsitter/<%= store.store_id%>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
       data-original-title="Edit user">
       Edit
     </a>
