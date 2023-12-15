@@ -35,6 +35,7 @@ router.get('/store/:store_id', async (req, res) => {
     },
   });
   return res.json({ data: store });
+  // res.render('store.ejs', { data: store });
 });
 
 // 게시글 작성

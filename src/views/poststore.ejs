@@ -1,0 +1,23 @@
+<div class="container">
+  <img
+    id="imgLogo"
+    onclick="location.href='/api/main'"
+    style="cursor: pointer"
+    src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true"
+  />
+  <div class="postingForm">
+    <form
+      class="postingFormtag"
+      method="POST"
+      action="/api/post?_method=post"
+      enctype="multipart/form-data"
+    >
+      <h4>펫시터 등록</h4>
+      <input id="fileInput" type="file" name="imgUrl" style="margin-bottom: 10px" />
+      <input class="postingInput" type="text" placeholder="제목를 입력해 주세요" name="title" />
+      <input class="postingInput" type="text" placeholder="내용을 입력해 주세요" name="content" />
+      <input class="postingInput" type="text" placeholder="가격을 입력해 주세요" name="price" />
+      <button id="post_btn" type="submit" class="btn btn-secondary post_btn">등록하기</button>
+    </form>
+  </div>
+</div>
