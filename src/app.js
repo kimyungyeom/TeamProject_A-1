@@ -20,6 +20,7 @@ import AdminRouter from './routers/admin.router.js';
 import reservationRouter from './routers/reservation.router.js';
 import reviewRouter from './routers/reviews.router.js';
 
+import frontAuth from './routers/auth.js';
 // app.js - global variables
 const app = express();
 
@@ -55,6 +56,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 // 임시
+app.use('/', frontAuth);
 app.use('/api', [reservationRouter]);
 
 // router middleware
