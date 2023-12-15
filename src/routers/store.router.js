@@ -34,8 +34,8 @@ router.get('/store/:store_id', async (req, res) => {
       store_id: +store_id,
     },
   });
-  return res.json({ data: store });
-  // res.render('store.ejs', { data: store });
+  // return res.json({ data: store });
+  return res.render('store.ejs', { store });
 });
 
 // 게시글 작성
@@ -76,7 +76,6 @@ router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
         store_id: +store_id,
       },
     });
-
     if (!store) {
       return res.status(404).send({ message: 'error' });
     }
