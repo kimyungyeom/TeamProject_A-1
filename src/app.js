@@ -62,6 +62,7 @@ app.use('/api', [reservationRouter]);
 // router middleware
 app.use('/api/', StoreRouter);
 app.use('/api/auth/', AuthRouter);
+app.use('/api/store', reviewRouter);
 
 app.use('/adm/', AdminRouter);
 
