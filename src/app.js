@@ -18,6 +18,8 @@ import StoreRouter from './routers/store.router.js';
 import AuthRouter from './routers/auth.router.js';
 import AdminRouter from './routers/admin.router.js';
 import reservationRouter from './routers/reservation.router.js';
+import reviewRouter from './routers/reviews.router.js';
+
 // app.js - global variables
 const app = express();
 
@@ -58,7 +60,6 @@ app.use('/api', [reservationRouter]);
 // router middleware
 app.use('/api', StoreRouter);
 app.use('/api/auth/', AuthRouter);
-app.use('/adm/', AdminRouter);
 app.get('/', checkAuthenticate, (req, res) => {
   const user = req.user;
   console.log('USER', user);
