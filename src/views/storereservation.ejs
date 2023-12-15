@@ -1,40 +1,66 @@
 <%- include('./partials/main.header.ejs') %>
-
+<style>
+  /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
+  .datePickerContainer {
+    display: flex;
+  }
+  /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
+  .input-group-text {
+    width: 100%;
+  }
+</style>
 <div class="" style="height: 30px">여백</div>
 
 <div class="container">
   <div class="row">
-    <div class="store_place card col">
+    <div class="store_place card col-9">
       <h2>스토어 정보 있을 자리</h2>
     </div>
-    <div class="card col">
+    <div class="card col-3">
       <div class="mb-3">
         <h2>예약하기</h2>
         <form class="reservationForm" method="post">
           <p>예약 일정</p>
           <div class="datePickerContainer">
             <input
-              class="dateSelector"
+              class="dateSelector input-group-text"
               type="text"
               name="reserve_date"
               placeholder="날짜를 선택하세요"
             />
           </div>
           <p>마리 수</p>
-          <input type="number" name="cats" min="1" max="10" value="1" />
+          <input class="input-group-text" type="number" name="cats" min="1" max="10" value="1" />
           <br />
           <p>코멘트</p>
-          <input type="text" name="res_comment" value="잘부탁드려요!" />
+          <input class="input-group-text" type="text" name="res_comment" value="잘부탁드려요!" />
           <br />
           <p>방문 시간</p>
-          <input type="time" name="visit_time" min="09:00" max="20:00" value="14:00" required />
+          <input
+            class="input-group-text"
+            type="time"
+            name="visit_time"
+            min="09:00"
+            max="20:00"
+            value="14:00"
+            required
+          />
           <br />
           <p>픽업 시간</p>
-          <input type="time" name="pickup_time" min="09:00" max="20:00" value="14:00" required />
+          <input
+            class="input-group-text"
+            type="time"
+            name="pickup_time"
+            min="09:00"
+            max="20:00"
+            value="14:00"
+            required
+          />
           <br />
           <p>합계</p>
-          <input type="text" name="total_price" value="50,000" readonly />
-          <button type="submit">예약하기</button>
+          <input class="input-group-text" type="text" name="total_price" value="50,000" readonly />
+          <br />
+          <button class="btn btn-secondary btn-sm" type="submit">예약하기</button>
         </form>
       </div>
     </div>
