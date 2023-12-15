@@ -58,8 +58,11 @@ app.use(passport.session());
 app.use('/api', [reservationRouter]);
 
 // router middleware
-app.use('/api', StoreRouter);
+app.use('/api/', StoreRouter);
 app.use('/api/auth/', AuthRouter);
+
+app.use('/adm/', AdminRouter);
+
 app.get('/', checkAuthenticate, (req, res) => {
   const user = req.user;
   console.log('USER', user);
