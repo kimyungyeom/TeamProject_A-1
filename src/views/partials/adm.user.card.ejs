@@ -1,0 +1,43 @@
+<tr>
+  <td class="col-4">
+    <div class="d-flex px-2 py-1">
+      <div>
+        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+      </div>
+
+      <div class="d-flex flex-column justify-content-center">
+        <h6 class="mb-0 text-sm">
+          <%= user.name %>
+        </h6>
+      </div>
+      <div class="d-flex flex-column justify-content-center">
+        <h6 class="mb-0 text-sm">
+          &nbsp; ( <%= user.email %> )
+        </h6>
+      </div>
+    </div>
+  </td>
+  <td class="col-2">
+    <h6 class="text-xs text-left font-weight-bold mb-0">
+      <%= user.phone %>
+    </h6>
+  </td>
+
+  <td class="align-middle text-center text-sm">
+    <span class="badge badge-sm bg-gradient-success">
+      <%= user.user_id %>
+    </span>
+  </td>
+  <td>
+    <p class="text-xs text-center font-weight-bold mb-0">
+      <%= user.created_at %>
+    </p>
+  </td>
+
+  <td class="align-middle">
+    <a href="/adm/users/<%= user.user_id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+      data-original-title="Edit user">
+      Edit
+    </a>
+  </td>
+</tr>
