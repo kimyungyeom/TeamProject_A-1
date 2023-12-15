@@ -86,14 +86,17 @@ router.get('/:store_id/reviews', async (req, res, next) => {
     const reviews = await prisma.reviews.findMany({
       where: { store_id: +store_id },
       orderBy: { created_at: 'desc' },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
-    // 평점 계산
-    const ratings = reviews.map((reviews) => reviews.rating);
-    const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
-    const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
-
-    return res.status(200).json({ data: reviews, averageRating });
+    res.render('review.ejs', { reviews });
+    // return res.status(200).json({ data: reviews, averageRating });
   } catch (err) {
     next(err);
   }
