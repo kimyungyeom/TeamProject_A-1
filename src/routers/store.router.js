@@ -14,6 +14,11 @@ router.get('/store', async (req, res) => {
       content: true,
       created_at: true,
       updated_at: true,
+      user: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: {
       created_at: 'desc',
@@ -22,16 +27,25 @@ router.get('/store', async (req, res) => {
   if (!stores) {
     return res.json({ message: 'error' });
   }
-  return res.json({ data: stores });
+  return res.render('mainstore.ejs', { stores });
 });
 
 // 게시글 상세조회
 router.get('/store/:store_id', async (req, res) => {
   const { store_id } = req.params;
 
-  const store = await prisma.stores.findFirst({
+  const store = await prisma.stores.findUnique({
     where: {
       store_id: +store_id,
+    },
+    include: {
+      user: {
+        select: {
+          email: true,
+          name: true,
+          phone: true,
+        },
+      },
     },
   });
   // return res.json({ data: store });

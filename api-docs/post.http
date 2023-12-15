@@ -14,7 +14,7 @@ GET {{host}}/api/store
 Content-Type: application/json
 
 ### 게시글 상세 조회
-GET {{host}}/api/store/2
+GET {{host}}/api/store/1
 Content-Type: application/json
 
 ### 게시글 작성
