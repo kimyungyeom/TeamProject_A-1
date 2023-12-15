@@ -4,7 +4,7 @@
 
       <div class="page-header min-height-300 border-radius-xl mt-4"
         style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
-        <span class="mask  bg-gradient-primary  opacity-6"></span>
+        <span class="mask  bg-gradient-success  opacity-6"></span>
       </div>
 
       <!-- 유저 정보  -->
@@ -18,17 +18,18 @@
           <div class="col-auto my-auto">
 
             <h5 class="mb-1">
-              <%= user.name %>
+              <%= store.user.name %> ( <%= store.user.email %>)
             </h5>
           </div>
           <div class="col-lg-1 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
             <div class="nav-rapper position-relative end-0">
-              <a class="btn btn-outline-primary mt-3 w-80" role="button" href="http://localhost:3000/adm/users">
+              <a class="btn btn-outline-primary mt-3 w-80" role="button" href="http://localhost:3000/adm/petsitter">
                 뒤로
               </a>
-
             </div>
           </div>
+
+
           <div class="row ">
             <!-- 유저 정보 왼쪽  -->
             <div class="col-12 col-xl-6">
@@ -36,26 +37,62 @@
                 <div class="card-body p-2">
                   <hr class="horizontal gray-light my-4">
                   <ul class="list-group">
+
                     <li class="list-group-item border-0 ps-0 pt-0 text-sm">
                       <strong class="text-dark">
-                        email :
+                        펫시터 연락처 :
                       </strong>
-                      &nbsp; <%= user.email %>
+                      &nbsp;&nbsp;&nbsp; <%= store.user.phone %>
                     </li>
-                    <li class="list-group-item border-0 ps-0 text-sm">
+
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
                       <strong class="text-dark">
-                        Mobile:</strong>
-                      &nbsp; <%= user.phone %>
-                    </li>
-                    <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">
-                        가입일 :
+                        펫시터 소개 제목:
                       </strong>
-                      &nbsp; <%= user.created_at %>
+                      &nbsp;&nbsp;&nbsp; <%= store.title %>
                     </li>
+
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">
+                        펫시터 소개 제목:
+                      </strong>
+                      &nbsp;&nbsp;&nbsp; <%= store.content %>
+                    </li>
+
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">
+                        가격 :
+                      </strong>
+                      &nbsp; <%= store.price %>
+                    </li>
+
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">
+                        경험 :
+                      </strong>
+                      &nbsp; <%= store.experience%>
+                    </li>
+
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">
+                        주소 :
+                      </strong>
+                      &nbsp; <%= store.state +" " + store.city + " " + store.address  %>
+                    </li>
+
+                    <li class=" list-group-item border-0 ps-0 pt-0 text-sm">
+                        <strong class="text-dark">
+                          가입일 :
+                        </strong>
+                        &nbsp; <%= store.created_at %>
+                    </li>
+
                   </ul>
                 </div>
               </div>
             </div>
+
+
 
             <!-- 유저 정보 오른쪽  -->
             <div class="col-12 col-xl-6">

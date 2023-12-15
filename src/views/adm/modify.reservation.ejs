@@ -1,0 +1,49 @@
+<%- include('../partials/header.ejs') %>
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+
+
+
+    <div class="container-fluid py-4 ms-3">
+      <div class="row min-vh-80 h-100">
+        <div class="col-6">
+          <div class="row">
+            <div class="bg-gradient-info shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">예약정보수정 ( 예약번호 <%= reservation.reserve_id %> )
+              </h6>
+            </div>
+
+            <div class="row">
+
+              <div class="card-body">
+                <form role="form" class="text-start">
+
+                  <label class="form-label mt-5 mb-0">Email</label>
+                  <div class="input-group input-group-outline my-3">
+                    <input type="email" class="form-control" value="<%= reservation.reserve_id %>">
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control">
+                  </div>
+                  <div class="form-check form-switch d-flex align-items-center mb-3">
+                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                    <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
+                  </div>
+                  <div class="text-center">
+                    <button type="button" class="btn bg-gradient-info w-100 my-4 mb-2">Sign in</button>
+                  </div>
+
+                </form>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+  </main>
+
+  <%- include('../partials/footer.ejs') %>
