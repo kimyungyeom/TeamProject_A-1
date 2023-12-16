@@ -8,60 +8,174 @@
   .input-group-text {
     width: 100%;
   }
-  .storeImgList {
-    object-fit: cover;
-    height: 258px;
-    width: 100%;
+  .approved-yes {
+    color: green;
+  }
+
+  .approved-no {
+    color: red;
   }
 </style>
 <div style="height: 50px"></div>
 
-
-
 <div class="container">
-<div class="row reservationHello align-items-center text-center justify-content-md-center">
-  <h2>예약하고 들어오는 경우 아래 메시지가 보이게 하자</h2>
-  <img src=“https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif” loop=infinite/>
-  <h3>예약이 정상적으로 신청되었습니다!</h3>
-  <h4>시터님 승인후 예약이 확정됩니다.</h4>
-</div>
-  <div class="card-columns row justify-content-md-center">
-    <div class="store_place card col-9 p-3 mx-3">
-      <div class="row titleImg align-items-center mx-4">
-          <h3 class="md-3">가져왔는지 보여줘</h3>
-          <p>가져왔니</p>
-        <div class="row middle_title_editBTn">
-          <div class="col middle_title mt-2">
-            <h5>보여줘</h5>
+  <div class="row reservationHello align-items-center text-center justify-content-md-center">
+    <img
+      src="https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif"
+      style="width: 200px; height: 200px; margin-bottom: 20px"
+    />
+    <% if (reservationInfo.approved === 'Yes') { %>
+      <div>
+        <h3>예약이 확정되었습니다!</h3>
+        <h4>일정을 확인해주세요.</h4>
+      </div>
+    <% } else { %>
+      <div>
+        <h3>예약이 정상적으로 신청되었습니다!</h3>
+        <h4>시터님 승인후 예약이 확정됩니다.</h4>
+      </div>
+    <% } %>
+  </div>
+  <div class="row storeInfo d-flex justify-content-center align-items-center">
+    <div class="storeCard card col-9 p-3 mx-3 my-4">
+      <div class="row p-3">
+        <div class="row titleImg mx-4">
+          <div class="col-auto p-2">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxzE0-W4cDj64hPIMW9d5Jfc86aocVsxYq9Q&usqp=CAU"
+              alt="profile_image"
+              class="w-100 border-radius-lg shadow-sm"
+              style="max-width: 70px; max-height: 70px"
+            />
           </div>
-          <div class="col WriterEdit text-end">
-            <a href="javascript:;">
-              <i
-                class="fas fa-user-edit text-secondary text-sm"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="수정하기"
-              ></i>
-            </a>
+          <div class="col-auto p-2">
+            <h3 class="md-3"><%= reservationInfo.store.title %></h3>
+            <p><%= reservationInfo.store.content %></p>
+          </div>
+          <div class="col middle_title text-end mt-2" style="margin-right: 30px">
+            <h5><%= reservationInfo.store.user_id %> 시터님</h5>
+            <h5 class="<%= reservationInfo.approved === 'Yes' ? 'approved-yes' : 'approved-no' %>">
+              승인여부 <%= reservationInfo.approved %>
+            </h5>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center align-items-center">
+    <div class="reservationCard card col-9 p-3 mx-3">
+      <div class="row reservationTitle text-center align-items-center mx-4">
+        <h2 class="md-3">예약 상세정보</h2>
+        <p>
+          아래의 내용을 수정하고 '수정하기' 버튼을 누르면 수정된 내용이 시터님에게 전달되고 승인이
+          초기화됩니다.
+        </p>
+      </div>
       <div class="mainContent mx-5 mt-5">
-        <p><%= reservationInfo.visit_time %></p>
-        <hr class="horizontal gray-light my-4" />
-        <h6 class="my-4">보게해줘</h6>
-        <ul class="list-group">
-          <li class="list-group-item border-0 ps-0 pt-0 text-sm">
-            <strong class="text-dark">리스트로 볼까?</strong> &nbsp; 잘 가져왔는지 보여줘
-          </li>
-        </ul>
-        </div>
+        <form
+          class="reservationForm"
+          method="post"
+          action="/api/reservation/<%= reservationInfo.reserve_id %>?_method=patch"
+        >
+          <p>예약 일정</p>
+          <div class="datePickerContainer">
+            <input
+              class="dateSelector input-group-text"
+              type="text"
+              name="reserve_date"
+              placeholder="날짜를 선택하세요"
+            />
+          </div>
+          <br />
+          <p>마리 수</p>
+          <input
+            class="input-group-text"
+            type="number"
+            name="cats"
+            min="1"
+            max="10"
+            value="<%= reservationInfo.cats %>"
+          />
+          <br />
+          <p>코멘트</p>
+          <input
+            class="input-group-text"
+            type="text"
+            name="res_comment"
+            value="<%= reservationInfo.res_comment %>"
+          />
+          <br />
+          <div class="row">
+            <div class="col">
+              <p>방문 시간</p>
+              <input
+                class="input-group-text"
+                type="time"
+                name="visit_time"
+                min="09:00"
+                max="20:00"
+                value="<%= reservationInfo.visit_time %>"
+                required
+              />
+            </div>
+            <div class="col">
+              <p>픽업 시간</p>
+              <input
+                class="input-group-text"
+                type="time"
+                name="pickup_time"
+                min="09:00"
+                max="20:00"
+                value="<%= reservationInfo.pickup_time %>"
+                required
+              />
+            </div>
+          </div>
+          <br />
+          <p>합계</p>
+          <input
+            class="input-group-text"
+            type="text"
+            name="total_price"
+            value="<%= reservationInfo.total_price %>"
+            readonly
+          />
+          <br />
+          <p class="text-center">
+            '수정하기' 버튼을 누르면 수정된 내용이 시터님에게 전달되고 승인이 초기화됩니다.
+          </p>
+          <div class="bottom-buttons row">
+            <button class="btn btn-outline-secondary col mx-3" type="submit">수정하기</button>
+            <button type="button" class="btn btn-secondary col mx-3">뒤로가기</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
+<script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+<script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script>
-  // 모달 창 열기
+  document.addEventListener('DOMContentLoaded', function () {
+    let dateSelector = document.querySelector('.dateSelector');
+    let startDate = '<%= startDate %>';
+    let endDate = '<%= endDate %>';
+
+    flatpickr(dateSelector, {
+      defaultDate: [startDate, endDate],
+      position: 'above',
+      mode: 'range',
+      minDate: 'today',
+      dateFormat: 'Y-m-d',
+      disable: [
+        function (date) {
+          // disable every multiple of 8
+          return !(date.getDate() % 8);
+        },
+      ],
+      locale: 'ko',
+    });
+  });
 </script>
 <%- include('./partials/main.footer.ejs') %>

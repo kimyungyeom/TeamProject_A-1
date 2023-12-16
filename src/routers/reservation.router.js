@@ -64,7 +64,7 @@ router.post(
           approved: 'No',
         },
       });
-      return res.status(201).json('/reservation/:reserve_id', { data: reservation });
+      return res.render('/reservation/:reserve_id', { data: reservation });
     } catch (err) {
       next(err);
     }
@@ -86,10 +86,16 @@ router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next)
             phone: true,
           },
         },
+        store: true,
       },
     });
+    const dateRange = reservationInfo.reserve_date.split(' ~ ');
 
-    return res.render('reservation.ejs', { reservationInfo });
+    return res.render('reservation.ejs', {
+      reservationInfo,
+      startDate: dateRange[0],
+      endDate: dateRange[1],
+    });
   } catch (err) {
     next(err);
   }
