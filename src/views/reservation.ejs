@@ -1,0 +1,67 @@
+<%- include('./partials/main.header.ejs') %>
+<style>
+  /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
+  .datePickerContainer {
+    display: flex;
+  }
+  /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
+  .input-group-text {
+    width: 100%;
+  }
+  .storeImgList {
+    object-fit: cover;
+    height: 258px;
+    width: 100%;
+  }
+</style>
+<div style="height: 50px"></div>
+
+
+
+<div class="container">
+<div class="row reservationHello align-items-center text-center justify-content-md-center">
+  <h2>예약하고 들어오는 경우 아래 메시지가 보이게 하자</h2>
+  <img src=“https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif” loop=infinite/>
+  <h3>예약이 정상적으로 신청되었습니다!</h3>
+  <h4>시터님 승인후 예약이 확정됩니다.</h4>
+</div>
+  <div class="card-columns row justify-content-md-center">
+    <div class="store_place card col-9 p-3 mx-3">
+      <div class="row titleImg align-items-center mx-4">
+          <h3 class="md-3">가져왔는지 보여줘</h3>
+          <p>가져왔니</p>
+        <div class="row middle_title_editBTn">
+          <div class="col middle_title mt-2">
+            <h5>보여줘</h5>
+          </div>
+          <div class="col WriterEdit text-end">
+            <a href="javascript:;">
+              <i
+                class="fas fa-user-edit text-secondary text-sm"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="수정하기"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mainContent mx-5 mt-5">
+        <p><%= reservationInfo.visit_time %></p>
+        <hr class="horizontal gray-light my-4" />
+        <h6 class="my-4">보게해줘</h6>
+        <ul class="list-group">
+          <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+            <strong class="text-dark">리스트로 볼까?</strong> &nbsp; 잘 가져왔는지 보여줘
+          </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 모달 창 열기
+</script>
+<%- include('./partials/main.footer.ejs') %>

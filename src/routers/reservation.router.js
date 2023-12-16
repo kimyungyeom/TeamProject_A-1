@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('');
 
 // API 예약 랜더
-router.get('/:store_id/reservation', async (req, res) => {
+router.get('/store/:store_id', async (req, res) => {
   try {
     const { store_id } = req.params;
     const store = await prisma.stores.findUnique({
@@ -34,7 +34,7 @@ router.get('/:store_id/reservation', async (req, res) => {
 // API 예약 생성
 //startDate, endDate//// json 형태로 받아서 사이 몇일인지 계산
 router.post(
-  '/:store_id/reservation',
+  '/store/:store_id',
   checkAuthenticate,
   reservationValidation,
   validate,
@@ -45,8 +45,16 @@ router.post(
       const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
       const reservation = await prisma.reservations.create({
         data: {
-          user_id: +user_id,
-          store_id: +store_id,
+          user: {
+            connect: {
+              user_id: +user_id,
+            },
+          },
+          store: {
+            connect: {
+              store_id: +store_id,
+            },
+          },
           reserve_date,
           cats: +cats,
           res_comment,
@@ -56,34 +64,32 @@ router.post(
           approved: 'No',
         },
       });
-      res.status(201).json({ data: reservation });
-      return res.send(
-        "<script>alert('예약 정보가 시터에게 전달되었습니다.');location.href = document.referrer;</script>",
-      );
+      return res.status(201).json('/reservation/:reserve_id', { data: reservation });
     } catch (err) {
       next(err);
     }
   },
 );
-// API 예약 상세보기
+// API 유저 예약 상세보기
 router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
   try {
     const { reserve_id } = req.params;
     const reservationInfo = await prisma.reservations.findUnique({
-      where: { reserve_id: +reserve_id },
-      select: {
-        user_id: true,
-        reserve_id: true,
-        reserve_date: true,
-        res_comment: true,
-        cats: true,
-        visit_time: true,
-        pickup_time: true,
-        total_price: true,
-        approved: true,
+      where: {
+        reserve_id: +reserve_id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+            phone: true,
+          },
+        },
       },
     });
-    res.status(200).json({ data: reservationInfo });
+
+    return res.render('reservation.ejs', { reservationInfo });
   } catch (err) {
     next(err);
   }
@@ -226,7 +232,7 @@ router.get('/sitter/reservation', checkAuthenticate, async (req, res, next) => {
 });
 
 // API 어드민 예약목록 조회
-router.get('/All/reservation', async (req, res, next) => {
+router.get('/reservation/all', async (req, res, next) => {
   try {
     // const user_level = req.user.user_level;
     // userLevel에서 시터/예약자 확인

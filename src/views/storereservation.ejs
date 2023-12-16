@@ -120,12 +120,12 @@
           <!-- 이미지 -->
         </div>
       </div>
-
       <!-- ==스토어정보 -->
     </div>
     <div class="col-3 p-3">
       <h3>예약하기</h3>
       <form class="reservationForm" method="post">
+        <!-- <input class="input-group-text" type="text" name="store_id" value="<%= store.price %>" readonly /> -->
         <p>예약 일정</p>
         <div class="datePickerContainer">
           <input
@@ -164,14 +164,13 @@
         />
         <br />
         <p>합계</p>
-        <input class="input-group-text" type="text" name="total_price" value="50,000" readonly />
+        <input class="input-group-text" type="text" name="total_price" value="50000" readonly />
         <br />
         <button class="btn btn-secondary btn-sm" type="submit">예약하기</button>
       </form>
     </div>
   </div>
 </div>
-<!-- 이미지 모달 -->
 
 <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
 <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
@@ -195,4 +194,4 @@
 
   // 모달 창 열기
 </script>
-<%- include('./partials/footer.ejs') %>
+<%- include('./partials/main.footer.ejs') %>
