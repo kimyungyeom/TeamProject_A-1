@@ -1,6 +1,5 @@
 <%- include('./partials/main.header2.ejs') %>
 
-
   <section>
     <div class="page-header min-vh-100">
       <div class="container">
@@ -9,7 +8,7 @@
             class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
             <div
               class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center"
-              style="background-image: url('../assets/img/illustrations/illustration-signup.jpg'); background-size: cover;">
+              style="background-image: url('/assets/img/illustrations/illustration-signup.jpg'); background-size: cover;">
             </div>
           </div>
           <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
@@ -18,36 +17,73 @@
                 <h4 class="font-weight-bolder">Sign Up</h4>
                 <p class="mb-0">Enter your email and password to register</p>
               </div>
+
               <div class="card-body">
-                <form role="form">
+
+
+                <form method="POST" action="/api/auth/signup" id="imageInput" enctype="multipart/form-data">
+
+                  <!-- 이메일 -->
+
+                  <label class="form-label me-3">Email</label>
+                  <span id="v_email" class="invisible" style="color: red;">Email을 입력해주세요</span>
+                  <div div class=" input-group  input-group-outline mb-3">
+                    <input id="email" type="email" class="form-control">
+                  </div>
+
+
+                  <!-- 패스워드 -->
+                  <label class="form-label me-3">패스워드</label>
+                  <span id="v_password" class="invisible" style="color: red;">비밀번호를 입력해주세요</span>
                   <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-control">
+                    <input id="password" type="password" class="form-control" required>
                   </div>
+
+                  <!-- 패스워드 check-->
+                  <label class="form-label me-3">패스워드 확인</label>
+                  <span id="v_passwordCheck" class="invisible" style="color: red;">비밀번호확인을 입력해주세요</span>
                   <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control">
+                    <input id="passwordCheck" type="password" class="form-control" required>
                   </div>
+
+                  <!-- 이름 -->
+                  <label class="form-label me-3">이름</label>
+                  <span id="v_name" class="invisible" style="color: red;">이름을 입력해주세요</span>
                   <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control">
+                    <input id="name" type="text" class="form-control" required>
                   </div>
-                  <div class="form-check form-check-info text-start ps-0">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                    <label class="form-check-label" for="flexCheckDefault">
-                      I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
-                    </label>
+
+                  <!-- 핸드폰 번호 -->
+                  <label class="form-label me-3">핸드폰 번호</label>
+                  <span id="v_phone" class="invisible" style="color: red;">휴대폰번호를 입력해주세요</span>
+                  <div class="input-group input-group-outline mb-3">
+                    <input id="phone" type="text" class="form-control" required>
                   </div>
+
+                  <!-- 프로필 이미지 -->
+                  <label class="form-label">프로필 이미지</label>
+                  <div class="input-group input-group-outline mb-3">
+                    <input id="image" class="form-control" type="file" name="image" />
+                  </div>
+
+
+
                   <div class="text-center">
-                    <button type="button" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign
+                    <button type="button" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0"
+                      onclick="submitForm()">Sign
                       Up</button>
                   </div>
                 </form>
               </div>
+
+              <a href="/api/auth/google" className=" googleBtn ">
+                <img src="/assets/img/web_light_sq_ctn@4x.png" class="col-10" /></a>
+
+
               <div class="card-footer text-center pt-0 px-lg-2 px-1">
                 <p class="mb-2 text-sm mx-auto">
                   Already have an account?
-                  <a href="../pages/sign-in.html" class="text-primary text-gradient font-weight-bold">Sign in</a>
+                  <a href="/login" class="text-primary text-gradient font-weight-bold">Sign in</a>
                 </p>
               </div>
             </div>
@@ -57,4 +93,37 @@
     </div>
   </section>
 
+  <script>
+    function submitForm()
+    {
+      const imageInput = document.getElementById('image');
+      console.log(imageInput.files[0])
+      const imageValue = imageInput.files[0] ? imageInput.files[0] : '없음'
+
+      const formData = new FormData();
+      formData.append('profile', imageInput.files[0]);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('password', document.getElementById('password').value);
+      formData.append('passwordCheck', document.getElementById('passwordCheck').value);
+      formData.append('name', document.getElementById('name').value);
+      formData.append('phone', document.getElementById('phone').value);
+
+
+      axios.post('/api/auth/signup', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response =>
+        {
+          // Handle the response as needed
+        })
+        .catch(err =>
+        {
+          alert('Error: 입력을 확인해주세요!')
+        });
+    }
+
+
+  </script>
   <%- include('./partials/footer.ejs') %>

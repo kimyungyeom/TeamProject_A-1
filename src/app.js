@@ -15,12 +15,13 @@ const PORT = process.env.SERVER_PORT;
 
 // import router
 import StoreRouter from './routers/store.router.js';
-import AuthRouter from './routers/auth.router.js';
+
 import AdminRouter from './routers/admin.router.js';
 import reservationRouter from './routers/reservation.router.js';
 import reviewRouter from './routers/reviews.router.js';
 
 import frontAuth from './routers/auth.js';
+import AuthRouter from './routers/auth.router.js';
 // app.js - global variables
 const app = express();
 
@@ -46,9 +47,12 @@ app.use(function (request, response, next) {
 });
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
-
+import methodOverride from 'method-override';
+app.use(methodOverride('_method'));
 app.set('views', path.join(currentModulePath, '../views'));
 app.set('view engine', 'ejs');
+// http에서 patch 등 사용하기
+
 app.use(express.static(path.join(currentModulePath, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
