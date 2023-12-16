@@ -15,12 +15,13 @@ const PORT = process.env.SERVER_PORT;
 
 // import router
 import StoreRouter from './routers/store.router.js';
-import AuthRouter from './routers/auth.router.js';
+
 import AdminRouter from './routers/admin.router.js';
 import reservationRouter from './routers/reservation.router.js';
 import reviewRouter from './routers/reviews.router.js';
 
 import frontAuth from './routers/auth.js';
+import AuthRouter from './routers/auth.router.js';
 // app.js - global variables
 const app = express();
 

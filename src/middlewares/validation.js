@@ -29,5 +29,7 @@ export function validate(req, res, next) {
   if (errors.isEmpty()) {
     return next();
   }
+
   return res.status(400).json({ message: errors.array() });
+  //res.redirect('/login');
 }
