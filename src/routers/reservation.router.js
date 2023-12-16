@@ -64,7 +64,7 @@ router.post(
           approved: 'No',
         },
       });
-      return res.render('/reservation/:reserve_id', { data: reservation });
+      return res.redirect(`/reservation/${reservation.reserve_id}`, { data: reservation });
     } catch (err) {
       next(err);
     }
@@ -101,41 +101,34 @@ router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next)
   }
 });
 // API 예약 수정-상세페이지에서
-router.patch(
-  '/reservation/:reserve_id',
-  checkAuthenticate,
-  reservationValidation,
-  validate,
-  async (req, res, next) => {
-    try {
-      const user_id = req.user.user_id;
-      const { reserve_id } = req.params;
-      const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
-      const reservationInfo = await prisma.reservations.findUnique({
-        where: { reserve_id: +reserve_id },
-      });
-      // 예약자 본인 확인
-      if (reservationInfo.user_id === user_id) {
-        const reservation = await prisma.reservations.update({
-          where: { reserve_id: +reserve_id },
-          data: {
-            reserve_date: reserve_date,
-            cats: +cats,
-            res_comment,
-            visit_time,
-            pickup_time,
-            total_price: +total_price,
-          },
-        });
-        res.status(200).json({ data: reservation });
-      } else {
-        throw new Error('Not a reserver');
-      }
-    } catch (err) {
-      next(err);
-    }
-  },
-);
+router.put('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
+  try {
+    const user_id = req.user.user_id;
+    const { reserve_id } = req.params;
+    const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price, approved } =
+      req.body;
+    const reservationInfo = await prisma.reservations.findUnique({
+      where: { reserve_id: +reserve_id },
+    });
+    // 예약자 본인 확인
+    // if (reservationInfo.user_id === user_id) {}
+    const reservation = await prisma.reservations.update({
+      where: { reserve_id: +reserve_id },
+      data: {
+        reserve_date: reserve_date,
+        cats: +cats,
+        res_comment,
+        visit_time,
+        pickup_time,
+        approved: 'No',
+        total_price: +total_price,
+      },
+    });
+    return res.redirect(`/api/reservation/${reserve_id}`);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // API 예약 수정-상세페이지에서 - 시터가 승인여부 변경
 router.patch('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) => {
