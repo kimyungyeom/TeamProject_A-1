@@ -1,0 +1,50 @@
+<%- include('./partials/main.header.ejs') %>
+<style>
+  .approved-yes {
+    color: green;
+  }
+  .approved-no {
+    color: red;
+  }
+  .reservationContent{
+    font-weight: 400; 
+    overflow: hidden; 
+    text-overflow:ellipsis; 
+    word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 2 ;
+        -webkit-box-orient: vertical;
+  }
+</style>
+
+<% if (user_id) { %>
+    <h1 class="text-center mt-5">내 예약 조회</h1>
+    <h5 class="text-center mt-2">예약 일정을 꼭 확인하세요!</h5>
+    <div class="container">
+      <div class="row storeInfo d-flex justify-content-center align-items-center">
+        <% data.forEach(AllReservations=>{ %>
+        <div class="storeCard card col-6 p-3 mx-2 my-3">
+          <a href="/api/reservation/<%= AllReservations.reserve_id %>">
+          <div class="row p-3">
+              <div class="col-auto col-8 p-2">
+                <h3><%= AllReservations.store.title %></h3>
+                <h5><%= AllReservations.store.user.name %> 시터님</h5>
+                <p class="reservationContent"><%= AllReservations.store.content %></p>
+              </div>
+              <div class="col middle_title text-end mt-2 .col-auto">
+                <h5 class="reserveDate"><%= AllReservations.reserve_date %></h5>
+                <h6 class="<%= AllReservations.approved === 'Yes' ? 'approved-yes' : 'approved-no' %>">
+                  승인여부 <%= AllReservations.approved %>
+                </h6>
+              </div>
+          </div>
+        </a>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+<% } else { %>
+<h1 class="text-center mt-5">로그인이 필요합니다.</h1>
+  <% } %>
+  
+<%- include('./partials/main.footer.ejs') %>
