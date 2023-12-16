@@ -47,9 +47,12 @@ app.use(function (request, response, next) {
 });
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
-
+import methodOverride from 'method-override';
+app.use(methodOverride('_method'));
 app.set('views', path.join(currentModulePath, '../views'));
 app.set('view engine', 'ejs');
+// http에서 patch 등 사용하기
+
 app.use(express.static(path.join(currentModulePath, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

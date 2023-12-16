@@ -15,44 +15,58 @@
   .approved-no {
     color: red;
   }
+  .reservationContent{
+    font-weight: 400; 
+    overflow: hidden; 
+    text-overflow:ellipsis; 
+    word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 2 ;
+        -webkit-box-orient: vertical;
+  }
 </style>
 <div style="height: 50px"></div>
 
 <div class="container">
   <div class="row reservationHello align-items-center text-center justify-content-md-center">
-    <img
-      src="https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif"
-      style="width: 200px; height: 200px; margin-bottom: 20px"
-    />
     <% if (reservationInfo.approved === 'Yes') { %>
       <div>
+        <img
+        src="https://item.kakaocdn.net/do/211cb65c3cc09bf3c7d16ebbbe6fe7faf43ad912ad8dd55b04db6a64cddaf76d"
+        style="width: 200px; height: 200px; margin-bottom: 20px"
+      />
         <h3>예약이 확정되었습니다!</h3>
-        <h4>일정을 확인해주세요.</h4>
+        <h4>일정을 다시한번 확인해주세요.</h4>
       </div>
     <% } else { %>
       <div>
+        <img
+        src="https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif"
+        style="width: 200px; height: 200px; margin-bottom: 20px"
+      />
         <h3>예약이 정상적으로 신청되었습니다!</h3>
-        <h4>시터님 승인후 예약이 확정됩니다.</h4>
+        <h4>시터님의 승인을 기다리고 있어요!</h4>
       </div>
     <% } %>
   </div>
   <div class="row storeInfo d-flex justify-content-center align-items-center">
-    <div class="storeCard card col-9 p-3 mx-3 my-4">
-      <div class="row p-3">
-        <div class="row titleImg mx-4">
+    <div class="storeCard card col-7 p-3 mx-2 my-4">
+      <div class="row p-2 ">
+        <div class="row titleImg mx-2">
           <div class="col-auto p-2">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxzE0-W4cDj64hPIMW9d5Jfc86aocVsxYq9Q&usqp=CAU"
               alt="profile_image"
               class="w-100 border-radius-lg shadow-sm"
-              style="max-width: 70px; max-height: 70px"
+              style="max-width: 80px; max-height: 80px"
             />
           </div>
-          <div class="col-auto p-2">
-            <h3 class="md-3"><%= reservationInfo.store.title %></h3>
-            <p><%= reservationInfo.store.content %></p>
+          <div class="col-auto col-7 p-1">
+            <h3><%= reservationInfo.store.title %></h3>
+            <p class="reservationContent">
+              <%= reservationInfo.store.content %></p>
           </div>
-          <div class="col middle_title text-end mt-2" style="margin-right: 30px">
+          <div class="col middle_title text-end mt-2 .col-auto">
             <h5><%= reservationInfo.store.user_id %> 시터님</h5>
             <h5 class="<%= reservationInfo.approved === 'Yes' ? 'approved-yes' : 'approved-no' %>">
               승인여부 <%= reservationInfo.approved %>
@@ -63,20 +77,16 @@
     </div>
   </div>
   <div class="row d-flex justify-content-center align-items-center">
-    <div class="reservationCard card col-9 p-3 mx-3">
+    <div class="reservationCard card col-7 p-3 mx-3">
       <div class="row reservationTitle text-center align-items-center mx-4">
         <h2 class="md-3">예약 상세정보</h2>
         <p>
-          아래의 내용을 수정하고 '수정하기' 버튼을 누르면 수정된 내용이 시터님에게 전달되고 승인이
+          아래의 내용을 수정하고 '수정하기' 버튼을 누르면 <br />수정된 내용이 시터님에게 전달되고 승인이
           초기화됩니다.
         </p>
       </div>
       <div class="mainContent mx-5 mt-5">
-        <form
-          class="reservationForm"
-          method="post"
-          action="/api/reservation/<%= reservationInfo.reserve_id %>?_method=patch"
-        >
+        <form id="reservationForm" class="reservationForm" method="post" action="/api/reservation/<%= reservationInfo.reserve_id %>?_method=put">
           <p>예약 일정</p>
           <div class="datePickerContainer">
             <input
@@ -142,7 +152,7 @@
           />
           <br />
           <p class="text-center">
-            '수정하기' 버튼을 누르면 수정된 내용이 시터님에게 전달되고 승인이 초기화됩니다.
+            '수정하기' 버튼을 누르면 수정된 내용이 시터에게 전달되고 승인이 초기화됩니다.
           </p>
           <div class="bottom-buttons row">
             <button class="btn btn-outline-secondary col mx-3" type="submit">수정하기</button>
@@ -176,6 +186,17 @@
       ],
       locale: 'ko',
     });
+  
+    const form = document.getElementById('reservationForm');
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        if (!confirm('정말로 수정하시겠습니까? 다시 시터님의 승인을 기다리셔야해요!')) {
+          event.preventDefault();
+        }
+      });
+    } else {
+      console.error('Form not found!');
+    }
   });
 </script>
 <%- include('./partials/main.footer.ejs') %>
