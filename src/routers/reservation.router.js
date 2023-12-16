@@ -64,7 +64,7 @@ router.post(
           approved: 'No',
         },
       });
-      return res.redirect(`/reservation/${reservation.reserve_id}`, { data: reservation });
+      return res.redirect(`/api/reservation/${reservation.reserve_id}`);
     } catch (err) {
       next(err);
     }
@@ -185,23 +185,26 @@ router.delete('/reservation/:reserve_id', checkAuthenticate, async (req, res, ne
   }
 });
 // API 포스트별(유저) 예약목록 조회
-router.get('/user/reservation', checkAuthenticate, async (req, res, next) => {
+router.get('/reservations', checkAuthenticate, async (req, res, next) => {
   try {
+    console.log('들어오긴 하니~');
     const user_id = req.user.user_id;
     // userLevel에서 시터/예약자 확인
     const AllReservations = await prisma.reservations.findMany({
       where: { user_id: +user_id },
-      select: {
-        reserve_id: true,
-        store_id: true,
-        reserve_date: true,
-        res_comment: true,
-        cats: true,
-        approved: true,
+      include: {
+        store: {
+          include: {
+            user: true,
+          },
+        },
       },
       orderBy: { created_at: 'desc' },
     });
-    res.status(200).json({ data: AllReservations });
+    return res.render('user.reservations.ejs', {
+      data: AllReservations,
+      user_id,
+    });
   } catch (err) {
     next(err);
   }
