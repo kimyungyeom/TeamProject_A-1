@@ -18,6 +18,7 @@ router.post(
       const user_id = req.user.user_id;
       const { store_id } = req.params;
       const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
+      const DateSpl = reserve_date;
       const reservation = await prisma.reservations.create({
         data: {
           user: {
@@ -40,7 +41,35 @@ router.post(
         },
       });
 
-      return res.redirect(`/reservation/${reservation.reserve_id}`);
+      // 예약한 날짜 스토어의 비활성화 날짜로 만들기
+      const dataRange = reserve_date.split(' ~ ');
+      const fromDate = dataRange[0];
+      const toDate = dataRange[1];
+
+      const transData = {
+        from: fromDate,
+        to: toDate,
+        reserve_id: +reservation.reserve_id,
+      };
+      // 스토어 찾기
+      const store = await prisma.stores.findUnique({
+        where: { store_id: +store_id },
+        select: { able_date: true },
+      });
+      const oriAble_date = Array.isArray(store.able_date)
+        ? store.able_date
+        : String(store.able_date).split(', ');
+
+      const updatedAble_date = [...oriAble_date, transData];
+
+      const reserveDatePush = await prisma.stores.update({
+        where: { store_id: +store_id },
+        data: {
+          able_date: updatedAble_date,
+        },
+      });
+
+      return res.redirect(`../../../reservation/${reservation.reserve_id}`);
     } catch (err) {
       next(err);
     }
@@ -71,7 +100,7 @@ router.put('/:reserve_id', checkAuthenticate, async (req, res, next) => {
         total_price: +total_price,
       },
     });
-    return res.redirect(`/reservation/${reserve_id}`);
+    return res.redirect(`../reservation/${reserve_id}`);
   } catch (err) {
     next(err);
   }

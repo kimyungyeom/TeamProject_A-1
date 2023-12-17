@@ -115,7 +115,7 @@
     </div>
     <div class="col-3 p-3">
       <h3>예약하기</h3>
-      <form class="reservationForm" method="post" action="/reservation/store/<%= store.store_id %>">
+      <form class="reservationForm" method="post" action="/api/reservation/store/<%= store.store_id %>">
         <!-- <input class="input-group-text" type="text" name="store_id" value="<%= store.price %>" readonly /> -->
         <p>예약 일정</p>
         <div class="datePickerContainer">
@@ -177,30 +177,28 @@
   </div>
 </div>
 
-  <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
-  <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function ()
-    {
-      let dateSelector = document.querySelector('.dateSelector');
-      const temp = flatpickr(dateSelector, {
-        position: 'above',
-        mode: 'range',
-        minDate: 'today',
-        dateFormat: 'Y-m-d',
-        disable: [
-          function (date)
-          {
-            // disable every multiple of 8
-            return !(date.getDate() % 8);
-          },
-        ],
-        locale: 'ko',
-      });
-      console.log(temp);
+<script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+<script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+<script>
+  const originDate = <%= store.able_date %>
+  console.log(originDate);
+  document.addEventListener('DOMContentLoaded', function () {
+    let dateSelector = document.querySelector('.dateSelector');
+    flatpickr(dateSelector, {
+      position: 'above',
+      mode: 'range',
+      minDate: 'today',
+      dateFormat: 'Y-m-d',
+      disable: [
+        function (date) {
+          // disable every multiple of 8
+          return !(date.getDate() % 8);
+        },
+      ],
+      locale: 'ko',
     });
+  });
 
-
-    // 모달 창 열기
-  </script>
-  <%- include('./partials/main.footer.ejs') %>
+  // 모달 창 열기
+</script>
+<%- include('./partials/main.footer.ejs') %>

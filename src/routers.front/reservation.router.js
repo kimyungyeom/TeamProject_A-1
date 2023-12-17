@@ -5,7 +5,7 @@ import { checkAuthenticated } from '../middlewares/Authorizations.js';
 //import { checkAuthenticate } from '../middlewares/auth.js';
 const router = express.Router();
 
-// API 유저 예약 상세보기
+// API 예약 상세보기
 router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
   try {
     const { reserve_id } = req.params;
@@ -25,7 +25,7 @@ router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
       },
     });
     const dateRange = reservationInfo.reserve_date.split(' ~ ');
-
+    console.log(store);
     return res.render('reservation.ejs', {
       reservationInfo,
       startDate: dateRange[0],
