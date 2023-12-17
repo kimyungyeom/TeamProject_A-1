@@ -2,6 +2,8 @@ import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 import passport from 'passport';
 import '../config/passport.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import {
   validate,
@@ -11,11 +13,26 @@ import {
   validatePhone,
   validateUsername,
 } from '../middlewares/validation.js';
+const currentModulePath = fileURLToPath(import.meta.url);
+
+import multer from 'multer';
+// multer 세팅
+const storageEngine = multer.diskStorage({
+  destination: (req, file, callback) => {
+    const uploadPath = path.join(currentModulePath, `../../public/images`);
+    callback(null, uploadPath);
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storageEngine }).single('profile');
 
 const router = express.Router();
 // 회원가입 local
 router.post(
   '/signup',
+  upload,
   [
     validateEmail,
     validatePassword,
@@ -24,8 +41,13 @@ router.post(
     validateUsername,
     validate,
   ],
+
   async (req, res, next) => {
-    const { email, password, passwordCheck, phone, name } = req.body;
+    console.log(req.body);
+    const { email, password, passwordCheck, phone, name, profile } = req.body;
+
+    const image = req.file ? req.file.filename : '';
+
     if (password === passwordCheck) {
     }
     const existEmailCheck = await prisma.users.findFirst({
@@ -41,6 +63,7 @@ router.post(
       password,
       phone,
       name,
+      profile: image,
     };
 
     const ExistUser = await prisma.users.create({
@@ -64,20 +87,12 @@ router.post('/login', [validateEmail, validatePassword, validate], (req, res, ne
     }
 
     req.logIn(user, function (err) {
-      if (err) return next(err);
-      res.status(200).send({ user });
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/store');
     });
   })(req, res, next);
-});
-
-//logout
-router.post('/logout', (req, res, next) => {
-  req.logOut(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/login');
-  });
 });
 
 router.get(
@@ -92,7 +107,7 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successReturnToOrRedirect: '/',
+    successReturnToOrRedirect: '/store',
     failureRedirect: '/login',
   }),
 );

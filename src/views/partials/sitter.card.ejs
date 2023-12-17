@@ -5,30 +5,26 @@
         <img
           src="../assets/img/team-2.jpg"
           class="avatar avatar-sm me-3 border-radius-lg"
-          alt="user1"
+          alt="user"
         />
       </div>
       <div class="d-flex flex-column justify-content-center">
-        <h6 class="mb-0 text-sm"><%= store.title %></h6>
-      </div>
-      <div class="d-flex flex-column justify-content-center">
-        <h6 class="mb-0 text-sm">&nbsp; ( <%= store.user.name %> )</h6>
+        <h4 class="mb-0 text-sm"><%= store.title %></h4>
       </div>
     </div>
   </td>
-  <td class="align-middle text-center text-sm">
-    <span> <%= store.store_id %> </span>
+
+  <td>
+    <div class="d-flex flex-column justify-content-center">
+      <h6 class="mb-0 text-sm">&nbsp; <%= store.user.name %>님</h6>
+    </div>
   </td>
-  <td class="align-middle text-center text-sm">
-    <span> <%= store.user_id %> </span>
-  </td>
+
   <td class="align-middle text-center text-sm">
     <span> <%= store.content %> </span>
   </td>
+
   <td class="align-middle text-center">
-    <span class="text-secondary text-xs font-weight-bold"> <%= store.created_at %> </span>
-  </td>
-  <td class="align-middle text-center">
-    <span class="text-secondary text-xs font-weight-bold"> <%= store.updated_at %> </span>
+    <span class="text-sm text-xs"> <%= store.updated_at %> </span>
   </td>
 </tr>

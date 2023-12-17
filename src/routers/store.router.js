@@ -4,40 +4,6 @@ import { checkAuthenticate } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-// 전체 게시글 조회
-router.get('/store', async (req, res) => {
-  const stores = await prisma.stores.findMany({
-    select: {
-      store_id: true,
-      user_id: true,
-      title: true,
-      content: true,
-      created_at: true,
-      updated_at: true,
-    },
-    orderBy: {
-      created_at: 'desc',
-    },
-  });
-  if (!stores) {
-    return res.json({ message: 'error' });
-  }
-  return res.json({ data: stores });
-});
-
-// 게시글 상세조회
-router.get('/store/:store_id', async (req, res) => {
-  const { store_id } = req.params;
-
-  const store = await prisma.stores.findFirst({
-    where: {
-      store_id: +store_id,
-    },
-  });
-  return res.json({ data: store });
-  // res.render('store.ejs', { data: store });
-});
-
 // 게시글 작성
 router.post('/store', checkAuthenticate, async (req, res, next) => {
   try {
@@ -58,7 +24,7 @@ router.post('/store', checkAuthenticate, async (req, res, next) => {
         address,
       },
     });
-    return res.json({ data: newStore });
+    return res.render('poststore.ejs', { newStore });
   } catch (err) {
     next(err);
   }
@@ -76,7 +42,6 @@ router.put('/store/:store_id', checkAuthenticate, async (req, res, next) => {
         store_id: +store_id,
       },
     });
-
     if (!store) {
       return res.status(404).send({ message: 'error' });
     }

@@ -71,7 +71,8 @@ router.post(
 );
 
 // 리뷰 조회 router
-router.get('/:store_id/reviews', async (req, res, next) => {
+router.get('/reviews/:store_id', async (req, res, next) => {
+  console.log('!');
   try {
     const { store_id } = req.params;
     const store = await prisma.stores.findFirst({
