@@ -17,12 +17,13 @@
 <div class="container">
   <div class="align-itemst-center justify-content-md-center row">
     <div class="col-8 card p-3">
-      <from method="POST" action="/store">
+      <form method="POST" action="/api/store">
         <h3 class="mb-3">캣시터 등록하기</h3>
         <div class="mb-3">
           <p for="title">제목</p>
           <input
             class="input-group-text"
+            name="title"
             type="text"
             id="titleInput"
             placeholder="제목을 입력해 주세요"
@@ -36,6 +37,16 @@
             id="contentInput"
             type="text"
             placeholder="소개글을 작성해 주세요"
+          />
+        </div>
+        <div class="mb-3">
+          <p>가격</p>
+          <input
+            class="input-group-text"
+            name="price"
+            id="contentInput"
+            type="text"
+            placeholder="가격을 입력해 주세요"
           />
         </div>
         <p>예약 불가능 날짜</p>
@@ -87,8 +98,20 @@
             placeholder="예시) 공지로 591"
           />
         </div>
+        <div class="mb-3">
+          <p>사진 추가하기</p>
+          <div class="input-group">
+            <input
+              type="file"
+              id="inputGroupFile04"
+              aria-describedby="inputGroupFileAddon04"
+              aria-label="Upload"
+            />
+          </div>
+        </div>
+
         <button id="post_btn" type="submit" class="btn btn-secondary post_btn">등록하기</button>
-      </from>
+      </form>
     </div>
   </div>
 </div>
