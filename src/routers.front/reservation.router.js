@@ -36,4 +36,32 @@ router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
   }
 });
 
+// API 예약 상세보기 - 시터
+router.get('/sitter/:reserve_id', checkAuthenticated, async (req, res, next) => {
+  try {
+    const { reserve_id } = req.params;
+    const reservationInfo = await prisma.reservations.findUnique({
+      where: {
+        reserve_id: +reserve_id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+            phone: true,
+          },
+        },
+        store: true,
+      },
+    });
+    return res.render('sitter.reservationOne.ejs', {
+      reservationInfo,
+      user: req.user ? req.user : null,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

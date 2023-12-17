@@ -1,13 +1,7 @@
 <%- include('./partials/main.header.ejs') %>
-  <%- include('./partials/main.backgound.ejs') %>
+<%- include('./partials/main.backgound.ejs') %>
 
   <style>
-    .approved-yes {
-      color: green;
-    }
-    .approved-no {
-      color: red;
-    }
     .reservationContent{
       font-weight: 400; 
       overflow: hidden; 
@@ -19,7 +13,7 @@
     }
   </style>
   <% if (user_id) { %>
-      <h1 class="text-center mt-5">내 예약 조회</h1>
+      <h1 class="text-center mt-5">예약 신청 내역 조회</h1>
         <% if (!data.AllReservations) { %>
           <h5 class="text-center mt-2">예약 일정을 꼭 확인하세요!</h5>
         <% } else { %>
@@ -29,21 +23,31 @@
         <div class="row storeInfo d-flex justify-content-center align-items-center">
           <% data.forEach(AllReservations=>{ %>
           <div class="storeCard card col-6 p-3 mx-2 my-3">
-            <a href="/reservation/<%= AllReservations.reserve_id %>">
+              <!-- ~~위 링크는 시터가 보는 예약 상세 페이지로 가야 됩니다. -->
             <div class="row p-3">
                 <div class="col-auto col-8 p-2">
-                  <h3><%= AllReservations.store.title %></h3>
-                  <h5><%= AllReservations.store.user.name %> 시터님</h5>
-                  <p class="reservationContent"><%= AllReservations.store.content %></p>
+                  <a href="/reservation/<%= AllReservations.reserve_id %>">
+                  <h4>예약번호 <%= AllReservations.reserve_id %></h4>
+                  <h5><%= AllReservations.user.name %> 회원님</h5>
+                  <p class="reservationContent"><%= AllReservations.res_comment %></p>
+                  </a>
                 </div>
+
                 <div class="col middle_title text-end mt-2 .col-auto">
                   <h5 class="reserveDate"><%= AllReservations.reserve_date %></h5>
-                  <h6 class="<%= AllReservations.approved === 'Yes' ? 'approved-yes' : 'approved-no' %>">
-                    승인여부 <%= AllReservations.approved %>
-                  </h6>
+
+                  <% if (AllReservations.approved==='Yes') { %>
+                    <button type="button" id="cancelRes" onclick="event.stopPropagation();" data-id="<%= AllReservations.reserve_id %>" class="btn btn-outline-danger reservation-button">승인취소</button>
+                    <button type="button" id="completeRes" onclick="event.stopPropagation();" data-id="<%= AllReservations.reserve_id %>" class="btn btn-secondary reservation-button">일정완료</button>
+                    <% } else if (AllReservations.approved==='No') { %>
+                    <button type="button" id="approveRes" onclick="event.stopPropagation();" data-id="<%= AllReservations.reserve_id %>" class="btn btn-success reservation-button">예약승인</button>
+                    <% } else if (AllReservations.approved==='Complete') { %>
+                    <button type="button" class="btn btn-outline-secondary reservation-button">지난 일정</button>
+                    <% } %>
+                  
+                   
                 </div>
             </div>
-          </a>
           </div>
           <% }); %>
         </div>
@@ -52,7 +56,39 @@
   <h1 class="text-center mt-5">로그인이 필요합니다.</h1>
     <% } %>
 
-
+    <script>
+      document.querySelectorAll('.reservation-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const reserveId = this.getAttribute('data-id');
+          let approvedValue;
+          if (this.id === 'approveRes') {
+            approvedValue = 'Yes';
+          } else if (this.id === 'completeRes') {
+            approvedValue = 'Complete';
+          } else {
+            approvedValue = 'No';
+          }
+          fetch(`/api/reservation/sitter/${reserveId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              approved: approvedValue,
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+            location.reload();  // 페이지 새로고침 코드
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        });
+      });
+      </script>
+      
 
 
   <%- include('./partials/main.footer.ejs') %>

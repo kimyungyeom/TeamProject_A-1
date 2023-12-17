@@ -95,8 +95,9 @@ router.put('/:reserve_id', checkAuthenticate, async (req, res, next) => {
 });
 
 // API 예약 수정-상세페이지에서 - 시터가 승인여부 변경
-router.patch('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) => {
+router.put('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) => {
   try {
+    console.log('고갱님 수정하러 오셨습니까?');
     const user_id = req.user.user_id;
     const { reserve_id } = req.params;
     const { approved } = req.body;
@@ -116,10 +117,10 @@ router.patch('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) =>
       const reservation = await prisma.reservations.update({
         where: { reserve_id: +reserve_id },
         data: {
-          approved: { set: approved },
+          approved: approved,
         },
       });
-      return res.status(200).json({ data: reservation });
+      return res.status(200).json({ data: reservation }).redirect('../../reserve_list/sitter');
     } else {
       throw new Error('Not a reserver');
     }
