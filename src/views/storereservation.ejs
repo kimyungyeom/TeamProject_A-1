@@ -16,8 +16,8 @@
       width: 100%;
     }
   </style>
-  <div style="height: 50px"></div>
-
+  <div style="height: 200px"></div>
+<h1>날짜가 여기 나와야되는데 <%= store.able_date["date"] %></h1>
   <div class="container">
     <div class="card-columns row justify-content-md-center">
       <div class="store_place card col-8 p-3 mx-3">
@@ -180,7 +180,7 @@
 <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
 <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script>
-  const originDate = <%= store.able_date %>
+  const originDate = <%= store.able_date["date"] %>
   console.log(originDate);
   document.addEventListener('DOMContentLoaded', function () {
     let dateSelector = document.querySelector('.dateSelector');
