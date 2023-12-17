@@ -51,6 +51,7 @@
   </div>
   <div class="row storeInfo d-flex justify-content-center align-items-center">
     <div class="storeCard card col-7 p-3 mx-2 my-4">
+      <a href="/api/store/<%= reservationInfo.store.store_id %>">
       <div class="row p-2 ">
         <div class="row titleImg mx-2">
           <div class="col-auto p-2">
@@ -74,6 +75,7 @@
           </div>
         </div>
       </div>
+    </a>
     </div>
   </div>
   <div class="row d-flex justify-content-center align-items-center">
@@ -152,11 +154,12 @@
           />
           <br />
           <p class="text-center">
-            '수정하기' 버튼을 누르면 수정된 내용이 시터에게 전달되고 승인이 초기화됩니다.
+            '수정하기' 버튼을 누르면 수정된 내용이 시터에게 전달되고 승인이 초기화됩니다.<br>
+            <span style="color: red;">예약일정 7일 전에는 수정/취소할 수 없어요.</span>
           </p>
           <div class="bottom-buttons row">
             <button class="btn btn-outline-secondary col mx-3" type="submit">수정하기</button>
-            <button type="button" class="btn btn-secondary col mx-3">뒤로가기</button>
+            <button type="button" class="btn btn-secondary col mx-3" onclick="history.back()">뒤로가기</button>
           </div>
         </form>
       </div>
