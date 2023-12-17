@@ -137,35 +137,42 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="row d-flex align-items-center justify-content-center">
-      <div class="col-md-7 p-3 mx-3">
-        <form>
-          <div class="card border">
-            <div class="card-header pb-0 px-3">
-              <h6 class="mb-0">펫시터님을 위해 소중한 리뷰를 남겨주세요!</h6>
-            </div>
-            <div class="card-body mx-3 mt-2">
-              <ul class="list-group">
-                <li class="list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
-                  <div class="text-align:center">
-                    <input class="reviewInput form-control" type="text" name="comment" id="reviewInput"
-                      placeholder="리뷰를 남겨주세요." />
-                  </div>
-                </li>
-                <div class="d-flex">
-                  <select class="ratingInput form-select-padding-x: 3" aria-label="select-rating" name="rating">
-                    <option selected>리뷰 평점 선택</option>
-                    <option value=1>1점</option>
-                    <option value=2>2점</option>
-                    <option value=3>3점</option>
-                    <option value=4>4점</option>
-                    <option value=5>5점</option>
-                  </select>
-                  <div class="ms-auto text-end">
-                    <a class="replyBtn btn btn-link text-danger text-gradient px-3 mb-0" type="button"
-                      href="javascript:;"><i class="material-icons text-sm me-2">reply</i>reply</a>
-                  </div>
+<div class="container">
+  <div class="row d-flex align-items-center justify-content-center">
+    <div class="col-md-7 p-3 mx-3">
+      <form>
+        <div class="card border">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">펫시터님을 위해 소중한 리뷰를 남겨주세요!</h6>
+          </div>
+          <div class="card-body mx-3 mt-2">
+            <ul class="list-group">
+              <li class="list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
+                <div class="text-align:center">
+                  <input
+                    class="commentInput"
+                    type="text"
+                    name="comment"
+                    placeholder="리뷰를 남겨주세요."
+                  />
+                </div>
+              </li>
+              <div class="d-flex">
+                <select
+                  class="ratingInput form-select-padding-x: 3"
+                  aria-label="select-rating"
+                  name="rating"
+                >
+                  <option selected>리뷰 평점 선택</option>
+                  <option value=1>1점</option>
+                  <option value=2>2점</option>
+                  <option value=3>3점</option>
+                  <option value=4>4점</option>
+                  <option value=5>5점</option>
+                </select>
+                <div class="ms-auto text-end">
+                  <a class="replyBtn btn btn-link text-danger text-gradient px-3 mb-0" type= "button" href="javascript:;"
+                    ><i class="material-icons text-sm me-2">reply</i>reply</a>
                 </div>
               </ul>
             </div>
@@ -180,11 +187,14 @@
   <script>
     const originDate = `<%= reservationInfo.store.able_date[0].date%>`
     const temp = originDate.split(',');
-
+    const startDate = new Date("<%= startDate %>");
+    const endDate = new Date("<%= endDate %>");
+    
     document.addEventListener('DOMContentLoaded', function ()
     {
       let dateSelector = document.querySelector('.dateSelector');
       flatpickr(dateSelector, {
+        defaultDate: [startDate, endDate],
         position: 'above',
         mode: 'range',
         minDate: 'today',
@@ -246,6 +256,25 @@
       });
     });
 
+  const commentEl = document.querySelector('.commentInput');
+  const ratingEl = document.querySelector('.ratingInput');
+  
+  document.addEventListener('DOMContentLoaded', function () {
+  const replyBtn = document.querySelector('.replyBtn');
+  const storeId = '<%= reservationInfo.store.store_id %>';
+  const reserveId = '<%= reservationInfo.reserve_id %>';
+  
+  replyBtn.addEventListener('click', async () => {
+    try {
+      const response = await axios.post(`/store/${storeId}/reservation/${reserveId}/review`, {
+        comment: commentEl.value,
+        rating: ratingEl.value
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  });
+});
 
-  </script>
-  <%- include('./partials/main.footer.ejs') %>
+</script>
+<%- include('./partials/main.footer.ejs') %>

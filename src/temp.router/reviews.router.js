@@ -58,13 +58,13 @@ router.post(
           user_id: user_id,
           store_id: +store_id,
           reserve_id: +reserve_id,
-          comment,
+          comment: comment,
           rating: +rating,
         },
       });
 
       return res.redirect(`/store/${store_id}`);
-      // return res.status(201).json({ data: reviews });
+      // return res.status(201).json({ data: newReview });
     } catch (err) {
       next(err);
     }
