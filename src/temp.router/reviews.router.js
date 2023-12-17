@@ -63,8 +63,8 @@ router.post(
         },
       });
 
-      return res.redirect(`/store/${store_id}`);
-      // return res.status(201).json({ data: newReview });
+      // return res.redirect(`/store/${store_id}`);
+      return res.status(201).json({ data: newReview });
     } catch (err) {
       next(err);
     }

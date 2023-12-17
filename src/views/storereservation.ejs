@@ -179,26 +179,20 @@
           </div>
         </div>
       </div>
-
-
     </div>
 
     <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
     <script>
-      const originDate = `<%= store.able_date%>`
-
+      const originDate = `<%= store.able_date[0].date%>`
       const temp = originDate.split(',');
-
-
 
       document.addEventListener('DOMContentLoaded', function ()
       {
-
         let dateSelector = document.querySelector('.dateSelector');
         flatpickr(dateSelector, {
           position: 'above',
-          mode: 'multiple',
+          mode: 'range',
           minDate: 'today',
           dateFormat: 'Y-m-d',
           disable:

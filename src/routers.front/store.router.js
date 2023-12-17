@@ -54,6 +54,7 @@ router.get('/:store_id', async (req, res, next) => {
             phone: true,
           },
         },
+        reservation: true,
       },
     });
 
