@@ -1,289 +1,260 @@
 <%- include('./partials/main.header.ejs') %>
-<style>
-  /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
-  .datePickerContainer {
-    display: flex;
-  }
-  /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
-  .input-group-text {
-    width: 100%;
-  }
-  .approved-yes {
-    color: green;
-  }
+  <style>
+    /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
+    .datePickerContainer {
+      display: flex;
+    }
 
-  .approved-no {
-    color: red;
-  }
-  .reservationContent{
-    font-weight: 400; 
-    overflow: hidden; 
-    text-overflow:ellipsis; 
-    word-wrap: break-word;
-        display: -webkit-box;
-        -webkit-line-clamp: 2 ;
-        -webkit-box-orient: vertical;
-  }
-</style>
-<div style="height: 50px"></div>
+    /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
+    .input-group-text {
+      width: 100%;
+    }
 
-<div class="container">
-  <div class="row reservationHello align-items-center text-center justify-content-md-center">
-    <% if (reservationInfo.approved === 'Yes') { %>
-      <div>
-        <img
-        src="https://item.kakaocdn.net/do/211cb65c3cc09bf3c7d16ebbbe6fe7faf43ad912ad8dd55b04db6a64cddaf76d"
-        style="width: 200px; height: 200px; margin-bottom: 20px"
-      />
-        <h3>예약이 확정되었습니다!</h3>
-        <h4>일정을 다시한번 확인해주세요.</h4>
+    .approved-yes {
+      color: green;
+    }
+
+    .approved-no {
+      color: red;
+    }
+
+    .reservationContent {
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  </style>
+  <div style="height: 50px"></div>
+
+  <div class="container">
+    <div class="row reservationHello align-items-center text-center justify-content-md-center">
+      <% if (reservationInfo.approved==='Yes' ) { %>
+        <div>
+          <img src="https://item.kakaocdn.net/do/211cb65c3cc09bf3c7d16ebbbe6fe7faf43ad912ad8dd55b04db6a64cddaf76d"
+            style="width: 200px; height: 200px; margin-bottom: 20px" />
+          <h3>예약이 확정되었습니다!</h3>
+          <h4>일정을 다시한번 확인해주세요.</h4>
+        </div>
+        <% } else { %>
+          <div>
+            <img src="https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif"
+              style="width: 200px; height: 200px; margin-bottom: 20px" />
+            <h3>예약이 정상적으로 신청되었습니다!</h3>
+            <h4>시터님의 승인을 기다리고 있어요!</h4>
+          </div>
+          <% } %>
+    </div>
+    <div class="row storeInfo d-flex justify-content-center align-items-center">
+      <div class="storeCard card col-7 p-3 mx-2 my-4">
+        <a href="/store/<%= reservationInfo.store.store_id %>">
+          <div class="row p-2 ">
+            <div class="row titleImg mx-2">
+              <div class="col-auto p-2">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxzE0-W4cDj64hPIMW9d5Jfc86aocVsxYq9Q&usqp=CAU"
+                  alt="profile_image" class="w-100 border-radius-lg shadow-sm"
+                  style="max-width: 80px; max-height: 80px" />
+              </div>
+              <div class="col-auto col-7 p-1">
+                <h3>
+                  <%= reservationInfo.store.title %>
+                </h3>
+                <p class="reservationContent">
+                  <%= reservationInfo.store.content %>
+                </p>
+              </div>
+              <div class="col middle_title text-end mt-2 .col-auto">
+                <h5>
+                  <%= reservationInfo.store.user_id %> 시터님
+                </h5>
+                <h5 class="<%= reservationInfo.approved === 'Yes' ? 'approved-yes' : 'approved-no' %>">
+                  승인여부 <%= reservationInfo.approved %>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
-    <% } else { %>
-      <div>
-        <img
-        src="https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif"
-        style="width: 200px; height: 200px; margin-bottom: 20px"
-      />
-        <h3>예약이 정상적으로 신청되었습니다!</h3>
-        <h4>시터님의 승인을 기다리고 있어요!</h4>
-      </div>
-    <% } %>
-  </div>
-  <div class="row storeInfo d-flex justify-content-center align-items-center">
-    <div class="storeCard card col-7 p-3 mx-2 my-4">
-      <a href="/store/<%= reservationInfo.store.store_id %>">
-      <div class="row p-2 ">
-        <div class="row titleImg mx-2">
-          <div class="col-auto p-2">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxzE0-W4cDj64hPIMW9d5Jfc86aocVsxYq9Q&usqp=CAU"
-              alt="profile_image"
-              class="w-100 border-radius-lg shadow-sm"
-              style="max-width: 80px; max-height: 80px"
-            />
-          </div>
-          <div class="col-auto col-7 p-1">
-            <h3><%= reservationInfo.store.title %></h3>
-            <p class="reservationContent">
-              <%= reservationInfo.store.content %></p>
-          </div>
-          <div class="col middle_title text-end mt-2 .col-auto">
-            <h5><%= reservationInfo.store.user_id %> 시터님</h5>
-            <h5 class="<%= reservationInfo.approved === 'Yes' ? 'approved-yes' : 'approved-no' %>">
-              승인여부 <%= reservationInfo.approved %>
-            </h5>
-          </div>
+    </div>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="reservationCard card col-7 p-3 mx-3">
+        <div class="row reservationTitle text-center align-items-center mx-4">
+          <h2 class="md-3">예약 상세정보</h2>
+          <p>
+            아래의 내용을 수정하고 '수정하기' 버튼을 누르면 <br />수정된 내용이 시터님에게 전달되고 승인이
+            초기화됩니다.
+          </p>
+        </div>
+        <div class="mainContent mx-5 mt-5">
+          <form id="reservationForm" class="reservationForm" method="post"
+            action="api/reservation/<%= reservationInfo.reserve_id %>?_method=put">
+            <p>예약 일정</p>
+            <div class="datePickerContainer">
+              <input class="dateSelector input-group-text" type="text" name="reserve_date" placeholder="날짜를 선택하세요" />
+            </div>
+            <br />
+            <p>마리 수</p>
+            <input class="input-group-text" type="number" name="cats" min="1" max="10"
+              value="<%= reservationInfo.cats %>" />
+            <br />
+            <p>코멘트</p>
+            <input class="input-group-text" type="text" name="res_comment" value="<%= reservationInfo.res_comment %>" />
+            <br />
+            <div class="row">
+              <div class="col">
+                <p>방문 시간</p>
+                <input class="input-group-text" type="time" name="visit_time" min="09:00" max="20:00"
+                  value="<%= reservationInfo.visit_time %>" required />
+              </div>
+              <div class="col">
+                <p>픽업 시간</p>
+                <input class="input-group-text" type="time" name="pickup_time" min="09:00" max="20:00"
+                  value="<%= reservationInfo.pickup_time %>" required />
+              </div>
+            </div>
+            <br />
+            <p>합계</p>
+            <input class="input-group-text" type="text" name="total_price" value="<%= reservationInfo.total_price %>"
+              readonly />
+            <br />
+            <p class="text-center">
+              '수정하기' 버튼을 누르면 수정된 내용이 시터에게 전달되고 승인이 초기화됩니다.<br>
+              <span style="color: red;">예약일정 7일 전에는 수정/취소할 수 없어요.</span>
+            </p>
+            <div class="bottom-buttons row">
+              <button class="btn btn-outline-secondary col" type="submit" style="margin-right: 5px;">수정하기</button>
+              <button type="button" class="btn btn-secondary col" style="margin-left: 5px;"
+                onclick="history.back()">뒤로가기</button>
+            </div>
+          </form>
+          <button class="btn btn-outline-danger input-group-text" id="reserveCancel">취소하기</button>
         </div>
       </div>
-    </a>
     </div>
   </div>
-  <div class="row d-flex justify-content-center align-items-center">
-    <div class="reservationCard card col-7 p-3 mx-3">
-      <div class="row reservationTitle text-center align-items-center mx-4">
-        <h2 class="md-3">예약 상세정보</h2>
-        <p>
-          아래의 내용을 수정하고 '수정하기' 버튼을 누르면 <br />수정된 내용이 시터님에게 전달되고 승인이
-          초기화됩니다.
-        </p>
-      </div>
-      <div class="mainContent mx-5 mt-5">
-        <form id="reservationForm" class="reservationForm" method="post" action="api/reservation/<%= reservationInfo.reserve_id %>?_method=put">
-          <p>예약 일정</p>
-          <div class="datePickerContainer">
-            <input
-              class="dateSelector input-group-text"
-              type="text"
-              name="reserve_date"
-              placeholder="날짜를 선택하세요"
-            />
-          </div>
-          <br />
-          <p>마리 수</p>
-          <input
-            class="input-group-text"
-            type="number"
-            name="cats"
-            min="1"
-            max="10"
-            value="<%= reservationInfo.cats %>"
-          />
-          <br />
-          <p>코멘트</p>
-          <input
-            class="input-group-text"
-            type="text"
-            name="res_comment"
-            value="<%= reservationInfo.res_comment %>"
-          />
-          <br />
-          <div class="row">
-            <div class="col">
-              <p>방문 시간</p>
-              <input
-                class="input-group-text"
-                type="time"
-                name="visit_time"
-                min="09:00"
-                max="20:00"
-                value="<%= reservationInfo.visit_time %>"
-                required
-              />
+
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col-md-7 p-3 mx-3">
+        <form>
+          <div class="card border">
+            <div class="card-header pb-0 px-3">
+              <h6 class="mb-0">펫시터님을 위해 소중한 리뷰를 남겨주세요!</h6>
             </div>
-            <div class="col">
-              <p>픽업 시간</p>
-              <input
-                class="input-group-text"
-                type="time"
-                name="pickup_time"
-                min="09:00"
-                max="20:00"
-                value="<%= reservationInfo.pickup_time %>"
-                required
-              />
+            <div class="card-body mx-3 mt-2">
+              <ul class="list-group">
+                <li class="list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
+                  <div class="text-align:center">
+                    <input class="reviewInput form-control" type="text" name="comment" id="reviewInput"
+                      placeholder="리뷰를 남겨주세요." />
+                  </div>
+                </li>
+                <div class="d-flex">
+                  <select class="ratingInput form-select-padding-x: 3" aria-label="select-rating" name="rating">
+                    <option selected>리뷰 평점 선택</option>
+                    <option value=1>1점</option>
+                    <option value=2>2점</option>
+                    <option value=3>3점</option>
+                    <option value=4>4점</option>
+                    <option value=5>5점</option>
+                  </select>
+                  <div class="ms-auto text-end">
+                    <a class="replyBtn btn btn-link text-danger text-gradient px-3 mb-0" type="button"
+                      href="javascript:;"><i class="material-icons text-sm me-2">reply</i>reply</a>
+                  </div>
+                </div>
+              </ul>
             </div>
-          </div>
-          <br />
-          <p>합계</p>
-          <input
-            class="input-group-text"
-            type="text"
-            name="total_price"
-            value="<%= reservationInfo.total_price %>"
-            readonly
-          />
-          <br />
-          <p class="text-center">
-            '수정하기' 버튼을 누르면 수정된 내용이 시터에게 전달되고 승인이 초기화됩니다.<br>
-            <span style="color: red;">예약일정 7일 전에는 수정/취소할 수 없어요.</span>
-          </p>
-          <div class="bottom-buttons row">
-            <button class="btn btn-outline-secondary col" type="submit" style="margin-right: 5px;">수정하기</button>
-            <button type="button" class="btn btn-secondary col" style="margin-left: 5px;" onclick="history.back()">뒤로가기</button>
           </div>
         </form>
-          <button class="btn btn-outline-danger input-group-text" id="reserveCancel">취소하기</button>
       </div>
     </div>
   </div>
-</div>
 
-<div class="container">
-  <div class="row d-flex align-items-center justify-content-center">
-    <div class="col-md-7 p-3 mx-3">
-      <form>
-        <div class="card border">
-          <div class="card-header pb-0 px-3">
-            <h6 class="mb-0">펫시터님을 위해 소중한 리뷰를 남겨주세요!</h6>
-          </div>
-          <div class="card-body mx-3 mt-2">
-            <ul class="list-group">
-              <li class="list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
-                <div class="text-align:center">
-                  <input
-                    class="reviewInput form-control"
-                    type="text"
-                    name="comment"
-                    id="reviewInput"
-                    placeholder="리뷰를 남겨주세요."
-                  />
-                </div>
-              </li>
-              <div class="d-flex">
-                <select
-                  class="ratingInput form-select-padding-x: 3"
-                  aria-label="select-rating"
-                  name="rating"
-                >
-                  <option selected>리뷰 평점 선택</option>
-                  <option value=1>1점</option>
-                  <option value=2>2점</option>
-                  <option value=3>3점</option>
-                  <option value=4>4점</option>
-                  <option value=5>5점</option>
-                </select>
-                <div class="ms-auto text-end">
-                  <a class="replyBtn btn btn-link text-danger text-gradient px-3 mb-0" type= "button" href="javascript:;"
-                    ><i class="material-icons text-sm me-2">reply</i>reply</a>
-                </div>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
-<script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    let dateSelector = document.querySelector('.dateSelector');
-    let startDate = '<%= startDate %>';
-    let endDate = '<%= endDate %>';
-    
+  <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+  <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function ()
+    {
+      let dateSelector = document.querySelector('.dateSelector');
+      let startDate = '<%= startDate %>';
+      let endDate = '<%= endDate %>';
 
 
-    flatpickr(dateSelector, {
-      defaultDate: [startDate, endDate],
-      position: 'above',
-      mode: 'range',
-      minDate: 'today',
-      dateFormat: 'Y-m-d',
-      disable: [
+
+      flatpickr(dateSelector, {
+        defaultDate: [startDate, endDate],
+        position: 'above',
+        mode: 'range',
+        minDate: 'today',
+        dateFormat: 'Y-m-d',
+        disable: [
+          {
+            from: "2023-12-19",
+            to: "2023-12-21",
+            user_id: 12
+          },
+        ],
+        locale: 'ko',
+      });
+
+      const form = document.getElementById('reservationForm');
+      if (form)
+      {
+        form.addEventListener('submit', function (event)
         {
-        from:"2023-12-19",
-        to : "2023-12-21",
-        user_id: 12
-        },
-      ],
-      locale: 'ko',
-    });
-  
-    const form = document.getElementById('reservationForm');
-    if (form) {
-      form.addEventListener('submit', function(event) {
-        if (confirm('정말로 수정하시겠습니까? 다시 시터님의 승인을 기다리셔야해요!')) {
-          event.preventDefault();
+          if (confirm('정말로 수정하시겠습니까? 다시 시터님의 승인을 기다리셔야해요!'))
+          {
+            event.preventDefault();
+          }
+        });
+      } else
+      {
+        console.error('Form not found!');
+      }
+
+
+
+      const cancelBtn = document.querySelector('#reserveCancel');
+
+      cancelBtn.addEventListener('click', async () =>
+      {
+        if (confirm('정말로 예약을 취소하시겠어요?'))
+        {
+          const response = await axios.delete('/api/reservation/<%= reservationInfo.reserve_id %>');
+          window.history.back();
         }
       });
-    } else {
-      console.error('Form not found!');
-    }
-
-
-
-    const cancelBtn = document.querySelector('#reserveCancel');
-
-    cancelBtn.addEventListener('click', async () =>{
-    if(confirm('정말로 예약을 취소하시겠어요?')){
-        const response = await axios.delete('/api/reservation/<%= reservationInfo.reserve_id %>');
-        window.history.back();
-      }
     });
-  });
 
-  const reviewEl = document.querySelector('.reviewInput');
-  const ratingEl = document.querySelector('.ratingInput');
-  
-  document.addEventListener('DOMContentLoaded', function () {
-  const replyBtn = document.querySelector('.replyBtn');
-  const storeId = '<%= reservationInfo.store.store_id %>';
-  const reserveId = '<%= reservationInfo.reserve_id %>';
-  
-  replyBtn.addEventListener('click', async () => {
-    try {
-      const response = await axios.post(`/store/${storeId}/reservation/${reserveId}/review`, {
-        review: reviewEl.value,
-        rating: ratingEl.value
+    const reviewEl = document.querySelector('.reviewInput');
+    const ratingEl = document.querySelector('.ratingInput');
+
+    document.addEventListener('DOMContentLoaded', function ()
+    {
+      const replyBtn = document.querySelector('.replyBtn');
+      const storeId = '<%= reservationInfo.store.store_id %>';
+      const reserveId = '<%= reservationInfo.reserve_id %>';
+
+      replyBtn.addEventListener('click', async () =>
+      {
+        try
+        {
+          const response = await axios.post(`/store/${storeId}/reservation/${reserveId}/review`, {
+            review: reviewEl.value,
+            rating: ratingEl.value
+          });
+        } catch (err)
+        {
+          console.error(err);
+        }
       });
-    } catch (err) {
-      console.error(err);
-    }
-  });
-});
+    });
 
-  
-</script>
-<%- include('./partials/main.footer.ejs') %>
+
+  </script>
+  <%- include('./partials/main.footer.ejs') %>

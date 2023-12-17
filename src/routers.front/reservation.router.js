@@ -25,7 +25,7 @@ router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
       },
     });
     const dateRange = reservationInfo.reserve_date.split(' ~ ');
-    console.log(store);
+
     return res.render('reservation.ejs', {
       reservationInfo,
       startDate: dateRange[0],
