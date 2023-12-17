@@ -41,31 +41,18 @@ router.post(
         },
       });
 
-      // 예약한 날짜 스토어의 비활성화 날짜로 만들기
-      const dataRange = reserve_date.split(' ~ ');
-      const fromDate = dataRange[0];
-      const toDate = dataRange[1];
-
-      const transData = {
-        from: fromDate,
-        to: toDate,
-        reserve_id: +reservation.reserve_id,
-      };
       // 스토어 찾기
       const store = await prisma.stores.findUnique({
         where: { store_id: +store_id },
         select: { able_date: true },
       });
-      const oriAble_date = Array.isArray(store.able_date)
-        ? store.able_date
-        : String(store.able_date).split(', ');
 
-      const updatedAble_date = [...oriAble_date, transData];
-
+      const Exist = store.able_date.toString().split(',');
+      const newDate = [...Exist, ...reserve_date.split(',')];
       const reserveDatePush = await prisma.stores.update({
         where: { store_id: +store_id },
         data: {
-          able_date: updatedAble_date,
+          able_date: newDate,
         },
       });
 
@@ -98,38 +85,9 @@ router.put('/:reserve_id', checkAuthenticate, async (req, res, next) => {
         pickup_time,
         approved: 'No',
         total_price: +total_price,
-        store_id,
       },
     });
-    const store_id = reservation.store_id;
-    // 예약한 날짜 스토어의 비활성화 날짜로 만들기
-    const dataRange = reserve_date.split(' ~ ');
-    const fromDate = dataRange[0];
-    const toDate = dataRange[1];
-
-    const transData = {
-      from: fromDate,
-      to: toDate,
-      reserve_id: +reservation.reserve_id,
-    };
-    // 스토어 찾기
-    const store = await prisma.stores.findUnique({
-      where: { store_id: +store_id },
-      select: { able_date: true },
-    });
-    const oriAble_date = Array.isArray(store.able_date)
-      ? store.able_date
-      : String(store.able_date).split(', ');
-
-    const updatedAble_date = [...oriAble_date, transData];
-
-    const reserveDatePush = await prisma.stores.update({
-      where: { store_id: +store_id },
-      data: {
-        able_date: updatedAble_date,
-      },
-    });
-
+    console.log(reservation);
     return res.redirect(`../reservation/${reserve_id}`);
   } catch (err) {
     next(err);
