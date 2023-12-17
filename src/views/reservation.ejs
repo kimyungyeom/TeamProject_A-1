@@ -181,10 +181,9 @@
               <li class="list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
                 <div class="text-align:center">
                   <input
-                    class="reviewInput form-control"
+                    class="commentInput"
                     type="text"
                     name="comment"
-                    id="reviewInput"
                     placeholder="리뷰를 남겨주세요."
                   />
                 </div>
@@ -264,7 +263,7 @@
     });
   });
 
-  const reviewEl = document.querySelector('.reviewInput');
+  const commentEl = document.querySelector('.commentInput');
   const ratingEl = document.querySelector('.ratingInput');
   
   document.addEventListener('DOMContentLoaded', function () {
@@ -275,7 +274,7 @@
   replyBtn.addEventListener('click', async () => {
     try {
       const response = await axios.post(`/store/${storeId}/reservation/${reserveId}/review`, {
-        review: reviewEl.value,
+        comment: commentEl.value,
         rating: ratingEl.value
       });
     } catch (err) {
@@ -284,6 +283,5 @@
   });
 });
 
-  
 </script>
 <%- include('./partials/main.footer.ejs') %>
