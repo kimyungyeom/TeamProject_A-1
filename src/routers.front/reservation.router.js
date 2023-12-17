@@ -24,12 +24,11 @@ router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
         store: true,
       },
     });
-    const dateRange = reservationInfo.reserve_date.split(' ~ ');
 
     return res.render('reservation.ejs', {
       reservationInfo,
-      startDate: dateRange[0],
-      endDate: dateRange[1],
+      startDate: reservationInfo.store.able_date[0],
+      endDate: reservationInfo.store.able_date[reservationInfo.store.able_date.length - 1],
       user: req.user ? req.user : null,
     });
   } catch (err) {

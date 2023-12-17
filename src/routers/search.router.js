@@ -5,19 +5,35 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   const search = req.query.search ? req.query.search : null;
+  console.log(search);
   if (!search) {
-    const result = await prisma.stores.findMany({});
-    res.send(result);
+    const results = await prisma.stores.findMany({});
+    return res.send(results);
   } else {
-    const result = await prisma.stores.findMany({
-      where: {
-        title: {
-          contains: search,
+    const results = await prisma.stores.findMany({
+      select: {
+        store_id: true,
+        user_id: true,
+        title: true,
+        content: true,
+        created_at: true,
+        updated_at: true,
+        user: {
+          select: {
+            name: true,
+          },
         },
       },
+
+      where: {
+        title: { contains: search },
+      },
     });
-    console.log(result);
-    res.send(result);
+    console.log(results);
+    return res.render('store.search.ejs', {
+      results: results,
+      user: req.user ? req.user : null,
+    });
   }
 });
 

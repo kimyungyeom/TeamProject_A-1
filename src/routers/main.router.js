@@ -19,7 +19,7 @@ const mainRouter = express.Router();
 
 mainRouter.use('/api/auth/', AuthRouter);
 mainRouter.use('/api/store', BackStoreRouter);
-mainRouter.use('/api/search', SearchRouter);
+
 mainRouter.use('/api/adm', Admin);
 mainRouter.use('/api/reservation', BackReserveRouter);
 
@@ -28,7 +28,7 @@ mainRouter.use('/', AuthFrontRouter);
 mainRouter.use('/reserve_list/', ReserveListRouter);
 mainRouter.use('/store/', StoreRouter);
 mainRouter.use('/reservation/', ReserveRouter);
-
+mainRouter.use('/search', SearchRouter);
 mainRouter.use('/adm/', AdminRouter);
 
 // temp
