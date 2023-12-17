@@ -1,0 +1,125 @@
+<%- include('./partials/main.header.ejs') %>
+<%- include('./partials/main.backgound.ejs') %>
+
+<style>
+  .{
+    width: 100%;
+  }
+  .reservationContent {
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+</style>
+<div style="height: 50px"></div>
+
+<div class="container">
+  <div class="row reservationHello align-items-center text-center justify-content-md-center">
+    <% if (reservationInfo.approved==='Yes' ) { %>
+      <div>
+        <img src="https://item.kakaocdn.net/do/211cb65c3cc09bf3c7d16ebbbe6fe7faf43ad912ad8dd55b04db6a64cddaf76d"
+          style="width: 200px; height: 200px; margin-bottom: 20px" />
+        <h3>예약이 확정되었습니다!</h3>
+        <h4>일정을 다시한번 확인해주세요.</h4>
+      </div>
+      <% } else { %>
+        <div>
+          <img src="https://i.pinimg.com/originals/5a/53/5d/5a535d4b736f73012c00a4f1f26d953c.gif"
+            style="width: 200px; height: 200px; margin-bottom: 20px" />
+          <h3>새롭게 신청된 예약입니다!</h3>
+          <h4>시터님의 승인을 기다리고 있어요!</h4>
+        </div>
+        <% } %>
+  <div class="row col-7 my-3 mb-3" >
+    <% if (reservationInfo.approved==='Yes') { %>
+      <button class="col btn btn-outline-danger reservation-button btn-lg" type="button" style="margin-right: 5px;" id="cancelRes"  data-id="<%= reservationInfo.reserve_id %>">승인취소</button>
+      <button class="col btn btn-secondary reservation-button btn-lg" type="button" style="margin-left: 5px;" id="completeRes"  data-id="<%= reservationInfo.reserve_id %>">일정완료</button>
+      <% } else if (reservationInfo.approved==='No') { %>
+      <button class="col btn btn-success reservation-button btn-lg" type="button" id="approveRes"  data-id="<%= reservationInfo.reserve_id %>">예약승인</button>
+      <% } else if (reservationInfo.approved==='Complete') { %>
+      <button class="col btn btn-outline-secondary reservation-button btn-lg" type="button">지난 일정</button>
+      <% } %>
+    </div>
+  </div>
+
+
+  <div class="row d-flex justify-content-center align-items-center">
+    <div class="reservationCard card col-7 p-3 mx-3">
+      <div class="row reservationTitle text-center align-items-center mx-4">
+        <h2 class="md-3">예약 상세정보</h2>
+      </div>
+      <div class="mainContent mx-5 mt-5">
+
+          <h4>예약 일정</h4>
+          <div class="datePickerContainer">
+            <h6 class="dateSelector"><%= reservationInfo.total_price %></h6>
+          </div>
+          <br />
+          <h4>예약 회원 명</h4>
+          <h6 type="number" name="cats" min="1" max="10"
+            value="<%= reservationInfo.cats %>" />
+          <br />
+          <h4>회원 코멘트</h4>
+          <h6 name="res_comment" value="<%= reservationInfo.res_comment %>" />
+          <br />
+          <h4>회원 연락처</h4>
+          <h6 name="total_price" value="<%= reservationInfo.total_price %>"
+            readonly />
+          <br />
+          <h6 class="text-center">
+            '수정하기' 버튼을 누르면 수정된 내용이 시터에게 전달되고 승인이 초기화됩니다.<br>
+            <span style="color: red;">예약일정 7일 전에는 수정/취소할 수 없어요.</span>
+          </h6>
+          <div class="bottom-buttons row">
+            <button type="button" class="btn btn-secondary col"
+              onclick="history.back()">뒤로가기</button>
+          </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.querySelectorAll('.reservation-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const reserveId = this.getAttribute('data-id');
+      let approvedValue;
+      if (this.id === 'approveRes') {
+        approvedValue = 'Yes';
+      } else if (this.id === 'completeRes') {
+        approvedValue = 'Complete';
+      } else {
+        approvedValue = 'No';
+      }
+      fetch(`/api/reservation/sitter/${reserveId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          approved: approvedValue,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        location.reload();  // 페이지 새로고침 코드
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  });
+  </script>
+
+
+
+<%- include('./partials/main.footer.ejs') %>

@@ -11,18 +11,16 @@ router.get('/sitter', async (req, res, next) => {
     // userLevel에서 시터/예약자 확인
     const AllReservations = await prisma.reservations.findMany({
       where: { store: { user_id: +user_id } }, //포스트 작성자 기준 확인
-      select: {
-        reserve_id: true,
-        user_id: true,
-        store_id: true,
-        reserve_date: true,
-        res_comment: true,
-        cats: true,
-        approved: true,
+      include: {
+        user: true,
       },
       orderBy: { created_at: 'desc' },
     });
-    res.status(200).json({ data: AllReservations, user: req.user ? req.user : null });
+    return res.render('sitter.reservations.ejs', {
+      user_id,
+      data: AllReservations,
+      user: req.user ? req.user : null,
+    });
   } catch (err) {
     next(err);
   }
