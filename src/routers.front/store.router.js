@@ -38,6 +38,15 @@ router.get('/post', async (req, res, next) => {
   }
 });
 
+// 게시글 수정
+router.get('/edit/:store_id', async (req, res, next) => {
+  try {
+    return res.render('putstore.ejs');
+  } catch (err) {
+    next(err);
+  }
+});
+
 //  스토어 상세 페이지
 router.get('/:store_id', async (req, res, next) => {
   try {
@@ -67,7 +76,6 @@ router.get('/:store_id', async (req, res, next) => {
         },
       },
     });
-
     return res.render('storereservation.ejs', { store, reviews, user: req.user ? req.user : null });
   } catch (err) {
     next(err);

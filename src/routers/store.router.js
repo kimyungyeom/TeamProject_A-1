@@ -14,7 +14,7 @@ router.post('/', checkAuthenticated, async (req, res, next) => {
         title,
         content,
         price: +price,
-        able_date: { able_date },
+        able_date: [{ date: able_date }],
         images: '하이',
         experience,
         state,

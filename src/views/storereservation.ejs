@@ -16,8 +16,9 @@
       width: 100%;
     }
   </style>
-  <div style="height: 50px"></div>
-
+  <div style="height: 200px"></div>
+  <h1>날짜가 여기 나와야되는데 <%= store.able_date["date"] %>
+  </h1>
   <div class="container">
     <div class="card-columns row justify-content-md-center">
       <div class="store_place card col-8 p-3 mx-3">
@@ -140,65 +141,64 @@
       </form>
     </div>
   </div>
-</div>
+  </div>
 
-<!-- 리뷰 -->
-<div class="row justify-content-md-center">
-  <div class="col-md-8 mt-4">
-    <div class="card border">
-      <div class="card-header pb-0 px-3">
-        <h6 class="mb-0">펫시터님을 위한 리뷰공간!</h6>
-      </div>
-      <div class="card-body pt-4 p-3">
-        <ul class="list-group">
-          <% reviews.forEach((review) => { %>
-            <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-              <div class="d-flex flex-column">
-                <h6 class="mb-3 text-sm">
-                  <%= review.user.name %> 평점: <%= review.rating %>
-                </h6>
-                <span class="mb-2 text-xs">
-                  <span class="text-dark font-weight-bold ms-sm-2"><%= review.comment %></span>
-                </span>
+  <!-- 리뷰 -->
+  <div class="row justify-content-md-center">
+    <div class="col-md-8 mt-4">
+      <div class="card border">
+        <div class="card-header pb-0 px-3">
+          <h6 class="mb-0">펫시터님을 위한 리뷰공간!</h6>
+        </div>
+        <div class="card-body pt-4 p-3">
+          <ul class="list-group">
+            <% reviews.forEach((review)=> { %>
+              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                <div class="d-flex flex-column">
+                  <h6 class="mb-3 text-sm">
+                    <%= review.user.name %> 평점: <%= review.rating %>
+                  </h6>
+                  <span class="mb-2 text-xs">
+                    <span class="text-dark font-weight-bold ms-sm-2">
+                      <%= review.comment %>
+                    </span>
+                  </span>
+                </div>
+              </li>
+              <div class="ms-auto text-end">
+                <button class="btn btn-link text-danger text-gradient px-3 mb-0 delete-review-btn"
+                  href="javascript:;"><i class="material-icons text-sm me-2">delete</i>Delete</button>
+                <button class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i
+                    class="material-icons text-sm me-2">edit</i>Edit</button>
               </div>
-            </li>
-            <div class="ms-auto text-end">
-              <button class="btn btn-link text-danger text-gradient px-3 mb-0 delete-review-btn" href="javascript:;"
-                ><i class="material-icons text-sm me-2">delete</i>Delete</button
-              >
-              <button class="btn btn-link text-dark px-3 mb-0" href="javascript:;"
-                ><i class="material-icons text-sm me-2">edit</i>Edit</button
-              >
-            </div>
-          <% }); %>
-        </ul>
+              <% }); %>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
-<script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
-<script>
-  const originDate = <%= store.able_date %>
-  console.log(originDate);
-  document.addEventListener('DOMContentLoaded', function () {
-    let dateSelector = document.querySelector('.dateSelector');
-    flatpickr(dateSelector, {
-      position: 'above',
-      mode: 'range',
-      minDate: 'today',
-      dateFormat: 'Y-m-d',
-      disable: [
-        function (date) {
-          // disable every multiple of 8
-          return !(date.getDate() % 8);
-        },
-      ],
-      locale: 'ko',
+  <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+  <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+  <script>
+    const originDate = `<%= store.able_date[0].date%>`
+    const temp = originDate.split(',');
+
+    document.addEventListener('DOMContentLoaded', function ()
+    {
+      let dateSelector = document.querySelector('.dateSelector');
+      flatpickr(dateSelector, {
+        position: 'above',
+        mode: 'range',
+        minDate: 'today',
+        dateFormat: 'Y-m-d',
+        disable:
+          temp
+        ,
+        locale: 'ko',
+      });
     });
-  });
 
-  // 모달 창 열기
-</script>
-<%- include('./partials/main.footer.ejs') %>
+    // 모달 창 열기
+  </script>
+  <%- include('./partials/main.footer.ejs') %>
