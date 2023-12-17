@@ -29,8 +29,17 @@ router.get('/', async (req, res) => {
   return res.render('mainstore.ejs', { stores });
 });
 
+// 게시글 작성
+router.get('/post', async (req, res, next) => {
+  try {
+    return res.render('poststore.ejs');
+  } catch (err) {
+    next(err);
+  }
+});
+
 //  스토어 상세 페이지
-router.get('/:store_id', async (req, res) => {
+router.get('/:store_id', async (req, res, next) => {
   try {
     const { store_id } = req.params;
     const store = await prisma.stores.findUnique({
