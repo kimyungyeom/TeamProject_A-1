@@ -4,6 +4,7 @@ import { prisma } from '../utils/prisma/index.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+  console.log(req.user);
   const stores = await prisma.stores.findMany({
     select: {
       store_id: true,

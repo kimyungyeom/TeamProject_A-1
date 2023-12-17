@@ -87,20 +87,12 @@ router.post('/login', [validateEmail, validatePassword, validate], (req, res, ne
     }
 
     req.logIn(user, function (err) {
-      if (err) return next(err);
-      res.status(200).send({ user });
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/store');
     });
   })(req, res, next);
-});
-
-//logout
-router.post('/logout', (req, res, next) => {
-  req.logOut(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/login');
-  });
 });
 
 router.get(
@@ -115,7 +107,7 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successReturnToOrRedirect: '/',
+    successReturnToOrRedirect: '/store',
     failureRedirect: '/login',
   }),
 );
