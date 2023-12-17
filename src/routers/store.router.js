@@ -4,53 +4,6 @@ import { checkAuthenticate } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-// 전체 게시글 조회
-router.get('/store', async (req, res) => {
-  const stores = await prisma.stores.findMany({
-    select: {
-      store_id: true,
-      user_id: true,
-      title: true,
-      content: true,
-      created_at: true,
-      updated_at: true,
-      user: {
-        select: {
-          name: true,
-        },
-      },
-    },
-    orderBy: {
-      created_at: 'desc',
-    },
-  });
-  if (!stores) {
-    return res.json({ message: 'error' });
-  }
-  return res.render('mainstore.ejs', { stores });
-});
-
-// 게시글 상세조회 - reservation 에 합침
-// router.get('/store/:store_id', async (req, res) => {
-//   const { store_id } = req.params;
-//   const store = await prisma.stores.findUnique({
-//     where: {
-//       store_id: +store_id,
-//     },
-//     include: {
-//       user: {
-//         select: {
-//           email: true,
-//           name: true,
-//           phone: true,
-//         },
-//       },
-//     },
-//   });
-//   // return res.json({ data: store });
-//   return res.render('store.ejs', { store, store_id });
-// });
-
 // 게시글 작성
 router.post('/store', checkAuthenticate, async (req, res, next) => {
   try {
