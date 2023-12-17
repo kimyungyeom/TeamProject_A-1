@@ -6,7 +6,6 @@ import { reservationValidation, validate } from '../middlewares/reservation.vali
 const router = express.Router();
 
 // API 예약 생성
-//startDate, endDate//// json 형태로 받아서 사이 몇일인지 계산
 router.post(
   '/store/:store_id',
   checkAuthenticate,
@@ -38,7 +37,7 @@ router.post(
           approved: 'No',
         },
       });
-      return res.redirect(`/api/reservation/${reservation.reserve_id}`);
+      return res.redirect(`/reservation/${reservation.reserve_id}`);
     } catch (err) {
       next(err);
     }
@@ -46,7 +45,7 @@ router.post(
 );
 
 // API 예약 수정-상세페이지에서
-router.put('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
+router.put('/:reserve_id', checkAuthenticate, async (req, res, next) => {
   try {
     const user_id = req.user.user_id;
     const { reserve_id } = req.params;
@@ -69,7 +68,7 @@ router.put('/reservation/:reserve_id', checkAuthenticate, async (req, res, next)
         total_price: +total_price,
       },
     });
-    return res.redirect(`/api/reservation/${reserve_id}`);
+    return res.redirect(`/reservation/${reserve_id}`);
   } catch (err) {
     next(err);
   }
@@ -109,8 +108,9 @@ router.patch('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) =>
   }
 });
 // API 예약 취소
-router.delete('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
+router.delete('/:reserve_id', checkAuthenticate, async (req, res, next) => {
   try {
+    console.log('오셨어요?');
     const user_id = req.user.user_id;
     const { reserve_id } = req.params;
     const reservationInfo = await prisma.reservations.findUnique({
@@ -121,7 +121,7 @@ router.delete('/reservation/:reserve_id', checkAuthenticate, async (req, res, ne
       const reservationCanc = await prisma.reservations.delete({
         where: { reserve_id: +reserve_id },
       });
-      res.status(200).json({ data: reservationCanc });
+      return res.status(200).json({ data: reservationCanc });
     } else {
       throw new Error('Not a reserver');
     }

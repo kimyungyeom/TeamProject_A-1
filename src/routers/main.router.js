@@ -9,6 +9,7 @@ import AdminRouter from '../routers.front/adm.router.js';
 // back
 import BackStoreRouter from './store.router.js';
 import AuthRouter from './auth.router.js';
+import BackReserveRouter from '../routers/reservation.router.js';
 
 import SearchRouter from './search.router.js';
 const mainRouter = express.Router();
@@ -21,7 +22,7 @@ mainRouter.use('/api/search', SearchRouter);
 mainRouter.use('/', AuthFrontRouter);
 mainRouter.use('/reserve_list/', ReserveListRouter);
 mainRouter.use('/store/', StoreRouter);
-mainRouter.use('/reservation/', ReserveRouter);
+mainRouter.use('/reservation/', [ReserveRouter, BackReserveRouter]);
 
 mainRouter.use('/adm/', AdminRouter);
 
