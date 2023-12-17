@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
   if (!stores) {
     return res.json({ message: 'error' });
   }
-  return res.render('mainstore.ejs', { stores });
+  return res.render('mainstore.ejs', { stores, user: req.user });
 });
 
 // 게시글 작성
@@ -56,7 +56,7 @@ router.get('/:store_id', async (req, res, next) => {
         },
       },
     });
-    return res.render('storereservation.ejs', { store });
+    return res.render('storereservation.ejs', { store, user: req.user ? req.user : null });
   } catch (err) {
     next(err);
   }

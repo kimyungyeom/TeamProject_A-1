@@ -6,9 +6,12 @@ import ReserveListRouter from '../routers.front/reservation.list.router.js';
 import StoreRouter from '../routers.front/store.router.js';
 import ReserveRouter from '../routers.front/reservation.router.js';
 import AdminRouter from '../routers.front/adm.router.js';
+import ReviewRouter from '../temp.router/reviews.router.js';
+
 // back
 import BackStoreRouter from './store.router.js';
 import AuthRouter from './auth.router.js';
+import BackReserveRouter from '../routers/reservation.router.js';
 
 import SearchRouter from './search.router.js';
 const mainRouter = express.Router();
@@ -21,9 +24,12 @@ mainRouter.use('/api/search', SearchRouter);
 mainRouter.use('/', AuthFrontRouter);
 mainRouter.use('/reserve_list/', ReserveListRouter);
 mainRouter.use('/store/', StoreRouter);
-mainRouter.use('/reservation/', ReserveRouter);
+mainRouter.use('/reservation/', [ReserveRouter, BackReserveRouter]);
 
 mainRouter.use('/adm/', AdminRouter);
+
+// temp
+mainRouter.use('/store/', ReviewRouter);
 
 //back
 // 로그인/회원가입

@@ -112,19 +112,14 @@ router.get(
   }),
 );
 
-router.get('passportlogin', (req, res, next) => {
-  passport.authenticate('jwt', { session: false });
-});
+router.post('/logout', (req, res, next) => {
+  console.log('!');
+  req.logOut(function (err) {
+    if (err) {
+      return next(err);
+    }
 
-// front end
-router.get('/users', (req, res) => {
-  res.render('adm/users.ejs');
-});
-
-router.get('/petsitter', (req, res) => {
-  res.render('adm/petsitter.ejs');
-});
-router.get('/reservation', (req, res) => {
-  res.render('adm/reservation.ejs');
+    return res.redirect('back');
+  });
 });
 export default router;

@@ -1,33 +1,33 @@
 <%- include('./partials/main.header.ejs') %>
+  <%- include('./partials/main.backgound.ejs') %>
+    <div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+      <!-- Navbar -->
 
-<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-    <!-- Navbar -->
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <h3 class="text-center mt-5">다양한 펫시터님들을 만나보세요</h3>
+          <h5 class="font-weight-bolder text-center mt-1"> 총 <%= stores.length %> 건
+          </h5>
+        </nav>
+      </div>
 
-    <div class="container">
-      <nav aria-label="breadcrumb">
-        <h3 class="text-center mt-5">다양한 펫시터님들을 만나보세요</h3>
-        <h5 class="font-weight-bolder text-center mt-1"> 총 <%= stores.length %> 건
-        </h5>
-      </nav>
-    </div>
-
-    <!-- End Navbar -->
-    <div class="container">
-      <div class="d-flex px-2 py-1">
-        <div class="container-fluid py-4 ">
-          <div class="row min-vh-80 h-100  ">
-           <div class="col">
+      <!-- End Navbar -->
+      <div class="container">
+        <div class="d-flex px-2 py-1">
+          <div class="container-fluid py-4 ">
+            <div class="row min-vh-80 h-100  ">
+              <div class="col">
                 <% for (const store of stores) { %>
 
-                 <%- include('./partials/sitter.card.ejs', { store : store }) %>
+                  <%- include('./partials/sitter.card.ejs', { store : store }) %>
 
-                <% } %>
-           </div>
-         </div>
+                    <% } %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    
-</div>
 
-<%- include('./partials/main.footer.ejs') %>
+    </div>
+
+    <%- include('./partials/main.footer.ejs') %>

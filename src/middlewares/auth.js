@@ -1,7 +1,9 @@
 import 'dotenv/config';
 
 export const checkAuthenticate = (req, res, next) => {
+  console.log('!');
   if (req.isAuthenticated()) {
+    console.log('@');
     return next();
   } else {
     res.redirect('/login');

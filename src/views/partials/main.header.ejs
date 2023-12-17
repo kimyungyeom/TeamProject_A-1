@@ -34,6 +34,7 @@
 </head>
 <!-- ~~ 네비게이션바 -->
 
+
 <body>
   <nav
     class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
@@ -58,39 +59,54 @@
               시터 검색
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link me-2" href="../pages/profile.html">
-              <i class="fa fa-user opacity-6 text-dark me-1"></i>
-              이용 후기
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link me-2" href="../pages/sign-up.html">
-              <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-              채팅 문의
-            </a>
-          </li>
+
         </ul>
+
+
         <ul class="navbar-nav d-lg-flex d-none">
-          <li class="nav-item d-flex align-items-center">
-            <a class="btn btn-secondary btn-sm mb-0 me-2" style="box-shadow: none" target="_blank" href="">
-              내 정보 / 로그인</a>
-          </li>
-          <li class="nav-item">
-            <a href="" class="btn btn-sm mb-0 me-1 btn-outline-secondary">예약정보 / 회원가입</a>
-          </li>
+          <% if (!user) { %>
+
+            <li class="nav-item">
+              <a href="/signup" class="btn btn-sm mb-0 me-1 btn-outline-secondary">회원가입</a>
+            </li>
+            <li class="nav-item">
+              <a href="/login" class="btn btn-sm mb-0 me-1 btn-outline-secondary">로그인</a>
+            </li>
+            <% }else{ %>
+              <li class="nav-item d-flex align-items-center">
+                <a class="btn btn-secondary btn-sm mb-0 me-2" style="box-shadow: none" target="_blank" href="/login">
+                  내 정보 </a>
+              </li>
+              <li class="nav-item">
+                <a href="/signup" class="btn btn-sm mb-0 me-1 btn-outline-secondary">예약정보</a>
+              </li>
+              <li class="nav-item">
+                <div class="temp nav-link me-2" type="button" onclick="test()">
+                  <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
+                  로그아웃
+                </div>
+              </li>
+
+              <% } %>
         </ul>
       </div>
     </div>
   </nav>
-  <!-- ~~메인 이미지 -->
-  <div class="main-img d-flex justify-content-center" style="position: relative">
-    <img style="width: 1300px"
-      src="https://github.com/kimyungyeom/TeamProject_A-1/blob/dev/src/views/img/Group%201cat.png?raw=true" />
-    <h1 class="main_img_txt" style="position: absolute; top: 50%; left: 20%; color: rgb(90, 90, 90)">
-      믿고 맡기는 캣시터
-    </h1>
-  </div>
-</body>
 
-</html>
+  <script>
+    async function test()
+    {
+      try
+      {
+        const response = await axios.post('/api/auth/logout');
+        window.location.href = '/store';
+      } catch (e)
+      {
+        console.error(e);
+      }
+    }
+
+
+
+
+  </script>

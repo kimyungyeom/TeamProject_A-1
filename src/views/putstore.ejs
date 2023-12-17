@@ -1,0 +1,172 @@
+<%- include('./partials/main.header.ejs') %>
+<style>
+  /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
+  .datePickerContainer {
+    display: flex;
+  }
+  /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
+  .input-group-text {
+    width: 100%;
+  }
+  .form-control {
+    width: 100%;
+  }
+</style>
+<div style="height: 50px"></div>
+
+<div class="container">
+  <div class="align-itemst-center justify-content-md-center row">
+    <div class="col-8 card p-3">
+      <form method="POST" action="/api/store/<%= store_id %>" id="putForm" class="putForm">
+        <h3 class="mb-3">캣시터 수정하기</h3>
+        <div class="mb-3">
+          <p for="title">제목</p>
+          <input
+            class="input-group-text"
+            name="title"
+            type="text"
+            id="titleInput"
+            placeholder="제목을 입력해 주세요"
+            value="<%= store.title %>"
+          />
+        </div>
+        <div class="mb-3">
+          <p>소개글</p>
+          <input
+            class="input-group-text"
+            name="content"
+            id="contentInput"
+            type="text"
+            placeholder="소개글을 작성해 주세요"
+            value="<%= store.content %>"
+          />
+        </div>
+        <div class="mb-3">
+          <p>가격</p>
+          <input
+            class="input-group-text"
+            name="price"
+            id="contentInput"
+            type="text"
+            placeholder="가격을 입력해 주세요"
+            value="<%= store.price %>"
+          />
+        </div>
+        <p>예약 불가능 날짜</p>
+        <div class="datePickerContainer">
+          <input
+            class="dateSelector input-group-text flatpickr-input"
+            type="text"
+            name="able_date"
+            placeholder="날짜를 선택하세요"
+          />
+        </div>
+        <div class="mb-3">
+          <p class="mt-3">반려동물을 키운 경험</p>
+          <input
+            class="input-group-text"
+            name="experience"
+            type="text"
+            id="experienceInput"
+            placeholder="본인이 직접 반려했던 반려기간을 입력해주세요"
+            value="<%= store.experience %>"
+          />
+        </div>
+        <div class="mb-3">
+          <p>도/시/군</p>
+          <input
+            class="input-group-text"
+            name="state"
+            type="text"
+            id="stateInput"
+            placeholder="예시) 강원도"
+            value="<%= store.state %>"
+          />
+        </div>
+        <div class="mb-3">
+          <p>시/군/구</p>
+          <input
+            class="input-group-text"
+            name="city"
+            type="text"
+            id="cityInput"
+            placeholder="예시) 춘천시"
+            value="<%= store.city %>"
+          />
+        </div>
+        <div class="mb-3">
+          <p>상세주소</p>
+          <input
+            class="input-group-text"
+            name="address"
+            type="text"
+            id="addressInput"
+            placeholder="예시) 공지로 591"
+            value="<%= store.address %>"
+          />
+        </div>
+        <div class="mb-3">
+          <p>사진 추가하기</p>
+          <div class="input-group">
+            <input
+              type="file"
+              id="inputGroupFile04"
+              aria-describedby="inputGroupFileAddon04"
+              aria-label="Upload"
+            />
+          </div>
+        </div>
+
+        <button id="put_btn" type="submit" class="btn btn-secondary post_btn">수정하기</button>
+        <button id="delete_btn" type="button" class="btn btn-secondary post_btn">삭제하기</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let dateSelector = document.querySelector('.dateSelector');
+    flatpickr(dateSelector, {
+      position: 'above',
+      mode: 'multiple',
+      minDate: 'today',
+      dateFormat: 'Y-m-d',
+      locale: 'ko',
+    });
+  });
+
+  document.getElementById('putForm').addEventListener('submit', function () {
+    const storeId = '<%= store_id %>';
+
+    axios
+      .put(`/stores/${storeId}`, formData)
+      .then((response) => {
+        // 서버로부터의 응답 처리
+        console.log('수정 성공');
+        window.location.href = `/store/${storeId}`;
+      })
+      .catch((error) => {
+        // 수정 실패 시의 처리
+        console.error('수정 실패:', error);
+      });
+  });
+
+  document.getElementById('delete_btn').addEventListener('click', function () {
+    const storeId = '<%= store_id %>';
+
+    axios
+      .delete(`/stores/${storeId}`)
+      .then((response) => {
+        // 서버로부터의 응답 처리
+        console.log('삭제 성공');
+        window.location.href = 'http://localhost:3000/store';
+      })
+      .catch((error) => {
+        // 삭제 실패 시의 처리
+        console.error('삭제 실패:', error);
+      });
+  });
+</script>
+<%- include('./partials/main.footer.ejs') %>
