@@ -1,12 +1,12 @@
 <%- include('./partials/main.header.ejs') %>
 
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
 
     <div class="container">
       <nav aria-label="breadcrumb">
-        <h3>다양한 펫시터님들을 만나보세요</h3>
-        <h5 class="font-weight-bolder "> 총 <%= stores.length %> 건
+        <h3 class="text-center mt-5">다양한 펫시터님들을 만나보세요</h3>
+        <h5 class="font-weight-bolder text-center mt-1"> 총 <%= stores.length %> 건
         </h5>
       </nav>
     </div>
@@ -28,5 +28,6 @@
       </div>
     </div>
     
-</main>
-  <%- include('./partials/footer.ejs') %>
+</div>
+
+<%- include('./partials/main.footer.ejs') %>
