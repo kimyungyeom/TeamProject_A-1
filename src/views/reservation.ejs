@@ -187,11 +187,14 @@
   <script>
     const originDate = `<%= reservationInfo.store.able_date[0].date%>`
     const temp = originDate.split(',');
-
+    const startDate = new Date("<%= startDate %>");
+    const endDate = new Date("<%= endDate %>");
+    
     document.addEventListener('DOMContentLoaded', function ()
     {
       let dateSelector = document.querySelector('.dateSelector');
       flatpickr(dateSelector, {
+        defaultDate: [startDate, endDate],
         position: 'above',
         mode: 'range',
         minDate: 'today',
