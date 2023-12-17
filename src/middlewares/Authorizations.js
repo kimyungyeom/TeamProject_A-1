@@ -60,23 +60,36 @@ export const checkReservationUser = async (req, res, next) => {
       reserve_id: +reserve_id,
     },
   });
-
+  if (!reservation) {
+    next(new Error('UserNotFound'));
+  }
   if (reservation.user_id !== user_id) {
     next(new Error('NotPermission'));
   }
   req.reservation = reservation;
   next();
 };
+
 // 예약정보 시터가 요청시
 export const checkReservationSitter = async (req, res, next) => {
   const { reserve_id } = req.params;
+  const { user_id } = req.user.user_id;
 
   const reservation = await prisma.reservations.findUnique({
     where: {
       reserve_id: +reserve_id,
     },
+    include: {
+      store: true,
+    },
   });
+  if (!reservation) {
+    next(new Error('NotFoundStore'));
+  }
+  if (reservation.store.user_id !== user_id) {
+    next(new Error('NotPermission'));
+  }
 
-  const { reservation_id } = req.params;
-  const { store_id } = req.store;
+  req.reservation = reservation;
+  next();
 };
