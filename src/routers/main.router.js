@@ -21,12 +21,13 @@ mainRouter.use('/api/auth/', AuthRouter);
 mainRouter.use('/api/store', BackStoreRouter);
 mainRouter.use('/api/search', SearchRouter);
 mainRouter.use('/api/adm', Admin);
+mainRouter.use('/api/reservation', BackReserveRouter);
 
 //front
 mainRouter.use('/', AuthFrontRouter);
 mainRouter.use('/reserve_list/', ReserveListRouter);
 mainRouter.use('/store/', StoreRouter);
-mainRouter.use('/reservation/', [ReserveRouter, BackReserveRouter]);
+mainRouter.use('/reservation/', ReserveRouter);
 
 mainRouter.use('/adm/', AdminRouter);
 

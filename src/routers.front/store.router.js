@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 // 게시글 작성
 router.get('/post', async (req, res, next) => {
   try {
-    return res.render('poststore.ejs');
+    return res.render('poststore.ejs', { user: req.user ? req.user : null });
   } catch (err) {
     next(err);
   }

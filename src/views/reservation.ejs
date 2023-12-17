@@ -88,7 +88,7 @@
         </p>
       </div>
       <div class="mainContent mx-5 mt-5">
-        <form id="reservationForm" class="reservationForm" method="post" action="/reservation/<%= reservationInfo.reserve_id %>?_method=put">
+        <form id="reservationForm" class="reservationForm" method="post" action="api/reservation/<%= reservationInfo.reserve_id %>?_method=put">
           <p>예약 일정</p>
           <div class="datePickerContainer">
             <input
@@ -222,6 +222,8 @@
     let dateSelector = document.querySelector('.dateSelector');
     let startDate = '<%= startDate %>';
     let endDate = '<%= endDate %>';
+    
+
 
     flatpickr(dateSelector, {
       defaultDate: [startDate, endDate],
@@ -230,9 +232,10 @@
       minDate: 'today',
       dateFormat: 'Y-m-d',
       disable: [
-        function (date) {
-          // disable every multiple of 8
-          return !(date.getDate() % 8);
+        {
+        from:"2023-12-19",
+        to : "2023-12-21",
+        user_id: 12
         },
       ],
       locale: 'ko',
@@ -241,7 +244,7 @@
     const form = document.getElementById('reservationForm');
     if (form) {
       form.addEventListener('submit', function(event) {
-        if (!confirm('정말로 수정하시겠습니까? 다시 시터님의 승인을 기다리셔야해요!')) {
+        if (confirm('정말로 수정하시겠습니까? 다시 시터님의 승인을 기다리셔야해요!')) {
           event.preventDefault();
         }
       });
@@ -249,11 +252,13 @@
       console.error('Form not found!');
     }
 
+
+
     const cancelBtn = document.querySelector('#reserveCancel');
 
     cancelBtn.addEventListener('click', async () =>{
     if(confirm('정말로 예약을 취소하시겠어요?')){
-        const response = await axios.delete('/reservation/<%= reservationInfo.reserve_id %>');
+        const response = await axios.delete('/api/reservation/<%= reservationInfo.reserve_id %>');
         window.history.back();
       }
     });
