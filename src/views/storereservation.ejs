@@ -1,117 +1,114 @@
 <%- include('./partials/main.header.ejs') %>
-<style>
-  /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
-  .datePickerContainer {
-    display: flex;
-  }
-  /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
-  .input-group-text {
-    width: 100%;
-  }
-  .storeImgList {
-    object-fit: cover;
-    height: 258px;
-    width: 100%;
-  }
-</style>
-<div style="height: 50px"></div>
+  <style>
+    /* input-group-text 클래스를 갖는 input 요소의 부모인 .datePickerContainer에 flex 스타일 추가 */
+    .datePickerContainer {
+      display: flex;
+    }
 
-<div class="container">
-  <div class="card-columns row justify-content-md-center">
-    <div class="store_place card col-8 p-3 mx-3">
-      <!-- ==스토어정보 -->
-      <div class="row titleImg align-items-center mx-4">
-        <div class="col-auto">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxzE0-W4cDj64hPIMW9d5Jfc86aocVsxYq9Q&usqp=CAU"
-            alt="profile_image"
-            class="w-100 border-radius-lg shadow-sm"
-            style="max-width: 80px; max-height: 80px"
-          />
-        </div>
-        <div class="col-auto p-2">
-          <h3 class="md-3"><%= store.title %></h3>
-          <p><%= store.user.name %></p>
-        </div>
-        <div class="row middle_title_editBTn">
-          <div class="col middle_title mt-2">
-            <h5>최고의 펫시터 <%= store.user.name %> 님을 만나보세요!</h5>
+    /* input-group-text 클래스를 갖는 input 요소가 가능한 최대 가로 공간을 차지하도록 설정 */
+    .input-group-text {
+      width: 100%;
+    }
+
+    .storeImgList {
+      object-fit: cover;
+      height: 258px;
+      width: 100%;
+    }
+  </style>
+  <div style="height: 50px"></div>
+
+  <div class="container">
+    <div class="card-columns row justify-content-md-center">
+      <div class="store_place card col-8 p-3 mx-3">
+        <!-- ==스토어정보 -->
+        <div class="row titleImg align-items-center mx-4">
+          <div class="col-auto">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxzE0-W4cDj64hPIMW9d5Jfc86aocVsxYq9Q&usqp=CAU"
+              alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="max-width: 80px; max-height: 80px" />
           </div>
-          <div class="col WriterEdit text-end">
-            <a href="javascript:;">
-              <i
-                class="fas fa-user-edit text-secondary text-sm"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="수정하기"
-              ></i>
-            </a>
+          <div class="col-auto p-2">
+            <h3 class="md-3">
+              <%= store.title %>
+            </h3>
+            <p>
+              <%= store.user.name %>
+            </p>
+          </div>
+          <div class="row middle_title_editBTn">
+            <div class="col middle_title mt-2">
+              <h5>최고의 펫시터 <%= store.user.name %> 님을 만나보세요!</h5>
+            </div>
+            <div class="col WriterEdit text-end">
+              <a href="javascript:;">
+                <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top"
+                  title="수정하기"></i>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="mainContent mx-5 mt-5">
-        <p><%= store.content %></p>
-        <hr class="horizontal gray-light my-4" />
-        <h6 class="my-4"><%= store.user.name %> 님은 이런 사람이에요!</h6>
-        <ul class="list-group">
-          <li class="list-group-item border-0 ps-0 pt-0 text-sm">
-            <strong class="text-dark">이름</strong> &nbsp; <%= store.user.name %>
-          </li>
-          <li class="list-group-item border-0 ps-0 text-sm">
-            <strong class="text-dark">연락처</strong> &nbsp; <%= store.user.phone %>
-          </li>
-          <li class="list-group-item border-0 ps-0 text-sm">
-            <strong class="text-dark">이메일</strong> &nbsp; <%= store.user.email %>
-          </li>
-          <li class="list-group-item border-0 ps-0 text-sm">
-            <strong class="text-dark">가격</strong> &nbsp; <%= store.price %>
-          </li>
-          <li class="list-group-item border-0 ps-0 text-sm">
-            <strong class="text-dark">반려동물</strong> &nbsp; <%= store.experience %>.
-          </li>
-          <li class="list-group-item border-0 ps-0 text-sm">
-            <strong class="text-dark">주소</strong> &nbsp; <%= store.state +" " +store.city + " " +
+        <div class="mainContent mx-5 mt-5">
+          <p>
+            <%= store.content %>
+          </p>
+          <hr class="horizontal gray-light my-4" />
+          <h6 class="my-4">
+            <%= store.user.name %> 님은 이런 사람이에요!
+          </h6>
+          <ul class="list-group">
+            <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+              <strong class="text-dark">이름</strong> &nbsp; <%= store.user.name %>
+            </li>
+            <li class="list-group-item border-0 ps-0 text-sm">
+              <strong class="text-dark">연락처</strong> &nbsp; <%= store.user.phone %>
+            </li>
+            <li class="list-group-item border-0 ps-0 text-sm">
+              <strong class="text-dark">이메일</strong> &nbsp; <%= store.user.email %>
+            </li>
+            <li class="list-group-item border-0 ps-0 text-sm">
+              <strong class="text-dark">가격</strong> &nbsp; <%= store.price %>
+            </li>
+            <li class="list-group-item border-0 ps-0 text-sm">
+              <strong class="text-dark">반려동물</strong> &nbsp; <%= store.experience %>.
+            </li>
+            <li class="list-group-item border-0 ps-0 text-sm">
+              <strong class="text-dark">주소</strong> &nbsp;
+              <%= store.state +" " +store.city + " " +
             store.address %>
           </li>
         </ul>
-        <hr class="horizontal gray-light my-5" />
-        <div class="row imgList">
-          <!-- 이미지2-->
-          <div class="container" style="width: 776px;">
-            <div class="row">
-              <% for(let key in store.images) { %>
-                <div class="col-4">
-                  <!-- 이미지를 클릭하면 모달이 나타남 -->
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#<%= key %>Modal">
-                    <img
-                      src="<%= store.images[key] %>"
-                      alt="<%= key %>"
-                      class="img-fluid shadow border-radius-xl"
-                      style="object-fit: cover; height: 258px; width: 100%;"
-                    />
-                  </a>
-                </div>
-                <!-- 이미지 모달 -->
-                <div class="modal fade" id="<%= key %>Modal" tabindex="-1">
-                  <div class="modal-dialog modal-dialog-centered" style="max-width: none;">
-                    <div class="modal-content">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 30px; height: 30px; color: gray;"">닫기</button>
-                      <div class="modal-body p-0">
-                        <img
-                          src="<%= store.images[key] %>"
-                          alt="<%= key %>"
-                          class="img-fluid"
-                          onclick="var myModal = bootstrap.Modal.getInstance(this.parentNode.parentNode.parentNode.parentNode); myModal.hide();"
-                          onload="this.parentNode.parentNode.parentNode.style.width = this.width > window.innerWidth ? window.innerWidth : this.width + 'px';"
-                        />
+        <hr class=" horizontal gray-light my-5" />
+              <div class="row imgList">
+                <!-- 이미지2-->
+                <div class="container" style="width: 776px;">
+                  <div class="row">
+                    <% for(let key in store.images) { %>
+                      <div class="col-4">
+                        <!-- 이미지를 클릭하면 모달이 나타남 -->
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#<%= key %>Modal">
+                          <img src="<%= store.images[key] %>" alt="<%= key %>" class="img-fluid shadow border-radius-xl"
+                            style="object-fit: cover; height: 258px; width: 100%;" />
+                        </a>
                       </div>
-                    </div>
+                      <!-- 이미지 모달 -->
+                      <div class="modal fade" id="<%= key %>Modal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: none;">
+                          <div class="modal-content">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                              style="width: 30px; height: 30px; color: gray;"">닫기</button>
+                      <div class=" modal-body p-0">
+                              <img src="<%= store.images[key] %>" alt="<%= key %>" class="img-fluid"
+                                onclick="var myModal = bootstrap.Modal.getInstance(this.parentNode.parentNode.parentNode.parentNode); myModal.hide();"
+                                onload="this.parentNode.parentNode.parentNode.style.width = this.width > window.innerWidth ? window.innerWidth : this.width + 'px';" />
+                          </div>
+                        </div>
+                      </div>
                   </div>
+                  <% } %>
                 </div>
-              <% } %>
-            </div>
-          </div>
-          <!-- 이미지 -->
+              </div>
+              <!-- 이미지 -->
         </div>
       </div>
       <!-- ==스토어정보 -->
@@ -122,12 +119,7 @@
         <!-- <input class="input-group-text" type="text" name="store_id" value="<%= store.price %>" readonly /> -->
         <p>예약 일정</p>
         <div class="datePickerContainer">
-          <input
-            class="dateSelector input-group-text"
-            type="text"
-            name="reserve_date"
-            placeholder="날짜를 선택하세요"
-          />
+          <input class="dateSelector input-group-text" type="text" name="reserve_date" placeholder="날짜를 선택하세요" />
         </div>
         <p>마리 수</p>
         <input class="input-group-text" type="number" name="cats" min="1" max="10" value="1" />
@@ -136,26 +128,10 @@
         <input class="input-group-text" type="text" name="res_comment" value="잘부탁드려요!" />
         <br />
         <p>방문 시간</p>
-        <input
-          class="input-group-text"
-          type="time"
-          name="visit_time"
-          min="09:00"
-          max="20:00"
-          value="14:00"
-          required
-        />
+        <input class="input-group-text" type="time" name="visit_time" min="09:00" max="20:00" value="14:00" required />
         <br />
         <p>픽업 시간</p>
-        <input
-          class="input-group-text"
-          type="time"
-          name="pickup_time"
-          min="09:00"
-          max="20:00"
-          value="14:00"
-          required
-        />
+        <input class="input-group-text" type="time" name="pickup_time" min="09:00" max="20:00" value="14:00" required />
         <br />
         <p>합계</p>
         <input class="input-group-text" type="text" name="total_price" value="50000" readonly />
@@ -164,28 +140,32 @@
       </form>
     </div>
   </div>
-</div>
+  </div>
 
-<script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
-<script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    let dateSelector = document.querySelector('.dateSelector');
-    flatpickr(dateSelector, {
-      position: 'above',
-      mode: 'range',
-      minDate: 'today',
-      dateFormat: 'Y-m-d',
-      disable: [
-        function (date) {
-          // disable every multiple of 8
-          return !(date.getDate() % 8);
-        },
-      ],
-      locale: 'ko',
+  <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+  <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function ()
+    {
+      let dateSelector = document.querySelector('.dateSelector');
+      const temp = flatpickr(dateSelector, {
+        position: 'above',
+        mode: 'range',
+        minDate: 'today',
+        dateFormat: 'Y-m-d',
+        disable: [
+          function (date)
+          {
+            // disable every multiple of 8
+            return !(date.getDate() % 8);
+          },
+        ],
+        locale: 'ko',
+      });
+      console.log(temp);
     });
-  });
 
-  // 모달 창 열기
-</script>
-<%- include('./partials/main.footer.ejs') %>
+
+    // 모달 창 열기
+  </script>
+  <%- include('./partials/main.footer.ejs') %>

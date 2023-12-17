@@ -31,9 +31,25 @@ router.get('/users/:user_id', checkAdmin, async (req, res, next) => {
       user_id: +user,
     },
   });
+  const recentReserve = await prisma.reservations.findMany({
+    take: 3,
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+    where: {
+      user_id: +user,
+    },
+    include: {
+      store: true,
+      user: true,
+    },
+  });
 
-  res.render('adm/modify.user.ejs', {
+  res.render('adm/detail.user.ejs', {
     user: selectUser,
+    recent: recentReserve,
   });
 });
 
@@ -51,6 +67,8 @@ router.get('/sitters', checkAdmin, async (req, res, next) => {
     },
   });
 
+  console.log(stores);
+
   const counts = await prisma.reservations.groupBy({
     by: ['store_id'],
     _count: {
@@ -60,7 +78,7 @@ router.get('/sitters', checkAdmin, async (req, res, next) => {
       total_price: true,
     },
   });
-
+  console.log(counts);
   res.render('adm/sitters.ejs', {
     stores,
     counts,

@@ -13,9 +13,12 @@ export const reservationValidation = [
 ];
 
 export function validate(req, res, next) {
+  console.log('#');
   const errors = validationResult(req);
   if (errors.isEmpty()) {
+    console.log('$');
     return next();
   }
+  console.log('^');
   return res.status(400).json({ message: errors.array() });
 }

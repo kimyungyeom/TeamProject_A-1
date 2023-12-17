@@ -27,7 +27,8 @@ export const checkNotAuthenticated = (req, res, next) => {
 // 로그인 유저가  ADMIN 인지 확인
 export const checkAdmin = (req, res, next) => {
   if (Number(req.user.user_level) === 10) {
-    next();
+    console.log(req.user.user_level);
+    return next();
   }
   throw new Error('NotPermission');
 };
