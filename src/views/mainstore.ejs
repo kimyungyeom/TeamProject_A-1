@@ -1,69 +1,32 @@
-<%- include('./partials/header.ejs') %>
+<%- include('./partials/main.header.ejs') %>
 
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
-      navbar-scroll="true">
 
-    </nav>
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <h3>다양한 펫시터님들을 만나보세요</h3>
+        <h5 class="font-weight-bolder "> 총 <%= stores.length %> 건
+        </h5>
+      </nav>
+    </div>
+
     <!-- End Navbar -->
-    <div class="container-fluid py-4">
-      <div class="row min-vh-80 h-100">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-12">
-              <div class="card my-4">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                  <div class="bg-gradient-warning shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 class="text-white text-capitalize ps-3">펫 시터</h6>
-                  </div>
-                </div>
-                <div class="card-body px-0 pb-2">
-                  <div class="table-responsive p-0">
-                    <table class="table align-items-center mb-0">
-                      <thead>
+    <div class="container">
+      <div class="d-flex px-2 py-1">
+        <div class="container-fluid py-4 ">
+          <div class="row min-vh-80 h-100  ">
+           <div class="col">
+                <% for (const store of stores) { %>
 
-                        <tr>
-                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            전체 <%= stores.length %> 명
-                          </th>
-                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            전화번호
-                          </th>
+                 <%- include('./partials/sitter.card.ejs', { store : store }) %>
 
-                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            예약수
-                          </th>
-                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            금액
-                          </th>
-                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            주소
-                          </th>
-                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            가입일
-                          </th>
-                          <th class="text-secondary opacity-7"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                        <% for (const store of stores) { %>
-
-                          <%- include('./partials/sitter.card.ejs',{ store : store }) %>
-
-                            <% } %>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                <% } %>
+           </div>
+         </div>
         </div>
       </div>
     </div>
-  </main>
-
+    
+</main>
   <%- include('./partials/footer.ejs') %>
