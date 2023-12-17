@@ -4,15 +4,13 @@ import { checkAuthenticated, checkStoreOwner } from '../middlewares/Authorizatio
 const router = express.Router();
 
 // 게시글 작성
-router.post('/store', checkAuthenticated, async (req, res, next) => {
+router.post('/', checkAuthenticated, async (req, res, next) => {
   try {
     const { user_id } = req.user;
-
     const { title, content, price, images, able_date, experience, state, city, address } = req.body;
 
     const newStore = await prisma.stores.create({
       data: {
-        user_id: +user_id,
         title,
         content,
         price: +price,
@@ -22,10 +20,15 @@ router.post('/store', checkAuthenticated, async (req, res, next) => {
         state,
         city,
         address,
+        user: {
+          connect: {
+            user_id: +user_id,
+          },
+        },
       },
     });
 
-    return res.render('poststore.ejs', { newStore });
+    return res.redirect(`../store/${newStore.store_id}`);
   } catch (err) {
     next(err);
   }

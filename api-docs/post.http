@@ -5,7 +5,7 @@ POST {{host}}/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "test02@test.com",
+    "email": "test15@test.com",
     "password": "111111"
 }
 
@@ -14,7 +14,7 @@ GET {{host}}/api/store
 Content-Type: application/json
 
 ### 게시글 상세 조회
-GET {{host}}/api/store/1
+GET {{host}}/api/store/3
 Content-Type: application/json
 
 ### 게시글 작성
@@ -60,5 +60,5 @@ Content-Type: application/json
 }
 
 ### 게시글 삭제
-DELETE {{host}}/api/store/2
+DELETE {{host}}/api/store/6
 Content-Type: application/json
