@@ -44,7 +44,7 @@ router.get('/:store_id', async (req, res, next) => {
     const { store_id } = req.params;
     const store = await prisma.stores.findUnique({
       where: {
-        store_id: +store_id,
+        store_id: Number(store_id),
       },
       include: {
         user: {
@@ -57,8 +57,18 @@ router.get('/:store_id', async (req, res, next) => {
       },
     });
 
-    return res.render('storereservation.ejs', { store, user: req.user ? req.user : null });
-
+    const reviews = await prisma.reviews.findMany({
+      where: { store_id: Number(store_id) },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    console.log(store);
+    return res.render('storereservation.ejs', { store, reviews, user: req.user ? req.user : null });
   } catch (err) {
     next(err);
   }
