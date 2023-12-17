@@ -178,29 +178,23 @@
   <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
   <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
   <script>
+    const originDate = `<%= reservationInfo.store.able_date[0].date%>`
+    const temp = originDate.split(',');
+
     document.addEventListener('DOMContentLoaded', function ()
     {
       let dateSelector = document.querySelector('.dateSelector');
-      let startDate = '<%= startDate %>';
-      let endDate = '<%= endDate %>';
-
-
-
       flatpickr(dateSelector, {
-        defaultDate: [startDate, endDate],
         position: 'above',
         mode: 'range',
         minDate: 'today',
         dateFormat: 'Y-m-d',
-        disable: [
-          {
-            from: "2023-12-19",
-            to: "2023-12-21",
-            user_id: 12
-          },
-        ],
+        disable:
+          temp
+        ,
         locale: 'ko',
       });
+    });
 
       const form = document.getElementById('reservationForm');
       if (form)
@@ -217,8 +211,6 @@
         console.error('Form not found!');
       }
 
-
-
       const cancelBtn = document.querySelector('#reserveCancel');
 
       cancelBtn.addEventListener('click', async () =>
@@ -229,7 +221,6 @@
           window.history.back();
         }
       });
-    });
 
     const reviewEl = document.querySelector('.reviewInput');
     const ratingEl = document.querySelector('.ratingInput');
