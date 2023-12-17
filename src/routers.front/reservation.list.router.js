@@ -22,7 +22,7 @@ router.get('/sitter', async (req, res, next) => {
       },
       orderBy: { created_at: 'desc' },
     });
-    res.status(200).json({ data: AllReservations });
+    res.status(200).json({ data: AllReservations, user: req.user ? req.user : null });
   } catch (err) {
     next(err);
   }
@@ -47,6 +47,7 @@ router.get('/user', async (req, res, next) => {
     return res.render('user.reservations.ejs', {
       data: AllReservations,
       user_id,
+      user: req.user ? req.user : null,
     });
   } catch (err) {
     next(err);

@@ -44,7 +44,7 @@ router.get('/:store_id', async (req, res, next) => {
     const { store_id } = req.params;
     const store = await prisma.stores.findUnique({
       where: {
-        store_id: Number(store_id),
+        store_id: +store_id,
       },
       include: {
         user: {
