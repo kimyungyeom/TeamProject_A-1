@@ -5,32 +5,6 @@ import { reservationValidation, validate } from '../middlewares/reservation.vali
 
 const router = express.Router();
 
-router.get('');
-
-// API 예약 랜더
-router.get('/store/:store_id', async (req, res) => {
-  try {
-    const { store_id } = req.params;
-    const store = await prisma.stores.findUnique({
-      where: {
-        store_id: +store_id,
-      },
-      include: {
-        user: {
-          select: {
-            email: true,
-            name: true,
-            phone: true,
-          },
-        },
-      },
-    });
-    return res.render('storereservation.ejs', { store });
-  } catch (err) {
-    next(err);
-  }
-});
-
 // API 예약 생성
 //startDate, endDate//// json 형태로 받아서 사이 몇일인지 계산
 router.post(
@@ -70,36 +44,7 @@ router.post(
     }
   },
 );
-// API 유저 예약 상세보기
-router.get('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
-  try {
-    const { reserve_id } = req.params;
-    const reservationInfo = await prisma.reservations.findUnique({
-      where: {
-        reserve_id: +reserve_id,
-      },
-      include: {
-        user: {
-          select: {
-            email: true,
-            name: true,
-            phone: true,
-          },
-        },
-        store: true,
-      },
-    });
-    const dateRange = reservationInfo.reserve_date.split(' ~ ');
 
-    return res.render('reservation.ejs', {
-      reservationInfo,
-      startDate: dateRange[0],
-      endDate: dateRange[1],
-    });
-  } catch (err) {
-    next(err);
-  }
-});
 // API 예약 수정-상세페이지에서
 router.put('/reservation/:reserve_id', checkAuthenticate, async (req, res, next) => {
   try {
@@ -180,81 +125,6 @@ router.delete('/reservation/:reserve_id', checkAuthenticate, async (req, res, ne
     } else {
       throw new Error('Not a reserver');
     }
-  } catch (err) {
-    next(err);
-  }
-});
-// API 포스트별(유저) 예약목록 조회
-router.get('/reservations', checkAuthenticate, async (req, res, next) => {
-  try {
-    console.log('들어오긴 하니~');
-    const user_id = req.user.user_id;
-    // userLevel에서 시터/예약자 확인
-    const AllReservations = await prisma.reservations.findMany({
-      where: { user_id: +user_id },
-      include: {
-        store: {
-          include: {
-            user: true,
-          },
-        },
-      },
-      orderBy: { created_at: 'desc' },
-    });
-    return res.render('user.reservations.ejs', {
-      data: AllReservations,
-      user_id,
-    });
-  } catch (err) {
-    next(err);
-  }
-});
-// API 포스트별(시터) 예약목록 조회
-router.get('/sitter/reservation', checkAuthenticate, async (req, res, next) => {
-  try {
-    const user_id = req.user.user_id;
-    // userLevel에서 시터/예약자 확인
-    const AllReservations = await prisma.reservations.findMany({
-      where: { store: { user_id: +user_id } }, //포스트 작성자 기준 확인
-      select: {
-        reserve_id: true,
-        user_id: true,
-        store_id: true,
-        reserve_date: true,
-        res_comment: true,
-        cats: true,
-        approved: true,
-      },
-      orderBy: { created_at: 'desc' },
-    });
-    res.status(200).json({ data: AllReservations });
-  } catch (err) {
-    next(err);
-  }
-});
-
-// API 어드민 예약목록 조회
-router.get('/reservation/all', async (req, res, next) => {
-  try {
-    // const user_level = req.user.user_level;
-    // userLevel에서 시터/예약자 확인
-    const AllReservations = await prisma.reservations.findMany({
-      //포스트 작성자 기준 확인
-      select: {
-        reserve_id: true,
-        user_id: true,
-        store_id: true,
-        reserve_date: true,
-        cats: true,
-        approved: true,
-        res_comment: true,
-        total_price: true,
-        created_at: true,
-        updated_at: true,
-      },
-      orderBy: { created_at: 'desc' },
-    });
-    res.render('전체 예약 조회', { data: AllReservations });
   } catch (err) {
     next(err);
   }
