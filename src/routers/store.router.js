@@ -47,7 +47,7 @@ router.put('/:store_id', checkStoreOwner, async (req, res, next) => {
       data: {
         title: title ? title : req.store.title,
         content: content ? content : req.store.content,
-        price: +price ? price : req.store.price,
+        price: +price ? +price : req.store.price,
         images: images ? images : req.store.images,
         able_date: able_date ? able_date : req.store.able_date,
         experience: experience ? experience : req.store.experience,

@@ -17,7 +17,7 @@
 <div class="container">
   <div class="align-itemst-center justify-content-md-center row">
     <div class="col-8 card p-3">
-      <form action="/api/store/<%= store.store_id %>">
+      <form method="POST" action="/api/store/<%= store.store_id %>?_method=put">
         <h3 class="mb-3">캣시터 수정하기</h3>
         <div class="mb-3">
           <p for="title">제목</p>
@@ -141,12 +141,12 @@
 
   editBtn.addEventListener('click', async () => {
     if (confirm('수정하시겠습니까?')) {
-      const editRes = await axios.put('api/store/<%= store.store_id %>');
+      const editRes = await axios.put('/api/store/<%= store.store_id %>');
       window.location.href = '/store/<%= store.store_id %>';
     }
   });
 
-  const deleteBtn = document.querySelector('delete_btn');
+  const deleteBtn = document.querySelector('#delete_btn');
 
   deleteBtn.addEventListener('click', async () => {
     if (confirm('삭제하시겠습니까?')) {
