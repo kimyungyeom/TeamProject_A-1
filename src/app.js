@@ -7,21 +7,12 @@ import 'dotenv/config';
 import ErrorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import methodOverride from 'method-override';
 
-import { checkAuthenticate } from './middlewares/auth.js';
-
+import mainRouter from './routers/main.router.js';
 // port
 const PORT = process.env.SERVER_PORT;
 
-// import router
-import StoreRouter from './routers/store.router.js';
-
-import AdminRouter from './routers/admin.router.js';
-import reservationRouter from './routers/reservation.router.js';
-import reviewRouter from './routers/reviews.router.js';
-
-import frontAuth from './routers/auth.js';
-import AuthRouter from './routers/auth.router.js';
 // app.js - global variables
 const app = express();
 
@@ -45,9 +36,10 @@ app.use(function (request, response, next) {
   }
   next();
 });
+
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
-import methodOverride from 'method-override';
+
 app.use(methodOverride('_method'));
 app.set('views', path.join(currentModulePath, '../views'));
 app.set('view engine', 'ejs');
@@ -59,22 +51,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
+
 // 임시
-app.use('/', frontAuth);
-app.use('/api', [reservationRouter]);
-
-// router middleware
-app.use('/api/', StoreRouter);
-app.use('/api/auth/', AuthRouter);
-app.use('/api/store', reviewRouter);
-
-app.use('/adm/', AdminRouter);
-
-app.get('/', checkAuthenticate, (req, res) => {
-  const user = req.user;
-  console.log('USER', user);
-  res.render('index.ejs', { user });
-});
+app.use('/', mainRouter);
 
 app.use(ErrorHandlingMiddleware);
 // 서버 구동

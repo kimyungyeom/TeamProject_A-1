@@ -1,7 +1,4 @@
 import express from 'express';
-import { prisma } from '../utils/prisma/index.js';
-import passport from 'passport';
-import '../config/passport.js';
 
 const router = express.Router();
 // 회원가입 local
