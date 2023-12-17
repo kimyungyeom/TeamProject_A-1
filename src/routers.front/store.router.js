@@ -56,7 +56,6 @@ router.get('/:store_id', async (req, res, next) => {
         },
       },
     });
-
     return res.render('storereservation.ejs', { store });
   } catch (err) {
     next(err);
