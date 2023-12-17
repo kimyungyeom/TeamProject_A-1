@@ -56,7 +56,19 @@ router.get('/:store_id', async (req, res, next) => {
         },
       },
     });
-    return res.render('storereservation.ejs', { store });
+
+    const reviews = await prisma.reviews.findMany({
+      where: { store_id: +store_id },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return res.render('storereservation.ejs', { store, reviews });
   } catch (err) {
     next(err);
   }
