@@ -1,6 +1,6 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
-import { checkAdmin } from '../middlewares/auth_access.js';
+import { checkAdmin } from '../middlewares/Authorizations.js';
 const router = express.Router();
 // 전체 유저 조회
 router.get('/users', checkAdmin, async (req, res, next) => {
@@ -24,7 +24,7 @@ router.get('/users', checkAdmin, async (req, res, next) => {
 });
 
 // 유저상세조회
-router.get('/users/:user_id', async (req, res, next) => {
+router.get('/users/:user_id', checkAdmin, async (req, res, next) => {
   const user = req.params.user_id;
   const selectUser = await prisma.users.findFirst({
     where: {
@@ -38,7 +38,7 @@ router.get('/users/:user_id', async (req, res, next) => {
 });
 
 // 전체 시터 조회
-router.get('/sitters', async (req, res, next) => {
+router.get('/sitters', checkAdmin, async (req, res, next) => {
   const stores = await prisma.stores.findMany({
     include: {
       user: {

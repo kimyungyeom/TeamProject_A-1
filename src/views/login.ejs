@@ -20,12 +20,14 @@
         <div class="text-center">
           <a type="button" class="signInBtn btn bg-gradient-primary w-100 my-4 mb-2">Sign in</a>
         </div>
+
         <p class="mt-4 text-sm text-center">
           Don't have an account?
           <a href="/signup" class="text-primary text-gradient font-weight-bold">Sign up</a>
         </p>
       </form>
     </div>
+
     <script>
       const google = document.querySelector('.signInGoogle');
       const searchEl = document.querySelector('.signInBtn');
@@ -40,7 +42,7 @@
             email: emailEl.value,
             password: passwordEl.value
           });
-          console.log(response);
+
           if (response)
           {
             window.location.href = '/';
