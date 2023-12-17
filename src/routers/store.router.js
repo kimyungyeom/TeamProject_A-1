@@ -71,7 +71,7 @@ router.post('/store', checkAuthenticate, async (req, res, next) => {
         address,
       },
     });
-    return res.json({ data: newStore });
+    return res.render('poststore.ejs', { newStore });
   } catch (err) {
     next(err);
   }
