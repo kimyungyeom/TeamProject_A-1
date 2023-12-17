@@ -122,4 +122,5 @@ router.post('/logout', (req, res, next) => {
     return res.redirect('back');
   });
 });
+
 export default router;

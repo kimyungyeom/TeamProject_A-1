@@ -13,12 +13,14 @@ import BackStoreRouter from './store.router.js';
 import AuthRouter from './auth.router.js';
 import BackReserveRouter from '../routers/reservation.router.js';
 
+import Admin from './admin.router.js';
 import SearchRouter from './search.router.js';
 const mainRouter = express.Router();
 
 mainRouter.use('/api/auth/', AuthRouter);
 mainRouter.use('/api/store', BackStoreRouter);
 mainRouter.use('/api/search', SearchRouter);
+mainRouter.use('/api/adm', Admin);
 
 //front
 mainRouter.use('/', AuthFrontRouter);
