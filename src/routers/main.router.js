@@ -10,18 +10,20 @@ import AdminRouter from '../routers.front/adm.router.js';
 import BackStoreRouter from './store.router.js';
 import AuthRouter from './auth.router.js';
 
+import SearchRouter from './search.router.js';
 const mainRouter = express.Router();
-
-mainRouter.use('/adm/', AdminRouter);
 
 mainRouter.use('/api/auth/', AuthRouter);
 mainRouter.use('/api/store', BackStoreRouter);
+mainRouter.use('/api/search', SearchRouter);
 
 //front
 mainRouter.use('/', AuthFrontRouter);
 mainRouter.use('/reserve_list/', ReserveListRouter);
 mainRouter.use('/store/', StoreRouter);
 mainRouter.use('/reservation/', ReserveRouter);
+
+mainRouter.use('/adm/', AdminRouter);
 
 //back
 // 로그인/회원가입
