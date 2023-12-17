@@ -17,8 +17,8 @@
 <div class="container">
   <div class="align-itemst-center justify-content-md-center row">
     <div class="col-8 card p-3">
-      <form method="POST" action="/api/store">
-        <h3 class="mb-3">캣시터 등록하기</h3>
+      <form method="POST" action="/api/store/<%= store_id %>" id="putForm" class="putForm">
+        <h3 class="mb-3">캣시터 수정하기</h3>
         <div class="mb-3">
           <p for="title">제목</p>
           <input
@@ -27,6 +27,7 @@
             type="text"
             id="titleInput"
             placeholder="제목을 입력해 주세요"
+            value="<%= store.title %>"
           />
         </div>
         <div class="mb-3">
@@ -37,6 +38,7 @@
             id="contentInput"
             type="text"
             placeholder="소개글을 작성해 주세요"
+            value="<%= store.content %>"
           />
         </div>
         <div class="mb-3">
@@ -47,6 +49,7 @@
             id="contentInput"
             type="text"
             placeholder="가격을 입력해 주세요"
+            value="<%= store.price %>"
           />
         </div>
         <p>예약 불가능 날짜</p>
@@ -66,6 +69,7 @@
             type="text"
             id="experienceInput"
             placeholder="본인이 직접 반려했던 반려기간을 입력해주세요"
+            value="<%= store.experience %>"
           />
         </div>
         <div class="mb-3">
@@ -76,16 +80,18 @@
             type="text"
             id="stateInput"
             placeholder="예시) 강원도"
+            value="<%= store.state %>"
           />
         </div>
         <div class="mb-3">
-          <p>시/군</p>
+          <p>시/군/구</p>
           <input
             class="input-group-text"
             name="city"
             type="text"
             id="cityInput"
             placeholder="예시) 춘천시"
+            value="<%= store.city %>"
           />
         </div>
         <div class="mb-3">
@@ -96,6 +102,7 @@
             type="text"
             id="addressInput"
             placeholder="예시) 공지로 591"
+            value="<%= store.address %>"
           />
         </div>
         <div class="mb-3">
@@ -110,11 +117,14 @@
           </div>
         </div>
 
-        <button id="post_btn" type="submit" class="btn btn-secondary post_btn">등록하기</button>
+        <button id="put_btn" type="submit" class="btn btn-secondary post_btn">수정하기</button>
+        <button id="delete_btn" type="button" class="btn btn-secondary post_btn">삭제하기</button>
       </form>
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     let dateSelector = document.querySelector('.dateSelector');
@@ -125,6 +135,38 @@
       dateFormat: 'Y-m-d',
       locale: 'ko',
     });
+  });
+
+  document.getElementById('putForm').addEventListener('submit', function () {
+    const storeId = '<%= store_id %>';
+
+    axios
+      .put(`/stores/${storeId}`, formData)
+      .then((response) => {
+        // 서버로부터의 응답 처리
+        console.log('수정 성공');
+        window.location.href = `/store/${storeId}`;
+      })
+      .catch((error) => {
+        // 수정 실패 시의 처리
+        console.error('수정 실패:', error);
+      });
+  });
+
+  document.getElementById('delete_btn').addEventListener('click', function () {
+    const storeId = '<%= store_id %>';
+
+    axios
+      .delete(`/stores/${storeId}`)
+      .then((response) => {
+        // 서버로부터의 응답 처리
+        console.log('삭제 성공');
+        window.location.href = 'http://localhost:3000/store';
+      })
+      .catch((error) => {
+        // 삭제 실패 시의 처리
+        console.error('삭제 실패:', error);
+      });
   });
 </script>
 <%- include('./partials/main.footer.ejs') %>

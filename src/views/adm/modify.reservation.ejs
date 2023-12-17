@@ -1,9 +1,6 @@
 <%- include('../partials/header.ejs') %>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-
-
-
     <div class="container-fluid py-4 ms-3">
       <div class="row min-vh-80 h-100">
         <div class="col-6">
@@ -17,33 +14,145 @@
 
               <div class="card-body">
                 <form role="form" class="text-start">
+                  <!-- 날짜 -->
+                  <div>
+                    <label class="form-label mt-5 mb-0">날짜</label>
+                    <div class="datePickerContainer">
+                      <input class="dateSelector input-group-text" type="text" name="reserve_date"
+                        placeholder="날짜를 선택하세요" />
+                    </div>
+                  </div>
+                  <!-- 마리수 -->
+                  <div>
+                    <label class="form-label">마리수</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="number" class="form-control" value="<%= reservation.cats %>">
+                    </div>
+                  </div>
+                  <!-- comment -->
+                  <div>
+                    <label class="form-label">comment</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="text" class="form-control" value="<%= reservation.res_comment %>">
+                    </div>
+                  </div>
+                  <!-- approved -->
+                  <div>
+                    <label class="form-label">승인</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="text" class="form-control" value="<%= reservation.approved %>">
+                    </div>
+                  </div>
+                  <!-- visit_time -->
+                  <div class="d-flex ">
+                    <div class="col-6">
+                      <label class="form-label">visit_time</label>
+                      <div class="input-group input-group-outline mb-3">
+                        <input type="time" class="form-control" value="<%= reservation.visit_time %>">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label">visit_time</label>
+                      <div class="input-group input-group-outline mb-3">
+                        <input type="time" class="form-control" value="<%= reservation.pickup_time %>">
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label">총금액</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="text" class="form-control" value="<%= reservation.total_price %>">
+                    </div>
+                  </div>
+                  <div class="form-label">펫시터정보</div>
 
-                  <label class="form-label mt-5 mb-0">Email</label>
-                  <div class="input-group input-group-outline my-3">
-                    <input type="email" class="form-control" value="<%= reservation.reserve_id %>">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control">
-                  </div>
-                  <div class="form-check form-switch d-flex align-items-center mb-3">
-                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                    <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
-                  </div>
-                  <div class="text-center">
-                    <button type="button" class="btn bg-gradient-info w-100 my-4 mb-2">Sign in</button>
+                  <div>
+                    <label class="form-label">펫시터이름</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="text" class="form-control" value="<%= reservation.user.name %>">
+                    </div>
                   </div>
 
+                  <div>
+                    <label class="form-label">펫시터연락처</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="text" class="form-control" value="<%= reservation.user.phone %>">
+                    </div>
+                  </div>
+
+                  <div class="text-center d-flex">
+                    <button type="button" class="backBtn btn bg-gradient-primary w-100 my-4 mb-2"
+                      onclick="history.back()">
+                      뒤로
+                    </button>
+                    <button type="button" class="send btn bg-gradient-info w-100 my-4 mb-2">
+                      확인
+                    </button>
+                  </div>
                 </form>
               </div>
-
 
             </div>
 
           </div>
         </div>
       </div>
+      <% const a=reservation.reserve_date.split('~') %>
+        <% const b=a[0] %>
+          <% const c=a[1] %>
+
+
 
   </main>
+  <script defer src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+  <script defer src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function ()
+    {
+      let dateSelector = document.querySelector('.dateSelector');
 
-  <%- include('../partials/footer.ejs') %>
+      let startDate = '<%= b %>';
+      let endDate = '<%= c %>'
+
+      flatpickr(dateSelector, {
+        defaultDate: [startDate, endDate],
+        position: 'above',
+        mode: 'range',
+        minDate: 'today',
+        dateFormat: 'Y-m-d',
+        disable: [
+          function (date)
+          {
+            // disable every multiple of 8
+            return !(date.getDate() % 8);
+          },
+        ],
+        locale: 'ko',
+      });
+
+      const sendBtn = document.querySelector('.send');
+      const form = document.getElementById('reservationForm');
+
+      sendBtn.addEventListener('click', async () =>
+      {
+        console.log('!');
+        try
+        {
+          const response = await axios.post('/api/adm/reserve/<%=reservation.reserve_id%>', {
+
+          });
+        } catch (e)
+        {
+          console.error(e);
+        }
+      })
+    }
+
+    );
+
+
+
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <% - include('../partials/footer.ejs') %>

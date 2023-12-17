@@ -16,11 +16,9 @@ router.get('/users', checkAdmin, async (req, res, next) => {
       },
     },
   });
-
   res.render('adm/users.ejs', {
     users: users,
   });
-  //res.send(users);
 });
 
 // 유저상세조회
@@ -31,6 +29,7 @@ router.get('/users/:user_id', checkAdmin, async (req, res, next) => {
       user_id: +user,
     },
   });
+
   const recentReserve = await prisma.reservations.findMany({
     take: 3,
     orderBy: [
@@ -67,8 +66,6 @@ router.get('/sitters', checkAdmin, async (req, res, next) => {
     },
   });
 
-  console.log(stores);
-
   const counts = await prisma.reservations.groupBy({
     by: ['store_id'],
     _count: {
@@ -94,16 +91,11 @@ router.get('/sitter/:store_id', async (req, res, next) => {
       store_id: +store_id,
     },
     include: {
-      user: {
-        select: {
-          email: true,
-          name: true,
-          phone: true,
-        },
-      },
+      user: true,
     },
   });
-  res.render('adm/modify.sitter.ejs', {
+
+  res.render('adm/detail.sitter.ejs', {
     store,
   });
 });
@@ -146,6 +138,7 @@ router.get('/reservation/:reservation_id', async (req, res, next) => {
       },
     },
   });
+  console.log(reservation);
   res.render('adm/modify.reservation.ejs', { reservation });
 });
 
