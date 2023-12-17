@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 // 게시글 작성
 router.get('/post', async (req, res, next) => {
   try {
-    return res.render('poststore.ejs', { user: req.user ? req.user : null });
+    return res.render('poststore.ejs');
   } catch (err) {
     next(err);
   }
@@ -67,8 +67,32 @@ router.get('/:store_id', async (req, res, next) => {
         },
       },
     });
-
     return res.render('storereservation.ejs', { store, reviews, user: req.user ? req.user : null });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 게시글 수정
+router.get('/edit/:store_id', async (req, res, next) => {
+  try {
+    const { store_id } = req.params;
+    const store = await prisma.stores.findUnique({
+      where: {
+        store_id: +store_id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+            phone: true,
+          },
+        },
+      },
+    });
+
+    return res.render('putstore.ejs', { store, user: req.user ? req.user : null });
   } catch (err) {
     next(err);
   }
