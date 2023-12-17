@@ -6,7 +6,7 @@ import { checkAuthenticated, checkReservationUser } from '../middlewares/Authori
 const router = express.Router();
 
 // API 유저 예약 상세보기
-router.get('/:reserve_id', checkAuthenticated, checkReservationUser, async (req, res, next) => {
+router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
   try {
     const { reserve_id } = req.params;
     const reservationInfo = await prisma.reservations.findUnique({

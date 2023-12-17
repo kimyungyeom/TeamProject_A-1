@@ -1,6 +1,7 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 import { checkAuthenticate } from '../middlewares/auth.js';
+
 import { reservationValidation, validate } from '../middlewares/reservation.validation.js';
 
 const router = express.Router();
@@ -13,6 +14,7 @@ router.post(
   validate,
   async (req, res, next) => {
     try {
+      console.log(req.body);
       const user_id = req.user.user_id;
       const { store_id } = req.params;
       const { reserve_date, cats, res_comment, visit_time, pickup_time, total_price } = req.body;
@@ -37,6 +39,7 @@ router.post(
           approved: 'No',
         },
       });
+
       return res.redirect(`/reservation/${reservation.reserve_id}`);
     } catch (err) {
       next(err);
