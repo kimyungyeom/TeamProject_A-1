@@ -1,6 +1,6 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
-import { checkAuthenticated, checkReservationUser } from '../middlewares/Authorizations.js';
+import { checkAuthenticated } from '../middlewares/Authorizations.js';
 
 //import { checkAuthenticate } from '../middlewares/auth.js';
 const router = express.Router();
@@ -30,6 +30,7 @@ router.get('/:reserve_id', checkAuthenticated, async (req, res, next) => {
       reservationInfo,
       startDate: dateRange[0],
       endDate: dateRange[1],
+      user: req.user ? req.user : null,
     });
   } catch (err) {
     next(err);
