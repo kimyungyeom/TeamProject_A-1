@@ -10,6 +10,7 @@ import { prisma } from '../utils/prisma/index.js';
 
 export const checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
+    console.log('login');
     return next();
   } else {
     res.redirect('/login');
@@ -50,12 +51,13 @@ export const checkStoreOwner = async (req, res, next) => {
 
 // 예약정보 유저가 요청시
 export const checkReservationUser = async (req, res, next) => {
-  const { reservation_id } = req.params;
+  const { reserve_id } = req.params;
+
   const { user_id } = req.user.user_id;
 
   const reservation = await prisma.reservations.findUnique({
     where: {
-      reservation_id: +reservation_id,
+      reserve_id: +reserve_id,
     },
   });
 
@@ -67,6 +69,14 @@ export const checkReservationUser = async (req, res, next) => {
 };
 // 예약정보 시터가 요청시
 export const checkReservationSitter = async (req, res, next) => {
+  const { reserve_id } = req.params;
+
+  const reservation = await prisma.reservations.findUnique({
+    where: {
+      reserve_id: +reserve_id,
+    },
+  });
+
   const { reservation_id } = req.params;
   const { store_id } = req.store;
 };
