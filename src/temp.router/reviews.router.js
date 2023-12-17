@@ -53,7 +53,7 @@ router.post(
       }
 
       // 리뷰 생성
-      const reviews = await prisma.reviews.create({
+      const newReview = await prisma.reviews.create({
         data: {
           user_id: user_id,
           store_id: +store_id,
@@ -63,27 +63,25 @@ router.post(
         },
       });
 
-      return res.status(201).json({ data: reviews });
+      return res.redirect(`/store/${store_id}`);
+      // return res.status(201).json({ data: reviews });
     } catch (err) {
       next(err);
     }
   },
 );
 
-// 리뷰 조회 router
 router.get('/reviews/:store_id', async (req, res, next) => {
-  console.log('!');
   try {
     const { store_id } = req.params;
     const store = await prisma.stores.findFirst({
       where: { store_id: +store_id },
     });
-    // 게시글이 존재하지 않을 때 예외처리
+
     if (!store) {
       throw new Error('NotFoundStore');
     }
 
-    // 리뷰 조회
     const reviews = await prisma.reviews.findMany({
       where: { store_id: +store_id },
       orderBy: { created_at: 'desc' },
@@ -96,8 +94,7 @@ router.get('/reviews/:store_id', async (req, res, next) => {
       },
     });
 
-    res.render('review.ejs', { reviews });
-    // return res.status(200).json({ data: reviews, averageRating });
+    return res.status(200).json({ reviews });
   } catch (err) {
     next(err);
   }

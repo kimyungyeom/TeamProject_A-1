@@ -56,7 +56,9 @@ router.get('/:store_id', async (req, res, next) => {
         },
       },
     });
+
     return res.render('storereservation.ejs', { store, user: req.user ? req.user : null });
+
   } catch (err) {
     next(err);
   }

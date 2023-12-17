@@ -3,7 +3,7 @@
 @cookie-session-name.sig=ZE31dBIzzL0FojIrPG8pxbdRtiE;
 
 ### 리뷰 생성
-POST {{host}}/api/store/3/reservation/2/review
+POST {{host}}/store/2/reservation/10/review
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### 리뷰 조회
-GET {{host}}/api/store/3/reviews
+GET {{host}}/store/reviews/2
 
 ### 리뷰 수정
 PUT {{host}}/api/store/3/reservation/2/review/3
