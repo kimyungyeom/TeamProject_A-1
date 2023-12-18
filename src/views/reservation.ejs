@@ -232,15 +232,16 @@
       const replyBtn = document.querySelector('.replyBtn');
       const storeId = '<%= reservationInfo.store.store_id %>';
       const reserveId = '<%= reservationInfo.reserve_id %>';
-
+      
       replyBtn.addEventListener('click', async () =>
       {
         try
         {
-          const response = await axios.post(`/store/${storeId}/reservation/${reserveId}/review`, {
+          const response = await axios.post(`/review/${storeId}/reservation/${reserveId}`, {
             comment: commentEl.value,
             rating: ratingEl.value
           });
+          location.href = `/store/${storeId}`
         } catch (err)
         {
           console.error(err);
