@@ -66,6 +66,7 @@ router.get('/:store_id', async (req, res, next) => {
             name: true,
           },
         },
+        reservation: true,
       },
     });
 
