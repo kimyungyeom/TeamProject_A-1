@@ -27,7 +27,10 @@ router.post('/', checkAuthenticated, async (req, res, next) => {
         },
       },
     });
-
+    const levelUp = await prisma.users.update({
+      where: { user_id: +user_id },
+      data: { user_level: 2 },
+    });
     return res.redirect(`../store/${newStore.store_id}`);
   } catch (err) {
     next(err);

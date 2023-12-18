@@ -148,48 +148,45 @@ router.put(
 );
 
 // 리뷰 삭제 router
-router.delete(
-  '/:store_id/reservation/:reserve_id/review/:review_id',
-  checkAuthenticate,
-  async (req, res, next) => {
-    try {
-      const user_id = req.user.user_id;
-      const { store_id, reserve_id, review_id } = req.params;
+router.delete('/:store_id/:reserve_id/:review_id', checkAuthenticate, async (req, res, next) => {
+  try {
+    console.log('오긴 했니? 올 생각은 있니?');
+    const user_id = req.user.user_id;
+    const { store_id, reserve_id, review_id } = req.params;
 
-      const store = await prisma.stores.findFirst({
-        where: { store_id: +store_id },
-      });
-      // 게시글이 존재하지 않을 때 예외처리
-      if (!store) {
-        throw new Error('NotFoundStore');
-      }
-
-      // 해당 유저의 예약 정보 확인
-      const reservation = await prisma.reservations.findUnique({
-        where: { reserve_id: +reserve_id, user_id },
-      });
-
-      // 예약 정보가 없는 경우
-      if (!reservation) {
-        throw new Error('NotPermission');
-      }
-
-      // 예약한 userId와 로그인한 userId가 다를 경우
-      if (reservation.user_id !== user_id) {
-        throw new Error('NotPermission');
-      }
-
-      // 리뷰 삭제
-      const deletedReview = await prisma.reviews.delete({
-        where: { store_id: +store_id, review_id: +review_id },
-      });
-
-      return res.status(200).json({ data: deletedReview });
-    } catch (err) {
-      next(err);
+    const store = await prisma.stores.findFirst({
+      where: { store_id: +store_id },
+    });
+    // 게시글이 존재하지 않을 때 예외처리
+    if (!store) {
+      throw new Error('NotFoundStore');
     }
-  },
-);
+
+    // 해당 유저의 예약 정보 확인
+    const reservation = await prisma.reservations.findUnique({
+      where: { reserve_id: +reserve_id, user_id },
+    });
+
+    // 예약 정보가 없는 경우
+    if (!reservation) {
+      throw new Error('NotPermission');
+    }
+
+    // 예약한 userId와 로그인한 userId가 다를 경우
+    if (reservation.user_id !== user_id) {
+      throw new Error('NotPermission');
+    }
+
+    // 리뷰 삭제
+    const deletedReview = await prisma.reviews.delete({
+      where: { store_id: +store_id, review_id: +review_id },
+    });
+
+    return res.status(200).json({ data: deletedReview });
+  } catch (err) {
+    next(err);
+  }
+});
 
 // export
 export default router;

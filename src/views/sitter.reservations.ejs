@@ -26,7 +26,7 @@
               <!-- ~~위 링크는 시터가 보는 예약 상세 페이지로 가야 됩니다. -->
             <div class="row p-3">
                 <div class="col-auto col-8 p-2">
-                  <a href="/reservation/<%= AllReservations.reserve_id %>">
+                  <a href="/reservation/sitter/<%= AllReservations.reserve_id %>">
                   <h4>예약번호 <%= AllReservations.reserve_id %></h4>
                   <h5><%= AllReservations.user.name %> 회원님</h5>
                   <p class="reservationContent"><%= AllReservations.res_comment %></p>

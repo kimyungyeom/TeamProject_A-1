@@ -167,9 +167,10 @@
               </div>
             </li>
             <div class="ms-auto text-end">
-              <button type="button" id="delete_btn" class="deleteBtn btn btn-link text-danger text-gradient px-3 mb-0" data-id='<%= review.reservation.reserve_id %>'
-                ><i class="material-icons text-sm me-2">delete</i>Delete</button
-              >
+<!-- FIXME -->
+<button type="button" id="delete_btn" data-id="<%= review.reservation.reserve_id %>/<%= review.review_id %>"
+  class="deleteBtn btn btn-link text-danger text-gradient px-3 mb-0">Delete </button>
+<!-- FIXME -->
               <button class="btn btn-link text-dark px-3 mb-0" href="javascript:;"
                 ><i class="material-icons text-sm me-2">edit</i>Edit</button
               >
@@ -207,14 +208,16 @@
   const storeId ='<%= store.store_id %>';
 
   document.querySelectorAll('.deleteBtn').forEach(button => {
-    button.addEventListener('click', function() {
-      const Id = this.getAttribute('data-id');
-    })
-  })
-  deleteBtn.addEventListener('click', async () => {
-      const response = await axios.delete(`/store/${storeId}/reservation/${Id}`);
+  button.addEventListener('click', function() {
+    const reviewlinks = this.getAttribute('data-id');
+    const userInput = window.prompt("정말로 삭제하시겠습니까? (확인을 원하시면 '확인'을 입력해주세요.)");
+    if (userInput === '확인') {
+      console.log(`/review/${storeId}/${reviewlinks}`);
+      const response = axios.delete(`/review/${storeId}/${reviewlinks}`);
       location.reload();
+    }
   })
+})
 
       // 모달 창 열기
     </script>

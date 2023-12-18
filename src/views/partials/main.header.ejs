@@ -50,9 +50,9 @@
           <span class="navbar-toggler-bar bar3"></span>
         </span>
       </button>
-      <div class="collapse navbar-collapse" id="navigation">
+      <div class="collapse navbar-collapse col" id="navigation">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item col-12">
+          <li class="nav-item">
             <div class="ms-md-auto pe-md-3 d-flex align-items-center">
               <label class="form-label">시터 검색</label>
               <div class="input-group input-group-outline">
@@ -60,13 +60,11 @@
               </div>
             </div>
           </li>
-
         </ul>
 
 
         <ul class="navbar-nav d-lg-flex d-none">
           <% if (!user) { %>
-
             <li class="nav-item">
               <a href="/signup" class="btn btn-sm mb-0 me-1 btn-outline-secondary">회원가입</a>
             </li>
@@ -74,14 +72,25 @@
               <a href="/login" class="btn btn-sm mb-0 me-1 btn-outline-secondary">로그인</a>
             </li>
             <% }else{ %>
+              <% if ( user.user_level === 2 ) { %>
+              <li class="nav-item d-flex align-items-center">
+                <a class="btn btn-secondary btn-sm mb-0 me-2" style="box-shadow: none" target="_blank" href="/reserve_list/sitter">
+                  시터 예약목록</a>
+              </li>
+              <% }else{ %>
+                <li class="nav-item d-flex align-items-center">
+                  <a class="btn btn-secondary btn-sm mb-0 me-2" style="box-shadow: none" target="_blank" href="/store/post">
+                    시터신청</a>
+                </li>
+              <% } %>
               <li class="nav-item d-flex align-items-center">
                 <a class="btn btn-secondary btn-sm mb-0 me-2" style="box-shadow: none" target="_blank" href="/login">
                   내 정보 </a>
               </li>
-              <li class="nav-item">
-                <a href="/signup" class="btn btn-sm mb-0 me-1 btn-outline-secondary">예약정보</a>
+              <li class="nav-item d-flex align-items-center">
+                <a href="/reserve_list/user" class="btn btn-sm mb-0 me-2 btn-outline-secondary">예약정보</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-flex align-items-center">
                 <div class="temp nav-link me-2" type="button" onclick="test()">
                   <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
                   로그아웃
