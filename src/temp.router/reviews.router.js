@@ -9,7 +9,7 @@ const router = express.Router();
 
 // 리뷰 생성 router
 router.post(
-  '/:store_id/reservation/:reserve_id/review',
+  '/:store_id/reservation/:reserve_id',
   [validate, validateComment, validateRating],
   checkAuthenticate,
   async (req, res, next) => {
