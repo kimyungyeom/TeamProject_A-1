@@ -32,9 +32,13 @@ router.get('/', async (req, res) => {
 // 게시글 작성
 router.get('/post', checkAuthenticated, async (req, res, next) => {
   try {
+<<<<<<< HEAD
     return res.render('poststore.ejs', {
       user: req.user,
     });
+=======
+    return res.render('poststore.ejs', { user: req.user });
+>>>>>>> 5e4337bc288890698e5aab3064e7af2e9c87e7b9
   } catch (err) {
     next(err);
   }
@@ -84,6 +88,7 @@ router.get('/:store_id', async (req, res, next) => {
         reservation: true,
       },
     });
+<<<<<<< HEAD
 >>>>>>> 4df9b7ecf7bf5f47ad8d027599c559278afef495
 
     return res.render('storereservation.ejs', {
@@ -91,6 +96,9 @@ router.get('/:store_id', async (req, res, next) => {
       /* reviews,*/
       user: req.user ? req.user : null,
     });
+=======
+    return res.render('storereservation.ejs', { store, reviews, user: req.user });
+>>>>>>> 5e4337bc288890698e5aab3064e7af2e9c87e7b9
   } catch (err) {
     next(err);
   }
@@ -115,7 +123,7 @@ router.get('/edit/:store_id', checkAuthenticated, checkStoreOwner, async (req, r
       },
     });
 
-    return res.render('putstore.ejs', { store, store_id, user: req.user ? req.user : null });
+    return res.render('putstore.ejs', { store, store_id, user: req.user });
   } catch (err) {
     next(err);
   }

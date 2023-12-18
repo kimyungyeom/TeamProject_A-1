@@ -32,7 +32,7 @@ mainRouter.use('/search', SearchRouter);
 mainRouter.use('/adm/', AdminRouter);
 
 // temp
-mainRouter.use('/store/', ReviewRouter);
+mainRouter.use('/review/', ReviewRouter);
 
 //back
 // 로그인/회원가입

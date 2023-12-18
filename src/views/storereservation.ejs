@@ -146,6 +146,7 @@
     </div>
     </div>
 
+<<<<<<< HEAD
     <!-- 리뷰 -->
     <div class="row justify-content-md-center">
       <div class="col-md-8 mt-4">
@@ -178,6 +179,39 @@
             </ul>
           </div>
         </div>
+=======
+<!-- 리뷰 -->
+<div class="row justify-content-md-center">
+  <div class="col-md-8 mt-4">
+    <div class="card border">
+      <div class="card-header pb-0 px-3">
+        <h6 class="mb-0">펫시터님을 위한 리뷰공간!</h6>
+      </div>
+      <div class="card-body pt-4 p-3">
+        <ul class="list-group">
+          <% reviews.forEach((review) => { %>
+            <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+              <div class="d-flex flex-column">
+                <h6 class="mb-3 text-sm">
+                  <%= review.user.name %> 평점: <%= review.rating %>
+                </h6>
+                <span class="mb-2 text-xs">
+                  <span class="text-dark font-weight-bold ms-sm-2"><%= review.comment %></span>
+                </span>
+              </div>
+            </li>
+            <div class="ms-auto text-end">
+<!-- FIXME -->
+<button type="button" id="delete_btn" data-id="<%= review.reservation.reserve_id %>/<%= review.review_id %>"
+  class="deleteBtn btn btn-link text-danger text-gradient px-3 mb-0">Delete </button>
+<!-- FIXME -->
+              <button class="btn btn-link text-dark px-3 mb-0" href="javascript:;"
+                ><i class="material-icons text-sm me-2">edit</i>Edit</button
+              >
+            </div>
+          <% }); %>
+        </ul>
+>>>>>>> 5e4337bc288890698e5aab3064e7af2e9c87e7b9
       </div>
     </div>
 
@@ -208,6 +242,7 @@
       const deleteBtn = document.querySelector('#delete_btn');
       const storeId = '<%= store.store_id %>';
 
+<<<<<<< HEAD
       document.querySelectorAll('.deleteBtn').forEach(button =>
       {
         button.addEventListener('click', function ()
@@ -220,6 +255,19 @@
         const response = await axios.delete(`/store/${storeId}/reservation/${Id}`);
         location.reload();
       })
+=======
+  document.querySelectorAll('.deleteBtn').forEach(button => {
+  button.addEventListener('click', function() {
+    const reviewlinks = this.getAttribute('data-id');
+    const userInput = window.prompt("정말로 삭제하시겠습니까? (확인을 원하시면 '확인'을 입력해주세요.)");
+    if (userInput === '확인') {
+      console.log(`/review/${storeId}/${reviewlinks}`);
+      const response = axios.delete(`/review/${storeId}/${reviewlinks}`);
+      location.reload();
+    }
+  })
+})
+>>>>>>> 5e4337bc288890698e5aab3064e7af2e9c87e7b9
 
       // 모달 창 열기
     </script>
