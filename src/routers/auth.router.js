@@ -4,6 +4,7 @@ import passport from 'passport';
 import '../config/passport.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { checkNotAuthenticated } from '../middlewares/Authorizations.js';
 
 import {
   validate,
@@ -41,9 +42,9 @@ router.post(
     validateUsername,
     validate,
   ],
+  checkNotAuthenticated,
 
   async (req, res, next) => {
-    console.log(req.body);
     const { email, password, passwordCheck, phone, name, profile } = req.body;
 
     const image = req.file ? req.file.filename : '';
@@ -74,26 +75,32 @@ router.post(
     delete ExistUser.kakao_id;
     delete ExistUser.profile;
     return res.status(200).send(ExistUser);
-    //res.redirect('/login');
   },
 );
 
-router.post('/login', [validateEmail, validatePassword, validate], (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) {
-      console.log('no user');
-      return res.json({ msg: info });
-    }
-
-    req.logIn(user, function (err) {
-      if (err) {
-        return next(err);
+router.post(
+  '/login',
+  [validateEmail, validatePassword, validate],
+  checkNotAuthenticated,
+  (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) return next(err);
+      if (!user) {
+        console.log('no user');
+        return res.json({ msg: info });
       }
-      res.redirect('/store');
-    });
-  })(req, res, next);
-});
+
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        console.log('!');
+        console.log(req.user);
+        res.redirect('/store', { user: ruser });
+      });
+    })(req, res, next);
+  },
+);
 
 router.get(
   '/google',

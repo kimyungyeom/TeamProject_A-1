@@ -31,5 +31,4 @@ export function validate(req, res, next) {
   }
 
   return res.status(400).json({ message: errors.array() });
-  //res.redirect('/login');
 }

@@ -1,6 +1,10 @@
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
-import { checkAuthenticate } from '../middlewares/auth.js';
+import {
+  checkAuthenticated,
+  checkReservationSitter,
+  checkReservationUser,
+} from '../middlewares/Authorizations.js';
 
 import { reservationValidation, validate } from '../middlewares/reservation.validation.js';
 
@@ -9,7 +13,7 @@ const router = express.Router();
 // API 예약 생성
 router.post(
   '/store/:store_id',
-  checkAuthenticate,
+  checkAuthenticated,
   reservationValidation,
   validate,
   async (req, res, next) => {
@@ -64,7 +68,7 @@ router.post(
 );
 
 // API 예약 수정-상세페이지에서
-router.put('/:reserve_id', checkAuthenticate, async (req, res, next) => {
+router.put('/:reserve_id', checkAuthenticated, checkReservationUser, async (req, res, next) => {
   try {
     const user_id = req.user.user_id;
     const { reserve_id } = req.params;
@@ -95,60 +99,70 @@ router.put('/:reserve_id', checkAuthenticate, async (req, res, next) => {
 });
 
 // API 예약 수정-상세페이지에서 - 시터가 승인여부 변경
-router.put('/sitter/:reserve_id', checkAuthenticate, async (req, res, next) => {
-  try {
-    console.log('고갱님 수정하러 오셨습니까?');
-    const user_id = req.user.user_id;
-    const { reserve_id } = req.params;
-    const { approved } = req.body;
-    const reservationInfo = await prisma.reservations.findUnique({
-      where: { reserve_id: +reserve_id },
-      include: {
-        store: {
-          select: {
-            user_id: true,
+router.put(
+  '/sitter/:reserve_id',
+  checkAuthenticated,
+  checkReservationSitter,
+  async (req, res, next) => {
+    try {
+      console.log('고갱님 수정하러 오셨습니까?');
+      const user_id = req.user.user_id;
+      const { reserve_id } = req.params;
+      const { approved } = req.body;
+      const reservationInfo = await prisma.reservations.findUnique({
+        where: { reserve_id: +reserve_id },
+        include: {
+          store: {
+            select: {
+              user_id: true,
+            },
           },
         },
-      },
-    });
-    const storeOwner = reservationInfo.store.user_id;
-    // 스토어 주인 확인
-    if (+storeOwner === +user_id) {
-      const reservation = await prisma.reservations.update({
-        where: { reserve_id: +reserve_id },
-        data: {
-          approved: approved,
-        },
       });
-      return res.status(200).json({ data: reservation }).redirect('../../reserve_list/sitter');
-    } else {
-      throw new Error('Not a reserver');
+      const storeOwner = reservationInfo.store.user_id;
+      // 스토어 주인 확인
+      if (+storeOwner === +user_id) {
+        const reservation = await prisma.reservations.update({
+          where: { reserve_id: +reserve_id },
+          data: {
+            approved: approved,
+          },
+        });
+        return res.status(200).json({ data: reservation }).redirect('../../reserve_list/sitter');
+      } else {
+        throw new Error('Not a reserver');
+      }
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
-  }
-});
+  },
+);
 // API 예약 취소
-router.delete('/:reserve_id', checkAuthenticate, async (req, res, next) => {
-  try {
-    console.log('오셨어요?');
-    const user_id = req.user.user_id;
-    const { reserve_id } = req.params;
-    const reservationInfo = await prisma.reservations.findUnique({
-      where: { reserve_id: +reserve_id },
-    });
-    // 본인확인
-    if (+reservationInfo.user_id === +user_id) {
-      const reservationCanc = await prisma.reservations.delete({
+router.delete(
+  '/:reserve_id',
+  checkAuthenticated,
+  checkReservationSitter,
+  async (req, res, next) => {
+    try {
+      console.log('오셨어요?');
+      const user_id = req.user.user_id;
+      const { reserve_id } = req.params;
+      const reservationInfo = await prisma.reservations.findUnique({
         where: { reserve_id: +reserve_id },
       });
-      return res.status(200).json({ data: reservationCanc });
-    } else {
-      throw new Error('Not a reserver');
+      // 본인확인
+      if (+reservationInfo.user_id === +user_id) {
+        const reservationCanc = await prisma.reservations.delete({
+          where: { reserve_id: +reserve_id },
+        });
+        return res.status(200).json({ data: reservationCanc });
+      } else {
+        throw new Error('Not a reserver');
+      }
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
-  }
-});
+  },
+);
 
 export default router;

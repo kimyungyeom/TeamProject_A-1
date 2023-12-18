@@ -35,7 +35,7 @@ router.post('/', checkAuthenticated, async (req, res, next) => {
 });
 
 // 게시글 수정
-router.put('/:store_id', checkStoreOwner, async (req, res, next) => {
+router.put('/:store_id', checkAuthenticated, checkStoreOwner, async (req, res, next) => {
   const { store_id } = req.params;
   const { title, content, price, images, able_date, experience, state, city, address } = req.body;
 
@@ -63,7 +63,7 @@ router.put('/:store_id', checkStoreOwner, async (req, res, next) => {
 });
 
 // 게시글 삭제
-router.delete('/:store_id', checkStoreOwner, async (req, res, next) => {
+router.delete('/:store_id', checkAuthenticated, checkStoreOwner, async (req, res, next) => {
   const { store_id } = req.params;
 
   try {

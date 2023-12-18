@@ -42,11 +42,9 @@
             email: emailEl.value,
             password: passwordEl.value
           });
+          console.log(response);
+          window.location.href = '/';
 
-          if (response)
-          {
-            window.location.href = '/';
-          }
         } catch (e)
         {
           console.error(e);

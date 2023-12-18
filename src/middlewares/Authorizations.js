@@ -10,7 +10,6 @@ import { prisma } from '../utils/prisma/index.js';
 
 export const checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log('login');
     return next();
   } else {
     res.redirect('/login');

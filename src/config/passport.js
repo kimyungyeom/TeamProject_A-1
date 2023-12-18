@@ -5,10 +5,12 @@ import 'dotenv/config';
 import { prisma } from '../utils/prisma/index.js';
 
 passport.serializeUser((user, done) => {
+  console.log(user);
   done(null, user.user_id);
 });
 // client => session => request
 passport.deserializeUser((id, done) => {
+  console.log(id);
   prisma.users.findUnique({ where: { user_id: Number(id) } }).then((user) => {
     delete user.password;
     delete user.google_id;
