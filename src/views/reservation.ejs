@@ -224,30 +224,6 @@
       }
     });
 
-    const reviewEl = document.querySelector('.reviewInput');
-    const ratingEl = document.querySelector('.ratingInput');
-
-    document.addEventListener('DOMContentLoaded', function ()
-    {
-      const replyBtn = document.querySelector('.replyBtn');
-      const storeId = '<%= reservationInfo.store.store_id %>';
-      const reserveId = '<%= reservationInfo.reserve_id %>';
-
-      replyBtn.addEventListener('click', async () =>
-      {
-        try
-        {
-          const response = await axios.post(`/store/${storeId}/reservation/${reserveId}/review`, {
-            review: reviewEl.value,
-            rating: ratingEl.value
-          });
-        } catch (err)
-        {
-          console.error(err);
-        }
-      });
-    });
-
     const commentEl = document.querySelector('.commentInput');
     const ratingEl = document.querySelector('.ratingInput');
 
